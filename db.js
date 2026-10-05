@@ -1,0 +1,10 @@
+const DB_NAME='kaloriku-pwa';const DB_VERSION=1;let _db;
+function dbOpen(){if(_db)return Promise.resolve(_db);return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('kv'))d.createObjectStore('kv',{keyPath:'key'});if(!d.objectStoreNames.contains('logs')){const s=d.createObjectStore('logs',{keyPath:'id'});s.createIndex('date','date',{unique:false});s.createIndex('createdAt','createdAt',{unique:false})}if(!d.objectStoreNames.contains('customFoods'))d.createObjectStore('customFoods',{keyPath:'id'});if(!d.objectStoreNames.contains('weights'))d.createObjectStore('weights',{keyPath:'date'})};r.onsuccess=()=>{_db=r.result;res(_db)};r.onerror=()=>rej(r.error)})}
+async function tx(store,mode='readonly'){const d=await dbOpen();return d.transaction(store,mode).objectStore(store)}
+async function dbGetKV(key,def=null){return new Promise(async(res,rej)=>{const s=await tx('kv');const r=s.get(key);r.onsuccess=()=>res(r.result?.value??def);r.onerror=()=>rej(r.error)})}
+async function dbSetKV(key,value){return new Promise(async(res,rej)=>{const s=await tx('kv','readwrite');const r=s.put({key,value});r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+async function dbAll(store){return new Promise(async(res,rej)=>{const s=await tx(store);const r=s.getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+async function dbPut(store,value){return new Promise(async(res,rej)=>{const s=await tx(store,'readwrite');const r=s.put(value);r.onsuccess=()=>res(value);r.onerror=()=>rej(r.error)})}
+async function dbDelete(store,key){return new Promise(async(res,rej)=>{const s=await tx(store,'readwrite');const r=s.delete(key);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+async function dbClear(store){return new Promise(async(res,rej)=>{const s=await tx(store,'readwrite');const r=s.clear();r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+async function dbLogsByDate(date){return new Promise(async(res,rej)=>{const s=await tx('logs');const r=s.index('date').getAll(IDBKeyRange.only(date));r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
