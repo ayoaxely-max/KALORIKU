@@ -78,7 +78,7 @@ function applyAiSuggestions(result){
     const m=findBestFoodMatch(s.name);
     if(m){
       const sg=photoServingGrams(m.food),grams=Math.max(1,Math.round(Number(s.estimated_grams)||sg||100));
-      matched.push({id:'pi_'+crypto.randomUUID(),food:m.food,servingGrams:sg||100,grams,qty:sg?grams/sg:grams/100,ai:{name:s.name,min:Math.round(Number(s.min_grams)||grams*.7),max:Math.round(Number(s.max_grams)||grams*1.3),confidence:Math.max(0,Math.min(1,Number(s.confidence)||0)),portion:s.portion_description||'',basis:s.visual_basis||'',matchScore:m.score}});
+      matched.push({id:'pi_'+crypto.randomUUID(),food:m.food,servingGrams:sg,grams:sg?grams:null,qty:sg?grams/sg:1,ai:{name:s.name,min:Math.round(Number(s.min_grams)||grams*.7),max:Math.round(Number(s.max_grams)||grams*1.3),confidence:Math.max(0,Math.min(1,Number(s.confidence)||0)),portion:s.portion_description||'',basis:s.visual_basis||'',matchScore:m.score}});
     }else unmatched.push(s);
   }
   photoDraftItems=matched;renderPhotoSelected();
