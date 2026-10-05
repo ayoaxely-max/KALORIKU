@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kaloriku-ai",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-05",
+  "vars": {
+    "ALLOWED_ORIGIN": "https://ayoaxely-max.github.io",
+    "GEMINI_MODEL": "gemini-3.6-flash"
+  }
+}
