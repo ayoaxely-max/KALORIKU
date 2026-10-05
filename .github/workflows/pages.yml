@@ -19,6 +19,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Build self-contained KaloriKu site
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data icons
+          curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/app.js" -o app.js
+          curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/data/foods.json" -o data/foods.json
+          curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/icons/icon-192.png" -o icons/icon-192.png
+          curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/icons/icon-512.png" -o icons/icon-512.png
+          test -s app.js
+          test -s data/foods.json
+          echo "KaloriKu assets ready"
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
