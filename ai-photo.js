@@ -1,3 +1,4 @@
+const DEFAULT_AI_BACKEND='https://kaloriku-ai.ayoaxely.workers.dev';
 let aiBackendUrl='';
 
 function aiNorm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
@@ -24,7 +25,7 @@ function setAiStatus(text,type='info'){
 }
 function normalizeBackendUrl(v){return String(v||'').trim().replace(/\/+$/,'')}
 async function loadAiBackend(){
-  aiBackendUrl=normalizeBackendUrl(await dbGetKV('aiBackendUrl',''));
+  aiBackendUrl=normalizeBackendUrl(await dbGetKV('aiBackendUrl',DEFAULT_AI_BACKEND));
   const input=$('aiBackendUrl');if(input)input.value=aiBackendUrl;
   updateAiBackendStatus(aiBackendUrl?'Tersimpan — belum dites':'Belum terhubung');
 }
@@ -37,7 +38,7 @@ async function saveAiBackend(){
   aiBackendUrl=url;await dbSetKV('aiBackendUrl',url);await testAiBackend(true);
 }
 async function clearAiBackend(){
-  aiBackendUrl='';await dbSetKV('aiBackendUrl','');$('aiBackendUrl').value='';updateAiBackendStatus('Belum terhubung');toast('URL backend dihapus');
+  aiBackendUrl=DEFAULT_AI_BACKEND;await dbSetKV('aiBackendUrl',DEFAULT_AI_BACKEND);$('aiBackendUrl').value=DEFAULT_AI_BACKEND;updateAiBackendStatus('Menggunakan backend default');toast('Kembali ke backend default');
 }
 async function testAiBackend(showToast=false){
   if(!aiBackendUrl){updateAiBackendStatus('Belum terhubung');return false}
