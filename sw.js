@@ -1,6 +1,6 @@
-const CACHE='kaloriku-github-pages-v1.0.2';
+const CACHE='kaloriku-github-pages-v1.0.3';
 const BASE=new URL('./',self.location.href);
-const SHELL=["", "styles.css", "db.js", "app.js", "manifest.webmanifest", "app.part1.txt", "app.part2.txt", "app.part3.txt", "app.part4.txt", "app.part5.txt", "app.part6.txt", "app.part7.txt", "app.part8.txt", "app.part9.txt", "app.part10.txt", "data/foods-gz-1.txt", "data/foods-gz-2.txt", "data/foods-gz-3.txt", "icons/icon-192.png", "icons/icon-512.png"].map(path=>new URL(path,BASE).toString());
+const SHELL=['','styles.css','db.js','app.js','manifest.webmanifest','data/foods.json','icons/icon-192.png','icons/icon-512.png'].map(path=>new URL(path,BASE).toString());
 const HOME=new URL('',BASE).toString();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
