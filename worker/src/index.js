@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = "gemini-3.6-flash";
+const DEFAULT_MODEL = "gemini-3.8-flash";
 
 function headers(origin, allowed) {
   const ok = origin && origin === allowed;
