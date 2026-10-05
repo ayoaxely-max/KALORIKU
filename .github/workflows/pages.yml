@@ -4,7 +4,7 @@ on:
     branches: ["main"]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 concurrency:
@@ -20,26 +20,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Vendor KaloriKu assets into GitHub once
+      - name: Verify bundled KaloriKu assets
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p data icons
-          if [ ! -s app.js ] || [ ! -s data/foods.json ] || [ ! -s icons/icon-192.png ] || [ ! -s icons/icon-512.png ]; then
-            curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/app.js" -o app.js
-            curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/data/foods.json" -o data/foods.json
-            curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/icons/icon-192.png" -o icons/icon-192.png
-            curl --fail --location --retry 3 "https://kaloriku-iota.vercel.app/icons/icon-512.png" -o icons/icon-512.png
-            test -s app.js
-            test -s data/foods.json
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add app.js data/foods.json icons/icon-192.png icons/icon-512.png
-            git commit -m "Vendor KaloriKu runtime assets into GitHub [skip ci]"
-            git push
-          else
-            echo "Runtime assets already stored in GitHub."
-          fi
+          test -s app.js
+          test -s data/foods.json
+          test -s icons/icon-192.png
+          test -s icons/icon-512.png
+          echo "All KaloriKu runtime assets are stored in GitHub."
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
