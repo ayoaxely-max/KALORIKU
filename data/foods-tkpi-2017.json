@@ -20,7 +20,14 @@
     "aliases": [
       "jawawut biji",
       "millet mentah"
-    ]
+    ],
+    "fiber": 8.2,
+    "sodium": 7,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_br002",
@@ -174,7 +181,14 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "kapurung sagu"
-    ]
+    ],
+    "fiber": 2,
+    "sodium": 185,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_bp043",
@@ -196,7 +210,14 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "kemplang bakar"
-    ]
+    ],
+    "fiber": 1,
+    "sodium": 7,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_bp054",
@@ -218,7 +239,14 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "papeda polos tanpa lauk"
-    ]
+    ],
+    "fiber": 0.5,
+    "sodium": 4,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_bp074",
@@ -262,7 +290,14 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "ubi cilembu panggang"
-    ]
+    ],
+    "fiber": 3.4,
+    "sodium": 1,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_cr014",
@@ -284,7 +319,14 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "kacang ijo kering"
-    ]
+    ],
+    "fiber": 7.5,
+    "sodium": 42,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_cr039",
@@ -328,7 +370,14 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "kacang merah rebus kering"
-    ]
+    ],
+    "fiber": 2.6,
+    "sodium": 6,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_cp027",
@@ -438,7 +487,13 @@
     "verification_status": "matched_printed_table",
     "aliases": [
       "peyek kacang tanah"
-    ]
+    ],
+    "fiber": 1.7,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi17_cp071",
