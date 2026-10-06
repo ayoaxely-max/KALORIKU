@@ -8,3 +8,23 @@
 .v14-subtitle{font-size:14px;margin:15px 0 4px}
 .log-edit-btn{width:auto;padding:5px 7px;font-size:12px;flex-shrink:0}
 @media(max-width:520px){.grid3 input{padding:8px 5px}}
+
+/* KaloriKu v1.5: hydration + weekly summary + undo + nutrition audit */
+.v15-water-card .section-head{padding-bottom:6px}
+.v15-water-progress{background:#e0f2fe;margin:10px 0 12px}
+.v15-water-progress span{background:#0284c7}
+.v15-water-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:8px}
+.v15-water-buttons button{padding:9px 5px;font-size:12px}
+.v15-water-custom{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
+.v15-water-custom label{font-size:12px;color:var(--muted);min-width:75px}
+.v15-water-custom input{width:90px;flex:1;min-width:0}
+.v15-water-custom button{font-size:12px;flex-shrink:0}
+.v15-water-card p{margin-bottom:0}
+.v15-warning{background:#fffbeb;color:#92400e;border:1px solid #fde68a;border-radius:10px;font-size:12px;padding:9px 11px;margin:8px 0;white-space:pre-wrap}
+.v15-warning:empty{display:none}
+.v15-audit-row{display:flex;flex-direction:column;gap:8px;padding:11px 0;border-top:1px solid var(--line)}
+.v15-audit-row strong{font-size:13px}
+.v15-audit-row button{align-self:flex-start}
+.v15-undo{position:fixed;bottom:calc(var(--nav) + 24px);left:50%;transform:translateX(-50%);z-index:60;background:#111827;color:white;border-radius:14px;box-shadow:0 12px 35px #0004;padding:11px 13px;display:flex;gap:12px;align-items:center;justify-content:space-between;width:min(450px,calc(100vw - 28px));font-size:12px}
+.v15-undo button{border:1px solid #9ca3af;background:transparent;border-radius:9px;padding:8px 10px;color:white;font-weight:700}
+@media(max-width:380px){.v15-water-buttons{grid-template-columns:1fr 1fr}.v15-water-custom{flex-wrap:wrap}.v15-water-custom label{width:100%}}
