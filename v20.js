@@ -239,6 +239,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
  $('v20Upload').onclick=v20Upload;$('v20Download').onclick=v20Download;
  $('v20Disconnect').onclick=v20Disconnect;
  $('v20DeleteCloud').onclick=v20DeleteCloud;
+ $('v20ShowKey').onclick=()=>{if(!v20Secret)return;if(!confirm('Tampilkan kode rahasia pada layar? Pastikan tidak ada orang lain yang melihat.'))return;$('v20NewKey').value=v20Secret;$('v20NewKeyWrap').classList.remove('hidden')};
  $('v20ReviewCancel').onclick=()=>{$('v20ReviewDialog').close();v20Downloaded=null};
  $('v20BackupConfirmed').onchange=v=>{$('v20ReviewContinue').disabled=!$('v20BackupConfirmed').checked};
  $('v20ReviewContinue').onclick=v20ReviewContinue;
