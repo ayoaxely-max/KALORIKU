@@ -33,6 +33,7 @@ function setPhotoPreview(blob){
 function openPhotoMeal(){
   try{if($('addDialog')?.open)$('addDialog').close()}catch{}
   photoDraftItems=[];photoDraftBlob=null;photoDraftSource=null;setPhotoPreview(null);
+  $('photoEntryDate').value=$('entryDate').value||localDate();$('photoEntryDate').max=localDate();
   $('photoSearch').value='';$('photoNote').value='';
   $('analyzePhotoBtn').disabled=true;
   $('analyzePhotoBtn').textContent='✨ Analisis foto dengan AI';
@@ -50,7 +51,7 @@ function closePhotoMeal(){
 function renderPhotoSearch(){
   const q=$('photoSearch').value.trim().toLowerCase();
   if(!q){$('photoSearchResults').innerHTML='<div class="empty small">Cari makanan untuk menambahkan komponen.</div>';return}
-  const a=allFoods.filter(f=>f.name.toLowerCase().includes(q)).slice(0,30);
+  const a=allFoods.filter(f=>foodMatches(f,q)).slice(0,30);
   $('photoSearchResults').innerHTML=a.map(f=>`<div class="log-row"><div class="food-info"><strong>${esc(f.name)}</strong><small>${esc(f.serving)} · ${fmt(f.calories)} kcal</small></div><button class="add-btn" onclick="addPhotoFood('${f.id}')">＋</button></div>`).join('')||'<div class="empty">Tidak ditemukan.</div>';
 }
 window.addPhotoFood=id=>{
@@ -78,7 +79,7 @@ function renderPhotoSelected(){
 async function savePhotoMeal(){
   if(!photoDraftBlob){toast('Ambil atau pilih foto dulu');return}
   if(!photoDraftItems.length){toast('Tambahkan minimal satu makanan');return}
-  const id='mp_'+crypto.randomUUID(),date=localDate(),meal=$('photoMeal').value,createdAt=Date.now();
+  const id='mp_'+crypto.randomUUID(),date=$('photoEntryDate').value||localDate(),meal=$('photoMeal').value,createdAt=Date.now();
   const items=photoDraftItems.map(i=>{
     const q=photoItemQty(i),m=photoItemMacros(i);
     return {foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?Math.round(i.grams||i.servingGrams):null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
