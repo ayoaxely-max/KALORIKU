@@ -1,6 +1,6 @@
-const CACHE='kaloriku-github-pages-v2.3.1';
+const CACHE='kaloriku-github-pages-v2.3.2';
 const BASE=new URL('./',self.location.href);
-const SHELL=['','styles.css?v=2.3.1','db.js','app.js?v=2.3.1','photo.js?v=2.3.1','ai-photo.js?v=2.3.1','v14.js?v=2.3.1','v15.js?v=2.3.1','v16.js?v=2.3.1','v17.js?v=2.3.1','v20.js?v=2.3.1','data/foods-extra.json','data/foods-daily.json','data/foods-regional.json','data/foods-expanded.json','data/foods-tkpi-2017.json','manifest.webmanifest','data/foods.json','icons/icon-192.png','icons/icon-512.png'].map(path=>new URL(path,BASE).toString());
+const SHELL=['','styles.css?v=2.3.2','db.js','app.js?v=2.3.2','photo.js?v=2.3.2','ai-photo.js?v=2.3.2','v14.js?v=2.3.2','v15.js?v=2.3.2','v16.js?v=2.3.2','v17.js?v=2.3.2','v20.js?v=2.3.2','data/foods-extra.json','data/foods-daily.json','data/foods-regional.json','data/foods-expanded.json','data/foods-tkpi-2017.json','data/foods-tkpi-2020.json','manifest.webmanifest','data/foods.json','icons/icon-192.png','icons/icon-512.png'].map(path=>new URL(path,BASE).toString());
 const DATA_PREFIX=new URL('data/',BASE).pathname;
 const HOME=new URL('',BASE).toString();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()))});
