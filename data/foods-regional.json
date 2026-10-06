@@ -1,0 +1,1561 @@
+[
+  {
+    "id": "regional26_0001",
+    "name": "Pecel ndeso",
+    "category": "Hidangan Jawa",
+    "serving": "1 porsi tanpa nasi (±180 g)",
+    "calories": 245,
+    "protein": 7,
+    "carbs": 25,
+    "fat": 13,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pecel kampung",
+      "pecel sayur ndeso"
+    ]
+  },
+  {
+    "id": "regional26_0002",
+    "name": "Pecel tumpang",
+    "category": "Hidangan Jawa",
+    "serving": "1 porsi sayur dan sambal tumpang (±200 g)",
+    "calories": 280,
+    "protein": 10,
+    "carbs": 24,
+    "fat": 16,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pecel sambal tumpang"
+    ]
+  },
+  {
+    "id": "regional26_0003",
+    "name": "Sego tumpang",
+    "category": "Hidangan Jawa",
+    "serving": "1 porsi nasi sayur sambal tumpang (±320 g)",
+    "calories": 481,
+    "protein": 12,
+    "carbs": 70,
+    "fat": 17,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "nasi tumpang"
+    ]
+  },
+  {
+    "id": "regional26_0004",
+    "name": "Selat Solo",
+    "category": "Hidangan Jawa",
+    "serving": "1 porsi (±300 g)",
+    "calories": 319,
+    "protein": 17,
+    "carbs": 29,
+    "fat": 15,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "selat galantin solo"
+    ]
+  },
+  {
+    "id": "regional26_0005",
+    "name": "Timlo Solo",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk (±330 g)",
+    "calories": 249,
+    "protein": 19,
+    "carbs": 23,
+    "fat": 9,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "timlo ayam solo"
+    ]
+  },
+  {
+    "id": "regional26_0006",
+    "name": "Sate kere",
+    "category": "Hidangan Jawa",
+    "serving": "5 tusuk dengan saus kacang (±130 g)",
+    "calories": 297,
+    "protein": 13,
+    "carbs": 23,
+    "fat": 17,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sate tempe gembus solo"
+    ]
+  },
+  {
+    "id": "regional26_0007",
+    "name": "Sate buntel kambing",
+    "category": "Hidangan Jawa",
+    "serving": "1 tusuk besar (±120 g)",
+    "calories": 325,
+    "protein": 19,
+    "carbs": 6,
+    "fat": 25,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sate buntel solo"
+    ]
+  },
+  {
+    "id": "regional26_0008",
+    "name": "Soto kwali sapi",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk tanpa nasi (±270 g)",
+    "calories": 223,
+    "protein": 18,
+    "carbs": 13,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "soto kuali",
+      "soto kwali"
+    ]
+  },
+  {
+    "id": "regional26_0009",
+    "name": "Soto daging sapi bening",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk tanpa nasi (±270 g)",
+    "calories": 231,
+    "protein": 21,
+    "carbs": 12,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "soto daging",
+      "soto sapi bening"
+    ]
+  },
+  {
+    "id": "regional26_0010",
+    "name": "Sop senerek",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk (±270 g)",
+    "calories": 212,
+    "protein": 11,
+    "carbs": 24,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sup senerek",
+      "sop kacang merah magelang"
+    ]
+  },
+  {
+    "id": "regional26_0011",
+    "name": "Nasi berkat lauk sederhana",
+    "category": "Hidangan Jawa",
+    "serving": "1 bungkus (±350 g)",
+    "calories": 497,
+    "protein": 17,
+    "carbs": 69,
+    "fat": 17,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sego berkat",
+      "nasi berkat"
+    ]
+  },
+  {
+    "id": "regional26_0012",
+    "name": "Nasi kucing sambal teri",
+    "category": "Hidangan Jawa",
+    "serving": "1 bungkus kecil (±130 g)",
+    "calories": 193,
+    "protein": 4,
+    "carbs": 33,
+    "fat": 5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sego kucing sambal teri"
+    ]
+  },
+  {
+    "id": "regional26_0013",
+    "name": "Kupat sayur Jawa",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk (±310 g)",
+    "calories": 371,
+    "protein": 8,
+    "carbs": 51,
+    "fat": 15,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "ketupat sayur",
+      "kupat sayur"
+    ]
+  },
+  {
+    "id": "regional26_0014",
+    "name": "Bakmi godog Jawa",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk (±350 g)",
+    "calories": 418,
+    "protein": 14,
+    "carbs": 59,
+    "fat": 14,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "bakmi godhog",
+      "bakmi rebus jawa"
+    ]
+  },
+  {
+    "id": "regional26_0015",
+    "name": "Jangan lombok",
+    "category": "Hidangan Jawa",
+    "serving": "1 mangkuk (±180 g)",
+    "calories": 184,
+    "protein": 5,
+    "carbs": 14,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sayur lombok",
+      "sayur cabai jawa",
+      "jangan lombok santan"
+    ]
+  },
+  {
+    "id": "regional26_0016",
+    "name": "Buntil daun singkong",
+    "category": "Hidangan Jawa",
+    "serving": "1 bungkus dengan kuah (±160 g)",
+    "calories": 232,
+    "protein": 7,
+    "carbs": 15,
+    "fat": 16,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "buntil"
+    ]
+  },
+  {
+    "id": "regional26_0017",
+    "name": "Bothok tahu tempe",
+    "category": "Hidangan Jawa",
+    "serving": "1 bungkus (±100 g)",
+    "calories": 168,
+    "protein": 11,
+    "carbs": 13,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "botok tahu tempe",
+      "bothok tempe"
+    ]
+  },
+  {
+    "id": "regional26_0018",
+    "name": "Garang asem ikan",
+    "category": "Hidangan Jawa",
+    "serving": "1 bungkus (±160 g)",
+    "calories": 184,
+    "protein": 20,
+    "carbs": 8,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "garang asem ikan pindang"
+    ]
+  },
+  {
+    "id": "regional26_0019",
+    "name": "Nasi bancakan sederhana",
+    "category": "Hidangan Jawa",
+    "serving": "1 porsi (±300 g)",
+    "calories": 430,
+    "protein": 12,
+    "carbs": 64,
+    "fat": 14,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sego bancakan"
+    ]
+  },
+  {
+    "id": "regional26_0020",
+    "name": "Nasi jagung urap ikan asin",
+    "category": "Hidangan Jawa",
+    "serving": "1 porsi (±330 g)",
+    "calories": 466,
+    "protein": 15,
+    "carbs": 70,
+    "fat": 14,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sego jagung urap"
+    ]
+  },
+  {
+    "id": "regional26_0021",
+    "name": "Sambal tumpang tempe semangit",
+    "category": "Lauk dan sambal",
+    "serving": "2 sdm (±40 g)",
+    "calories": 77,
+    "protein": 3,
+    "carbs": 5,
+    "fat": 5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambel tumpang",
+      "tumpang tempe"
+    ]
+  },
+  {
+    "id": "regional26_0022",
+    "name": "Tempe garit goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±55 g)",
+    "calories": 167,
+    "protein": 9,
+    "carbs": 8,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tempe garit",
+      "tempe sayat"
+    ]
+  },
+  {
+    "id": "regional26_0023",
+    "name": "Tempe kemul goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 lembar (±70 g)",
+    "calories": 212,
+    "protein": 7,
+    "carbs": 19,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kemul tempe"
+    ]
+  },
+  {
+    "id": "regional26_0024",
+    "name": "Tempe gembus goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±60 g)",
+    "calories": 137,
+    "protein": 4,
+    "carbs": 10,
+    "fat": 9,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "gembus goreng",
+      "menjes goreng"
+    ]
+  },
+  {
+    "id": "regional26_0025",
+    "name": "Tahu pong goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±55 g)",
+    "calories": 121,
+    "protein": 5,
+    "carbs": 5,
+    "fat": 9,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tahu pong"
+    ]
+  },
+  {
+    "id": "regional26_0026",
+    "name": "Tahu aci goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 buah (±65 g)",
+    "calories": 182,
+    "protein": 5,
+    "carbs": 18,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tahu aci tegal"
+    ]
+  },
+  {
+    "id": "regional26_0027",
+    "name": "Tahu susu goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±65 g)",
+    "calories": 138,
+    "protein": 7,
+    "carbs": 5,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tahu susu"
+    ]
+  },
+  {
+    "id": "regional26_0028",
+    "name": "Tahu gimbal tanpa lontong",
+    "category": "Lauk dan sambal",
+    "serving": "1 porsi (±240 g)",
+    "calories": 351,
+    "protein": 12,
+    "carbs": 33,
+    "fat": 19,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tahu gimbal"
+    ]
+  },
+  {
+    "id": "regional26_0029",
+    "name": "Sate ceker ayam",
+    "category": "Lauk dan sambal",
+    "serving": "3 tusuk kecil (±75 g)",
+    "calories": 144,
+    "protein": 11,
+    "carbs": 7,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sate ceker"
+    ]
+  },
+  {
+    "id": "regional26_0030",
+    "name": "Sate ati ampela ayam",
+    "category": "Lauk dan sambal",
+    "serving": "2 tusuk (±80 g)",
+    "calories": 187,
+    "protein": 14,
+    "carbs": 8,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sate hati ampela"
+    ]
+  },
+  {
+    "id": "regional26_0031",
+    "name": "Sate kikil bumbu kacang",
+    "category": "Lauk dan sambal",
+    "serving": "3 tusuk (±100 g)",
+    "calories": 202,
+    "protein": 12,
+    "carbs": 16,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sate kulit sapi kikil"
+    ]
+  },
+  {
+    "id": "regional26_0032",
+    "name": "Sate usus bumbu kecap",
+    "category": "Lauk dan sambal",
+    "serving": "3 tusuk (±75 g)",
+    "calories": 188,
+    "protein": 12,
+    "carbs": 8,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sate usus ayam kecap"
+    ]
+  },
+  {
+    "id": "regional26_0033",
+    "name": "Pepes peda kemangi",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong ikan (±85 g)",
+    "calories": 183,
+    "protein": 17,
+    "carbs": 4,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pepes peda",
+      "pepes ikan asin"
+    ]
+  },
+  {
+    "id": "regional26_0034",
+    "name": "Ikan wader goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 porsi kecil (±80 g)",
+    "calories": 201,
+    "protein": 16,
+    "carbs": 5,
+    "fat": 13,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "wader goreng",
+      "wader crispy"
+    ]
+  },
+  {
+    "id": "regional26_0035",
+    "name": "Pindang serani ikan",
+    "category": "Lauk dan sambal",
+    "serving": "1 mangkuk (±250 g)",
+    "calories": 175,
+    "protein": 19,
+    "carbs": 9,
+    "fat": 7,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pindang serani"
+    ]
+  },
+  {
+    "id": "regional26_0036",
+    "name": "Terong penyet sambal",
+    "category": "Lauk dan sambal",
+    "serving": "1 porsi (±140 g)",
+    "calories": 168,
+    "protein": 3,
+    "carbs": 12,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "terong penyet"
+    ]
+  },
+  {
+    "id": "regional26_0037",
+    "name": "Oseng daun pepaya teri",
+    "category": "Sayur rumahan",
+    "serving": "1 porsi (±110 g)",
+    "calories": 162,
+    "protein": 8,
+    "carbs": 10,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tumis daun pepaya"
+    ]
+  },
+  {
+    "id": "regional26_0038",
+    "name": "Sayur lodeh terong",
+    "category": "Sayur rumahan",
+    "serving": "1 mangkuk (±200 g)",
+    "calories": 197,
+    "protein": 4,
+    "carbs": 16,
+    "fat": 13,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "lodeh terong"
+    ]
+  },
+  {
+    "id": "regional26_0039",
+    "name": "Sayur lodeh labu siam",
+    "category": "Sayur rumahan",
+    "serving": "1 mangkuk (±200 g)",
+    "calories": 188,
+    "protein": 3,
+    "carbs": 17,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "jangan jipang",
+      "lodeh jipang"
+    ]
+  },
+  {
+    "id": "regional26_0040",
+    "name": "Sayur bening katuk",
+    "category": "Sayur rumahan",
+    "serving": "1 mangkuk (±190 g)",
+    "calories": 61,
+    "protein": 4,
+    "carbs": 9,
+    "fat": 1,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sayur katuk"
+    ]
+  },
+  {
+    "id": "regional26_0041",
+    "name": "Oseng pare telur",
+    "category": "Sayur rumahan",
+    "serving": "1 porsi (±130 g)",
+    "calories": 158,
+    "protein": 8,
+    "carbs": 9,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tumis pare telur"
+    ]
+  },
+  {
+    "id": "regional26_0042",
+    "name": "Oseng rebung pedas",
+    "category": "Sayur rumahan",
+    "serving": "1 porsi (±120 g)",
+    "calories": 127,
+    "protein": 3,
+    "carbs": 13,
+    "fat": 7,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tumis rebung"
+    ]
+  },
+  {
+    "id": "regional26_0043",
+    "name": "Oseng kacang panjang tempe",
+    "category": "Sayur rumahan",
+    "serving": "1 porsi (±130 g)",
+    "calories": 170,
+    "protein": 7,
+    "carbs": 13,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tumis kacang panjang tempe"
+    ]
+  },
+  {
+    "id": "regional26_0044",
+    "name": "Oseng jipang wortel",
+    "category": "Sayur rumahan",
+    "serving": "1 porsi (±130 g)",
+    "calories": 123,
+    "protein": 2,
+    "carbs": 13,
+    "fat": 7,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tumis labu siam wortel"
+    ]
+  },
+  {
+    "id": "regional26_0045",
+    "name": "Sambal bawang",
+    "category": "Lauk dan sambal",
+    "serving": "1 sdm (±15 g)",
+    "calories": 37,
+    "protein": 0.5,
+    "carbs": 2,
+    "fat": 3,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambel bawang"
+    ]
+  },
+  {
+    "id": "regional26_0046",
+    "name": "Sambal terasi",
+    "category": "Lauk dan sambal",
+    "serving": "1 sdm (±15 g)",
+    "calories": 37,
+    "protein": 0.7,
+    "carbs": 3,
+    "fat": 2.5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambel terasi"
+    ]
+  },
+  {
+    "id": "regional26_0047",
+    "name": "Sambal korek",
+    "category": "Lauk dan sambal",
+    "serving": "1 sdm (±15 g)",
+    "calories": 46,
+    "protein": 0.5,
+    "carbs": 2,
+    "fat": 4,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambel korek"
+    ]
+  },
+  {
+    "id": "regional26_0048",
+    "name": "Sambal tomat",
+    "category": "Lauk dan sambal",
+    "serving": "1 sdm (±15 g)",
+    "calories": 32,
+    "protein": 0.5,
+    "carbs": 3,
+    "fat": 2,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambel tomat"
+    ]
+  },
+  {
+    "id": "regional26_0049",
+    "name": "Sambal matang goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 sdm (±15 g)",
+    "calories": 50,
+    "protein": 0.5,
+    "carbs": 3,
+    "fat": 4,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambel matang"
+    ]
+  },
+  {
+    "id": "regional26_0050",
+    "name": "Sambal hijau",
+    "category": "Lauk dan sambal",
+    "serving": "1 sdm (±15 g)",
+    "calories": 41,
+    "protein": 0.5,
+    "carbs": 3,
+    "fat": 3,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sambal ijo"
+    ]
+  },
+  {
+    "id": "regional26_0051",
+    "name": "Ayam bumbu rujak",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±110 g)",
+    "calories": 267,
+    "protein": 23,
+    "carbs": 10,
+    "fat": 15,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "ayam bumbu pedas"
+    ]
+  },
+  {
+    "id": "regional26_0052",
+    "name": "Ayam bacem goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±100 g)",
+    "calories": 296,
+    "protein": 23,
+    "carbs": 15,
+    "fat": 16,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "ayam bacem"
+    ]
+  },
+  {
+    "id": "regional26_0053",
+    "name": "Daging sapi oseng mercon",
+    "category": "Lauk dan sambal",
+    "serving": "1 porsi (±110 g)",
+    "calories": 291,
+    "protein": 20,
+    "carbs": 10,
+    "fat": 19,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "oseng mercon daging"
+    ]
+  },
+  {
+    "id": "regional26_0054",
+    "name": "Bandeng presto goreng",
+    "category": "Lauk dan sambal",
+    "serving": "1 potong (±100 g)",
+    "calories": 252,
+    "protein": 20,
+    "carbs": 7,
+    "fat": 16,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "bandeng presto"
+    ]
+  },
+  {
+    "id": "regional26_0055",
+    "name": "Jenang abang",
+    "category": "Jajanan pasar",
+    "serving": "1 mangkuk kecil (±150 g)",
+    "calories": 212,
+    "protein": 2,
+    "carbs": 42,
+    "fat": 4,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "jenang merah",
+      "bubur merah"
+    ]
+  },
+  {
+    "id": "regional26_0056",
+    "name": "Jenang candil",
+    "category": "Jajanan pasar",
+    "serving": "1 mangkuk kecil (±170 g)",
+    "calories": 301,
+    "protein": 3,
+    "carbs": 52,
+    "fat": 9,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "candil ubi",
+      "bubur candil"
+    ]
+  },
+  {
+    "id": "regional26_0057",
+    "name": "Bubur ketan hitam santan",
+    "category": "Jajanan pasar",
+    "serving": "1 mangkuk kecil (±180 g)",
+    "calories": 314,
+    "protein": 5,
+    "carbs": 51,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "bubur ketan hitam",
+      "ketan ireng"
+    ]
+  },
+  {
+    "id": "regional26_0058",
+    "name": "Wajik ketan gula merah",
+    "category": "Jajanan pasar",
+    "serving": "1 potong (±65 g)",
+    "calories": 200,
+    "protein": 2,
+    "carbs": 39,
+    "fat": 4,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "wajik"
+    ]
+  },
+  {
+    "id": "regional26_0059",
+    "name": "Jadah ketan",
+    "category": "Jajanan pasar",
+    "serving": "1 potong (±65 g)",
+    "calories": 180,
+    "protein": 3,
+    "carbs": 33,
+    "fat": 4,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "jadah"
+    ]
+  },
+  {
+    "id": "regional26_0060",
+    "name": "Jadah tempe bacem",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi (±125 g)",
+    "calories": 324,
+    "protein": 9,
+    "carbs": 45,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "jadah tempe"
+    ]
+  },
+  {
+    "id": "regional26_0061",
+    "name": "Kipo Kotagede",
+    "category": "Jajanan pasar",
+    "serving": "4 buah kecil (±80 g)",
+    "calories": 206,
+    "protein": 3,
+    "carbs": 35,
+    "fat": 6,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kipo"
+    ]
+  },
+  {
+    "id": "regional26_0062",
+    "name": "Rengginang goreng",
+    "category": "Jajanan pasar",
+    "serving": "2 keping (±35 g)",
+    "calories": 193,
+    "protein": 2,
+    "carbs": 26,
+    "fat": 9,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "rengginang"
+    ]
+  },
+  {
+    "id": "regional26_0063",
+    "name": "Rambak kulit sapi goreng",
+    "category": "Jajanan pasar",
+    "serving": "1 genggam (±25 g)",
+    "calories": 168,
+    "protein": 14,
+    "carbs": 1,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kerupuk rambak",
+      "kerupuk kulit"
+    ]
+  },
+  {
+    "id": "regional26_0064",
+    "name": "Leker manis",
+    "category": "Jajanan pasar",
+    "serving": "1 buah (±60 g)",
+    "calories": 190,
+    "protein": 2,
+    "carbs": 32,
+    "fat": 6,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kue leker",
+      "lekker"
+    ]
+  },
+  {
+    "id": "regional26_0065",
+    "name": "Leker cokelat keju",
+    "category": "Jajanan pasar",
+    "serving": "1 buah (±85 g)",
+    "calories": 291,
+    "protein": 6,
+    "carbs": 42,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "leker coklat keju"
+    ]
+  },
+  {
+    "id": "regional26_0066",
+    "name": "Roti goreng isi cokelat",
+    "category": "Jajanan pasar",
+    "serving": "1 buah (±85 g)",
+    "calories": 302,
+    "protein": 5,
+    "carbs": 39,
+    "fat": 14,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "roti goreng"
+    ]
+  },
+  {
+    "id": "regional26_0067",
+    "name": "Roti sisir mentega",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi (±80 g)",
+    "calories": 300,
+    "protein": 6,
+    "carbs": 42,
+    "fat": 12,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "roti sisir"
+    ]
+  },
+  {
+    "id": "regional26_0068",
+    "name": "Bakpao isi ayam",
+    "category": "Jajanan pasar",
+    "serving": "1 buah (±90 g)",
+    "calories": 218,
+    "protein": 9,
+    "carbs": 32,
+    "fat": 6,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "bakpao ayam"
+    ]
+  },
+  {
+    "id": "regional26_0069",
+    "name": "Bakpao kacang hijau",
+    "category": "Jajanan pasar",
+    "serving": "1 buah (±95 g)",
+    "calories": 225,
+    "protein": 6,
+    "carbs": 39,
+    "fat": 5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "bakpao kacang"
+    ]
+  },
+  {
+    "id": "regional26_0070",
+    "name": "Otak-otak ikan goreng",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi (±85 g)",
+    "calories": 219,
+    "protein": 8,
+    "carbs": 22,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "otak otak goreng"
+    ]
+  },
+  {
+    "id": "regional26_0071",
+    "name": "Cilung telur",
+    "category": "Jajanan pasar",
+    "serving": "1 tusuk (±60 g)",
+    "calories": 155,
+    "protein": 4,
+    "carbs": 19,
+    "fat": 7,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "cilung",
+      "aci gulung"
+    ]
+  },
+  {
+    "id": "regional26_0072",
+    "name": "Pentol bakar bumbu",
+    "category": "Jajanan pasar",
+    "serving": "5 butir (±110 g)",
+    "calories": 214,
+    "protein": 10,
+    "carbs": 21,
+    "fat": 10,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pentol bakar"
+    ]
+  },
+  {
+    "id": "regional26_0073",
+    "name": "Pentol kuah",
+    "category": "Jajanan pasar",
+    "serving": "1 mangkuk (±190 g)",
+    "calories": 182,
+    "protein": 10,
+    "carbs": 22,
+    "fat": 6,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pentol kuah"
+    ]
+  },
+  {
+    "id": "regional26_0074",
+    "name": "Pentol mercon",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi (±120 g)",
+    "calories": 237,
+    "protein": 11,
+    "carbs": 19,
+    "fat": 13,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pentol pedas"
+    ]
+  },
+  {
+    "id": "regional26_0075",
+    "name": "Cilok bakar",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi (±110 g)",
+    "calories": 225,
+    "protein": 5,
+    "carbs": 31,
+    "fat": 9,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "cilok bakar"
+    ]
+  },
+  {
+    "id": "regional26_0076",
+    "name": "Bakwan Malang komplit",
+    "category": "Jajanan pasar",
+    "serving": "1 mangkuk (±300 g)",
+    "calories": 365,
+    "protein": 16,
+    "carbs": 37,
+    "fat": 17,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "bakso malang",
+      "bakwan malang"
+    ]
+  },
+  {
+    "id": "regional26_0077",
+    "name": "Tahu bulat goreng",
+    "category": "Jajanan pasar",
+    "serving": "5 buah kecil (±90 g)",
+    "calories": 229,
+    "protein": 7,
+    "carbs": 12,
+    "fat": 17,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tahu bulat"
+    ]
+  },
+  {
+    "id": "regional26_0078",
+    "name": "Tahu crispy tepung",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi (±110 g)",
+    "calories": 255,
+    "protein": 8,
+    "carbs": 22,
+    "fat": 15,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "tahu crispy"
+    ]
+  },
+  {
+    "id": "regional26_0079",
+    "name": "Makaroni bantet pedas",
+    "category": "Jajanan pasar",
+    "serving": "1 porsi kecil (±50 g)",
+    "calories": 243,
+    "protein": 5,
+    "carbs": 31,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "makaroni bantet"
+    ]
+  },
+  {
+    "id": "regional26_0080",
+    "name": "Sempol ayam goreng",
+    "category": "Jajanan pasar",
+    "serving": "3 tusuk (±105 g)",
+    "calories": 249,
+    "protein": 11,
+    "carbs": 22,
+    "fat": 13,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sempol ayam"
+    ]
+  },
+  {
+    "id": "regional26_0081",
+    "name": "Telur gulung sosis",
+    "category": "Jajanan pasar",
+    "serving": "1 tusuk (±75 g)",
+    "calories": 175,
+    "protein": 8,
+    "carbs": 11,
+    "fat": 11,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "telor gulung sosis"
+    ]
+  },
+  {
+    "id": "regional26_0082",
+    "name": "Pisang aroma cokelat",
+    "category": "Jajanan pasar",
+    "serving": "1 buah (±55 g)",
+    "calories": 180,
+    "protein": 2,
+    "carbs": 25,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "pisang aroma"
+    ]
+  },
+  {
+    "id": "regional26_0083",
+    "name": "Es teh kampul",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 104,
+    "protein": 0,
+    "carbs": 26,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "teh kampul",
+      "es teh jeruk kampul"
+    ]
+  },
+  {
+    "id": "regional26_0084",
+    "name": "Es teh jumbo manis",
+    "category": "Minuman warung",
+    "serving": "1 gelas besar (±500 ml)",
+    "calories": 192,
+    "protein": 0,
+    "carbs": 48,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es teh jumbo"
+    ]
+  },
+  {
+    "id": "regional26_0085",
+    "name": "Teh poci gula batu",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 96,
+    "protein": 0,
+    "carbs": 24,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "teh poci manis"
+    ]
+  },
+  {
+    "id": "regional26_0086",
+    "name": "Wedang secang manis",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±240 ml)",
+    "calories": 88,
+    "protein": 0,
+    "carbs": 22,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "wedang secang"
+    ]
+  },
+  {
+    "id": "regional26_0087",
+    "name": "Wedang angsle",
+    "category": "Minuman warung",
+    "serving": "1 mangkuk (±250 ml)",
+    "calories": 260,
+    "protein": 4,
+    "carbs": 43,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "angsle"
+    ]
+  },
+  {
+    "id": "regional26_0088",
+    "name": "Jamu beras kencur manis",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±200 ml)",
+    "calories": 137,
+    "protein": 1,
+    "carbs": 32,
+    "fat": 0.5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "beras kencur",
+      "jamu beras kencur"
+    ]
+  },
+  {
+    "id": "regional26_0089",
+    "name": "Jamu kunir asem manis",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±200 ml)",
+    "calories": 120,
+    "protein": 0,
+    "carbs": 30,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kunyit asam",
+      "kunir asem",
+      "jamu kunyit asam"
+    ]
+  },
+  {
+    "id": "regional26_0090",
+    "name": "Sekoteng jahe",
+    "category": "Minuman warung",
+    "serving": "1 mangkuk (±250 ml)",
+    "calories": 276,
+    "protein": 4,
+    "carbs": 47,
+    "fat": 8,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "sekoteng"
+    ]
+  },
+  {
+    "id": "regional26_0091",
+    "name": "Es tape singkong",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 202,
+    "protein": 1,
+    "carbs": 45,
+    "fat": 2,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es tape"
+    ]
+  },
+  {
+    "id": "regional26_0092",
+    "name": "Es tape ketan hitam",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 249,
+    "protein": 3,
+    "carbs": 48,
+    "fat": 5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es tape ketan"
+    ]
+  },
+  {
+    "id": "regional26_0093",
+    "name": "Es kelapa muda gula",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±300 ml)",
+    "calories": 153,
+    "protein": 1,
+    "carbs": 35,
+    "fat": 1,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es degan gula"
+    ]
+  },
+  {
+    "id": "regional26_0094",
+    "name": "Es susu cokelat",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 219,
+    "protein": 7,
+    "carbs": 32,
+    "fat": 7,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es coklat susu"
+    ]
+  },
+  {
+    "id": "regional26_0095",
+    "name": "Es tebu segar",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 128,
+    "protein": 0,
+    "carbs": 32,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "air tebu",
+      "es tebu"
+    ]
+  },
+  {
+    "id": "regional26_0096",
+    "name": "Kopi tubruk gula",
+    "category": "Minuman warung",
+    "serving": "1 cangkir (±200 ml)",
+    "calories": 69,
+    "protein": 0.3,
+    "carbs": 17,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kopi manis tubruk",
+      "kopi hitam gula"
+    ]
+  },
+  {
+    "id": "regional26_0097",
+    "name": "Kopi susu sachet seduh",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±200 ml)",
+    "calories": 149,
+    "protein": 2,
+    "carbs": 24,
+    "fat": 5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "kopi sachet manis"
+    ]
+  },
+  {
+    "id": "regional26_0098",
+    "name": "Wedang tape hangat",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±220 ml)",
+    "calories": 125,
+    "protein": 1,
+    "carbs": 29,
+    "fat": 0.5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "wedang tape singkong"
+    ]
+  },
+  {
+    "id": "regional26_0099",
+    "name": "Es sirup cocopandan",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 124,
+    "protein": 0,
+    "carbs": 31,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es sirup merah"
+    ]
+  },
+  {
+    "id": "regional26_0100",
+    "name": "Es jeruk nipis manis",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 96,
+    "protein": 0,
+    "carbs": 24,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es jeruk nipis"
+    ]
+  },
+  {
+    "id": "regional26_0101",
+    "name": "Es lemon tea manis",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±250 ml)",
+    "calories": 108,
+    "protein": 0,
+    "carbs": 27,
+    "fat": 0,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "lemon tea manis"
+    ]
+  },
+  {
+    "id": "regional26_0102",
+    "name": "Es blewah susu",
+    "category": "Minuman warung",
+    "serving": "1 gelas (±280 ml)",
+    "calories": 209,
+    "protein": 3,
+    "carbs": 38,
+    "fat": 5,
+    "source_type": "estimate",
+    "source_ref": "Estimasi porsi dan komponen resep rumahan, bukan hasil analisis laboratorium/TKPI terverifikasi; minyak, gula, bumbu, dan ukuran porsi dapat berbeda",
+    "aliases": [
+      "es blewah susu"
+    ]
+  }
+]

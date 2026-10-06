@@ -23,3 +23,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - Semua nilai penambahan ini berstatus **estimasi**, bukan TKPI tervalidasi. Kalori didekati dari protein, karbohidrat, dan lemak (4/4/9 kkal/g). Jenis minyak, gula, saus, serta ukuran porsi mengubah hasil secara signifikan.
 - Alias pencarian memudahkan ejaan umum seperti telor/telur dan mata sapi/ceplok tanpa menggandakan nutrisi yang sama. Hasil AI tetap harus dikonfirmasi sebelum disimpan.
 - Database lama dan catatan pengguna tidak diubah.
+
+## Tambahan regional Wonogiri–Solo v2.2.0
+- `data/foods-regional.json`: 102 makanan/minuman baru dari kategori masakan Jawa, lauk-sambal, sayur, jajanan, dan minuman warung; setelah cek nama yang ada agar tidak duplikat.
+- Seluruh angka pada berkas ini merupakan **estimasi per porsi**, dihitung dari asumsi kandungan protein, karbohidrat, lemak (4/4/9 kkal/g). **Bukan TKPI tervalidasi, pengukuran laboratorium, atau perhitungan resep individual.** Takaran, jumlah minyak, gula dan kuah dapat mengubah hasil secara besar.
+- Alias seperti sego/nasi, sambel/sambal, gethuk/getuk, dan nama daerah membantu pencarian tanpa membuat makanan fiktif berlabel TKPI.
+- Berkas referensi sebelumnya dan data harian pengguna (IndexedDB) tidak dimodifikasi.

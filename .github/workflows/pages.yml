@@ -38,7 +38,7 @@ jobs:
         run: |
           node --check app.js
           node --check ai-photo.js
-          node --test tests/catalog.test.mjs
+          node --test tests/catalog.test.mjs tests/regional.test.mjs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
