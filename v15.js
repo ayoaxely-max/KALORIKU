@@ -119,11 +119,16 @@ async function v15SaveProduct(event){
     toast('Produk diperbarui; catatan makan lama tidak diubah');
   }catch(e){console.error(e);toast('Gagal mengubah produk')}
 }
+function v15DismissUndo(){
+  $('v15UndoBar').classList.add('hidden');
+  if(v15UndoTimer)clearTimeout(v15UndoTimer);
+  v15UndoTimer=null;v15Deleted=null;
+}
 function v15UndoVisible(){
   $('v15UndoBar').classList.remove('hidden');
   $('v15UndoText').textContent='Catatan '+v15Deleted.name+' dihapus';
   if(v15UndoTimer)clearTimeout(v15UndoTimer);
-  v15UndoTimer=setTimeout(()=>{$('v15UndoBar').classList.add('hidden');v15Deleted=null},20000);
+  v15UndoTimer=setTimeout(v15DismissUndo,20000);
 }
 window.removeLog=async function(id){
   const record=logs.find(x=>x.id===id);if(!record)return;
@@ -175,6 +180,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   };
   $('v15WaterGoalSave').onclick=v15SaveWaterGoal;
   $('v15UndoButton').onclick=v15UndoDelete;
+  $('v15UndoClose').onclick=v15DismissUndo;
   $('v15CloseProductDialog').onclick=()=>$('v15ProductDialog').close();
   $('v15ProductForm').addEventListener('submit',v15SaveProduct);
   for(const id of ['customCal','customP','customC','customF']){
