@@ -9663,7 +9663,13 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "CP077"
+    "tkpi_code": "CP077",
+    "fiber": 2.1,
+    "sodium": 13.5,
+    "nutrient_basis": "Konversi dari CP077 per 100 g BDD",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_source_method": "proportional_calculation_from_2020_transcription"
   },
   {
     "id": "portion_tempe_kedelai_murni_mentah_50_g",
@@ -9679,7 +9685,13 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "CP077"
+    "tkpi_code": "CP077",
+    "fiber": 0.7,
+    "sodium": 4.5,
+    "nutrient_basis": "Konversi dari CP077 per 100 g BDD",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_source_method": "proportional_calculation_from_2020_transcription"
   },
   {
     "id": "portion_tempe_kedelai_murni_mentah_75_g",
@@ -9695,7 +9707,13 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "CP077"
+    "tkpi_code": "CP077",
+    "fiber": 1.05,
+    "sodium": 6.75,
+    "nutrient_basis": "Konversi dari CP077 per 100 g BDD",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_source_method": "proportional_calculation_from_2020_transcription"
   },
   {
     "id": "tkpi_cp082",
