@@ -17,9 +17,11 @@ KaloriKu tetap **offline-first**. Sinkronisasi berlangsung secara **manual** ket
 - Cloudflare D1 menyimpan data yang telah dienkripsi, ID akun turunan hash, hash token autentikasi, dan nomor revisi. Data makanan atau foto tidak dikirim sebagai plaintext ke backend sinkronisasi.
 - Semua request diterima hanya dari origin GitHub Pages yang dikonfigurasi. Ini **bukan** pengganti autentikasi: kepemilikan kode pemulihan tetap diperlukan.
 - Perubahan cloud memakai kontrol versi optimistik. Jika revisi berubah karena perangkat lain, unggah ditolak.
-- **Penggabungan ditinjau pengguna.** Unduh cloud menampilkan gabungan berdasarkan ID (berat badan berdasarkan tanggal), daftar konflik, dan pilihan sumber konflik: perangkat ini atau cloud. Air minum pada tanggal sama tidak dijumlahkan. Simpan backup JSON lokal, konfirmasi gabungan, lalu unggah hasilnya.
+- **Penggabungan ditinjau pengguna.** Unduh cloud menampilkan gabungan berdasarkan ID (berat badan berdasarkan tanggal), daftar konflik, dan pilihan perangkat ini atau cloud untuk setiap konflik. Tombol pilihan semua konflik dapat dipakai sebagai pintasan. Air minum pada tanggal sama tidak dijumlahkan. Simpan backup JSON lokal, konfirmasi gabungan, lalu unggah hasilnya.
 - Resep tersimpan bersama makanan sendiri; takaran pribadi ikut backup dan cloud.
-- Penghapusan belum disinkronkan: catatan yang hanya ada di cloud dapat muncul lagi. Dua input dengan ID berbeda tetap dianggap dua catatan meskipun nama dan waktu mirip.
+- Penghapusan catatan, makanan sendiri/resep, berat badan, dan foto memakai penanda persisten yang ikut backup/cloud. Foto dihapus bersama komponennya dalam satu transaksi. Batalkan penghapusan menghasilkan revisi penanda baru, sehingga pemulihan dapat ikut disinkronkan.
+- Penanda dipertahankan untuk melindungi perangkat yang lama offline. Penghapusan sebelum versi 2.5.0 tidak dapat direkonstruksi. Dua input dengan ID berbeda tetap dianggap dua catatan meskipun nama dan waktu mirip.
+- Cadangan baru menggunakan format v5. Perbarui semua perangkat ke versi 2.5.0; versi lama menolak cadangan v5 agar tidak mengabaikan penanda penghapusan. Pemulihan backup v2–v4 masih didukung.
 - Revisi lokal diperiksa saat penerapan dalam satu transaksi IndexedDB. Perubahan data selama pratinjau membatalkan penerapan dan memerlukan tinjauan ulang. Pemulihan JSON lokal tetap menggunakan mode penggantian.
 - Tidak ada sinkronisasi latar belakang; jangan mengira perubahan di HP langsung terlihat di laptop sebelum menekan sinkronisasi.
 - Pengguna dapat memutuskan akun dari perangkat tanpa menghapus data lokal atau menghapus backup terenkripsi dari cloud lewat dua kali konfirmasi.
@@ -36,4 +38,6 @@ KaloriKu tetap **offline-first**. Sinkronisasi berlangsung secara **manual** ket
 - SQL schema: `cloud-sync/schema.sql`.
 - Domain sinkronisasi: `https://kaloriku-sync-v2.ayoaxely.workers.dev`.
 
-**Catatan:** Backend sudah dikonfigurasi dan diverifikasi melalui Cloudflare API. Pengujian antarmuka browser HP/laptop yang sesungguhnya masih diperlukan; jangan hapus backup JSON.
+**Validasi 2.5.0:** tes unit/integrasi mencakup penghapusan, undo, konflik per catatan, transaksi dan penjaga revisi. Tes layanan cloud nyata tersedia lewat `RUN_LIVE_SYNC=1 node tests/live-sync.cjs`: dua IndexedDB terisolasi memakai akun acak dan data buatan. Pengujian langsung pada HP/laptop pengguna tetap terpisah; jangan hapus backup JSON.
+
+Validasi bagian data di backend menerima satu pemisah IV/ciphertext `.` pada format terenkripsi aplikasi. Autentikasi, origin, batas ukuran, dan pemeriksaan revisi tetap berlaku.

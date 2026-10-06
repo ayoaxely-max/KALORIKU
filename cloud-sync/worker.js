@@ -34,7 +34,7 @@ export default {
    if(u.pathname==='/sync/chunk'&&request.method==='POST'){
     const x=await body(request,125000);
     if(!/^[a-f0-9-]{36}$/.test(x.uploadId||'')||!Number.isInteger(x.index)||x.index<0||x.index>=MAX_CHUNKS||
-      typeof x.data!=='string'||!x.data.length||x.data.length>MAX_PART||!/^[A-Za-z0-9_-]+$/.test(x.data))
+      typeof x.data!=='string'||!x.data.length||x.data.length>MAX_PART||!/^[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)?$/.test(x.data))
      return fail('Bagian data tidak valid',400,cors);
     await env.SYNC_DB.prepare('INSERT OR REPLACE INTO sync_chunks(account_id,upload_id,idx,data) VALUES (?,?,?,?)')
      .bind(accountId,x.uploadId,x.index,x.data).run();

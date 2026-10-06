@@ -91,9 +91,9 @@ async function savePhotoMeal(){
 async function deletePhotoMeal(id){
   const rec=mealPhotos.find(x=>x.id===id);if(!rec)return;
   const linked=logs.filter(l=>l.mealPhotoId===id);
-  for(const l of linked)await dbDelete('logs',l.id);
+  await dbDeleteMany(linked.map(l=>({store:'logs',key:l.id})).concat({store:'mealPhotos',key:id}));
   logs=logs.filter(l=>l.mealPhotoId!==id);
-  await dbDelete('mealPhotos',id);mealPhotos=mealPhotos.filter(x=>x.id!==id);
+  mealPhotos=mealPhotos.filter(x=>x.id!==id);
   renderToday();renderHistory();renderStats();renderPhotoMeals();updatePhotoStorageStatus();toast('Foto makanan dihapus');
 }
 window.deletePhotoMeal=deletePhotoMeal;
