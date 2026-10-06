@@ -95,6 +95,17 @@ for (const food of entries) {
     }
   }
 }
+// Compare the catalog against the recorded row-level source audit, not 4/4/9 alone.
+const macroEvidence = JSON.parse(fs.readFileSync(path.join(root, 'docs/TKPI_MACRO_AUDIT_97_2026-10-06.json'), 'utf8'));
+if (macroEvidence.length !== 97 || new Set(macroEvidence.map(f => f.id)).size !== 97) errors.push('Bukti audit makro harus mencakup 97 ID unik');
+for (const row of macroEvidence) {
+  const food = byId.get(row.id);
+  if (!food || food.tkpi_code !== row.tkpi_code) { errors.push('Bukti audit tidak cocok: ' + row.id); continue; }
+  for (const key of ['calories','protein','fat','carbs']) {
+    if (Math.abs(food[key] - row[key]) > 0.011) errors.push('Berbeda dengan baris sumber: ' + row.id + '.' + key);
+  }
+  if (!food.macro_verification_status || !row.source_url) errors.push('Lingkup audit hilang: ' + row.id);
+}
 let calculatedCount = 0;
 for (const food of entries) {
   if (food.source_type !== 'calculated') continue;

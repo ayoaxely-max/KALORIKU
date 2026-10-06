@@ -34,5 +34,5 @@ test('catalog is fetched online and cached offline without requiring data resets
  assert.ok(src.includes('data/foods-regional.json'));
  const sw=fs.readFileSync('sw.js','utf8');
  assert.ok(sw.includes('data/foods-regional.json'));
- assert.ok(sw.includes('kaloriku-github-pages-v2.2.0'));
+ assert.match(sw,/kaloriku-github-pages-v\d+\.\d+\.\d+/);
 });
