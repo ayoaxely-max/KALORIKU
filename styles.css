@@ -28,3 +28,9 @@
 .v15-undo{position:fixed;bottom:calc(var(--nav) + 24px);left:50%;transform:translateX(-50%);z-index:60;background:#111827;color:white;border-radius:14px;box-shadow:0 12px 35px #0004;padding:11px 13px;display:flex;gap:12px;align-items:center;justify-content:space-between;width:min(450px,calc(100vw - 28px));font-size:12px}
 .v15-undo button{border:1px solid #9ca3af;background:transparent;border-radius:9px;padding:8px 10px;color:white;font-weight:700}
 @media(max-width:380px){.v15-water-buttons{grid-template-columns:1fr 1fr}.v15-water-custom{flex-wrap:wrap}.v15-water-custom label{width:100%}}
+
+/* KaloriKu 1.5.1 - add and subtract arbitrary water volumes */
+.v15-water-custom{align-items:flex-end;flex-wrap:wrap}
+.v15-water-custom-actions{display:flex;gap:6px;flex:1;min-width:185px}
+.v15-water-custom-actions button{flex:1;min-width:0;white-space:nowrap}
+@media(max-width:420px){.v15-water-custom label{flex-basis:100%;width:100%}.v15-water-custom input{flex:0 0 85px}}
