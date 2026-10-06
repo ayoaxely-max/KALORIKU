@@ -1,7 +1,7 @@
 /* KaloriKu v1.4: correct food-log quantities without clearing records. */
 let v14EditId=null,v14GramBase=null;
 function v14ServingGrams(rec){const food=allFoods.find(f=>f.id===rec.foodId);const m=String(food?.serving||rec.serving||'').toLowerCase().replace(',','.').match(/(\d+(?:\.\d+)?)\s*g\b/);return m?Number(m[1]):null}
-function v14UnitGrams(unit,name){if(unit==='gram')return 1;if(unit==='sdm')return 15;if(unit==='centong')return /nasi|beras/i.test(name)?100:70;if(unit==='potong')return 75;if(unit==='gelas')return 200;return null}
+function v14UnitGrams(unit,name){if(unit==='gram')return 1;if(unit==='sdm')return 15;if(unit==='sdt')return 5;if(unit==='centong')return /nasi|beras/i.test(name)?100:70;if(unit==='potong')return 75;if(unit==='gelas')return 200;return null}
 window.editKaloriLog=function(id){
  const l=logs.find(x=>x.id===id);if(!l)return;
  v14EditId=id;v14GramBase=v14ServingGrams(l);
