@@ -97,8 +97,12 @@ export default {
       "Kembalikan JSON sesuai schema."
     ].join(" ");
 
-    const model = env.GEMINI_MODEL || DEFAULT_MODEL;
-    const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent";
+    // Retry only transient provider failures, then try a different Gemini model.
+    // Keep retries bounded so a busy model cannot block the UI indefinitely.
+    const primaryModel = env.GEMINI_MODEL || DEFAULT_MODEL;
+    const fallbackModel = env.GEMINI_FALLBACK_MODEL || "gemini-2.5-flash";
+    const models = [{ name:primaryModel, tries:2 }];
+    if (fallbackModel !== primaryModel) models.push({ name:fallbackModel, tries:1 });
     const payload = {
       contents:[{ role:"user", parts:[
         { text:prompt },
@@ -111,34 +115,56 @@ export default {
       }
     };
 
-    let response;
-    try {
-      response = await fetch(endpoint, {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "x-goog-api-key":env.GEMINI_API_KEY
-        },
-        body:JSON.stringify(payload)
-      });
-    } catch {
-      return json({ ok:false, error:"gemini_network_error" }, 502, origin, allowed);
+    let failedBecauseBusy = false;
+    for (const plan of models) {
+      for (let attempt = 0; attempt < plan.tries; attempt++) {
+        if (attempt > 0) await new Promise(resolve => setTimeout(resolve, 900));
+        const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/" +
+          encodeURIComponent(plan.name) + ":generateContent";
+        let response;
+        try {
+          response = await fetch(endpoint, {
+            method:"POST",
+            headers:{
+              "Content-Type":"application/json",
+              "x-goog-api-key":env.GEMINI_API_KEY
+            },
+            body:JSON.stringify(payload),
+            signal:AbortSignal.timeout(15000)
+          });
+        } catch {
+          failedBecauseBusy = true;
+          continue;
+        }
+
+        if (!response.ok) {
+          if (![429, 500, 502, 503, 504].includes(response.status)) {
+            // Do not expose raw provider errors, configuration, or key details.
+            return json({ ok:false, error:"ai_provider_error", retryable:false }, 502, origin, allowed);
+          }
+          failedBecauseBusy = true;
+          continue;
+        }
+
+        let result;
+        try {
+          const raw = await response.json();
+          const answer = raw.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
+          result = JSON.parse(answer);
+          if (!result || !Array.isArray(result.foods)) throw new Error("invalid_model_result");
+        } catch {
+          // A malformed success response is also safe to try with the fallback.
+          failedBecauseBusy = true;
+          continue;
+        }
+        return json({ ok:true, model:plan.name, result }, 200, origin, allowed);
+      }
     }
 
-    if (!response.ok) {
-      const detail = (await response.text()).slice(0,500);
-      return json({ ok:false, error:"gemini_error", status:response.status, detail }, 502, origin, allowed);
-    }
-
-    const raw = await response.json();
-    const text = raw.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
-    if (!text) return json({ ok:false, error:"empty_model_response" }, 502, origin, allowed);
-
-    try {
-      const result = JSON.parse(text);
-      return json({ ok:true, model, result }, 200, origin, allowed);
-    } catch {
-      return json({ ok:false, error:"invalid_model_json", detail:text.slice(0,500) }, 502, origin, allowed);
-    }
+    return json({
+      ok:false,
+      error:failedBecauseBusy ? "ai_temporarily_unavailable" : "ai_provider_error",
+      retryable:Boolean(failedBecauseBusy)
+    }, failedBecauseBusy ? 503 : 502, origin, allowed);
   }
 };

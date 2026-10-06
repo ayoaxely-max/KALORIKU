@@ -1,9 +1,11 @@
 {
   "name": "kaloriku-ai-worker",
   "private": true,
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
     "dev": "wrangler dev",
+    "test": "node --test test/*.test.mjs",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {

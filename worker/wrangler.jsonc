@@ -5,6 +5,7 @@
   "compatibility_date": "2026-10-05",
   "vars": {
     "ALLOWED_ORIGIN": "https://ayoaxely-max.github.io",
-    "GEMINI_MODEL": "gemini-3.8-flash"
+    "GEMINI_MODEL": "gemini-3.8-flash",
+    "GEMINI_FALLBACK_MODEL": "gemini-2.5-flash"
   }
 }

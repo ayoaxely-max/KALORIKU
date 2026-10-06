@@ -56,16 +56,56 @@ async function testAiBackend(showToast=false){
 async function analyzeFoodPhoto(){
   if(!photoDraftBlob){toast('Ambil atau pilih foto dulu');return}
   if(!aiBackendUrl){toast('Atur URL backend AI di Profil');go('profile');return}
+  const sourcePhoto=photoDraftBlob;
   const btn=$('analyzePhotoBtn');btn.disabled=true;btn.textContent='Menganalisis…';
-  setAiStatus('AI sedang mengenali komponen makanan dan memperkirakan porsinya. Hasil tetap perlu dikoreksi.');
+  setAiStatus('AI mengenali makanan. Jika server sedang sibuk, aplikasi akan mencoba kembali secara otomatis.');
   try{
-    const b64=await blobBase64(photoDraftBlob);
-    const r=await fetch(aiBackendUrl+'/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,mimeType:photoDraftBlob.type||'image/jpeg'})});
-    const j=await r.json();
-    if(!r.ok||!j.ok)throw new Error(j.detail||j.error||('HTTP '+r.status));
-    applyAiSuggestions(j.result);
-  }catch(e){console.error(e);setAiStatus('Analisis gagal: '+String(e.message||e),'error')}
-  finally{btn.disabled=false;btn.textContent='✨ Analisis ulang dengan AI'}
+    const b64=await blobBase64(sourcePhoto);
+    let succeeded=false;
+    for(let attempt=0;attempt<2;attempt++){
+      if(sourcePhoto!==photoDraftBlob)return; // Foto telah diganti / dialog ditutup.
+      let response,body;
+      try{
+        response=await fetch(aiBackendUrl+'/analyze',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({imageBase64:b64,mimeType:sourcePhoto.type||'image/jpeg'}),
+          signal:AbortSignal.timeout(50000)
+        });
+        body=await response.json().catch(()=>null);
+      }catch(error){
+        if(attempt===0){
+          setAiStatus('Koneksi AI terputus. Mencoba sekali lagi…');
+          await new Promise(resolve=>setTimeout(resolve,1800));
+          continue;
+        }
+        throw new Error('Tidak dapat menghubungi AI. Periksa koneksi internet dan coba lagi.');
+      }
+      if(response.ok&&body?.ok){
+        if(sourcePhoto!==photoDraftBlob)return;
+        applyAiSuggestions(body.result);
+        succeeded=true;
+        break;
+      }
+      const transient=[429,502,503,504].includes(response.status)&&body?.retryable!==false;
+      if(transient&&attempt===0){
+        setAiStatus('Layanan AI sedang sibuk. Mencoba kembali otomatis (2/2)…');
+        await new Promise(resolve=>setTimeout(resolve,1800));
+        continue;
+      }
+      if(transient)throw new Error('Server AI sedang sibuk. Coba lagi beberapa menit atau masukkan komponen makanan secara manual.');
+      if(body?.error==='gemini_not_configured')throw new Error('Backend AI belum dikonfigurasi. Periksa pengaturan AI di Profil.');
+      throw new Error('Analisis belum berhasil. Silakan coba kembali atau pilih makanan secara manual.');
+    }
+    if(!succeeded&&sourcePhoto===photoDraftBlob)throw new Error('Analisis belum berhasil. Coba beberapa saat lagi.');
+  }catch(error){
+    if(sourcePhoto===photoDraftBlob){
+      setAiStatus(String(error.message||'Analisis gagal. Silakan coba lagi.'),'error');
+    }
+  }finally{
+    btn.disabled=!photoDraftBlob;
+    btn.textContent='✨ Analisis ulang dengan AI';
+  }
 }
 function applyAiSuggestions(result){
   const foods=Array.isArray(result?.foods)?result.foods:[],matched=[],unmatched=[];

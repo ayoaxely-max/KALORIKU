@@ -98,3 +98,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v20-confirm-checkbox{display:flex;align-items:flex-start;gap:9px;font-size:13px;margin:14px 0;line-height:1.4}
 .v20-confirm-checkbox input{flex-shrink:0;width:18px;height:18px;margin-top:2px}
 @media(max-width:400px){.v20-sync-actions{grid-template-columns:1fr}}
+
+/* AI photo feedback: errors must not look like successful analyses. */
+#aiPhotoStatus.ai-error{background:#fef2f2;color:#991b1b;white-space:pre-line}
+#aiPhotoStatus.ai-ok{background:#f0fdf4;color:#166534}

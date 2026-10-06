@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Test AI fallback and retry handling
+        run: npm test
+
       - name: Validate required secrets
         shell: bash
         run: |
