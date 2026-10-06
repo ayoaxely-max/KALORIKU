@@ -65,7 +65,7 @@ async function v20Attach(secret,created=false){
  const [account,token]=await Promise.all([
  v20Sha('kaloriku-account-v2|'+key),v20Sha('kaloriku-auth-v2|'+key)
  ]);
- const result=await v20Api('/sync/init',{method:'POST',secret:key,account,token,data:{}});
+ const result=created?await v20Api('/sync/init',{method:'POST',secret:key,account,token,data:{}}):await v20Api('/sync/head',{secret:key,account,token});
  await dbSetKV('v20Secret',key);
  v20Secret=key;v20AccountId=account;v20Token=token;
  const prev=await dbGetKV('v20KnownRevision',null);
