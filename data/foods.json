@@ -9293,7 +9293,14 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP005 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "CP005"
+    "tkpi_code": "CP005",
+    "fiber": 1.5,
+    "sodium": 447,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi_cp006",
@@ -9504,9 +9511,16 @@
     "tkpi_code": "CP013",
     "tkpi_edition_crosschecked": 2017,
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
-    "verification_status": "matched_printed_table",
-    "verification_note": "Energi dan makronutrien dicocokkan dengan baris kode TKPI 2017.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_status": "printed_source_conflict",
+    "verification_note": "TKPI 2017 dan transkripsi 2020 mencantumkan lemak 28 g/100 g, sedangkan dataset ini menggunakan 18 g. Nilai tercetak 28 g tidak sejalan dengan neraca massa (air 62,1 g + protein 10,6 g + lemak 28 g + karbohidrat 8 g + abu 1,3 g > 100 g). Nilai lemak belum terkonfirmasi dari halaman asli/errata; tidak dinyatakan terverifikasi.",
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 1,
+    "sodium": 36,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi_kacang_tolo_tunggak_kering",
@@ -9548,7 +9562,14 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "matched_printed_table",
     "verification_note": "Energi dan makronutrien dicocokkan dengan baris kode TKPI 2017.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 0.9,
+    "sodium": 13,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi_cr037",
@@ -9596,7 +9617,14 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP076 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "CP076"
+    "tkpi_code": "CP076",
+    "fiber": 4.2,
+    "sodium": 22,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tempe_100",
@@ -9612,7 +9640,14 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "CP077"
+    "tkpi_code": "CP077",
+    "fiber": 1.4,
+    "sodium": 9,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "portion_tempe_kedelai_murni_mentah_150_g",
@@ -9712,8 +9747,15 @@
     "tkpi_edition_crosschecked": 2017,
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "printed_source_anomaly",
-    "verification_note": "Nilai energi dan makronutrien persis mengikuti tabel TKPI 2017 yang tersedia, tetapi terdapat ketidaksesuaian internal yang belum diselesaikan. Perlu konfirmasi ulang terhadap sumber primer sebelum dipakai untuk penghitungan presisi.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata.",
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 5.8,
+    "sodium": 52,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi_cr052",
@@ -9878,7 +9920,13 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "matched_printed_table",
     "verification_note": "Energi dan makronutrien dicocokkan dengan baris kode TKPI 2017.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 1.4,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "orek_tempe",
@@ -10523,7 +10571,14 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode AR001 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": "AR001"
+    "tkpi_code": "AR001",
+    "fiber": 0.2,
+    "sodium": 27,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi_ar004",
@@ -10687,8 +10742,15 @@
     "tkpi_edition_crosschecked": 2017,
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "printed_source_anomaly",
-    "verification_note": "Nilai energi dan makronutrien persis mengikuti tabel TKPI 2017 yang tersedia, tetapi terdapat ketidaksesuaian internal yang belum diselesaikan. Perlu konfirmasi ulang terhadap sumber primer sebelum dipakai untuk penghitungan presisi.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata.",
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 5.6,
+    "sodium": 106,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "beras_merah_mentah",
@@ -10741,7 +10803,14 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "matched_printed_table",
     "verification_note": "Energi dan makronutrien dicocokkan dengan baris kode TKPI 2017.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 2.4,
+    "sodium": 5,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "tkpi_bihun_goreng_instan",
@@ -11278,8 +11347,15 @@
     "tkpi_edition_crosschecked": 2017,
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "printed_source_anomaly",
-    "verification_note": "Nilai energi dan makronutrien persis mengikuti tabel TKPI 2017 yang tersedia, tetapi terdapat ketidaksesuaian internal yang belum diselesaikan. Perlu konfirmasi ulang terhadap sumber primer sebelum dipakai untuk penghitungan presisi.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata.",
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 2.6,
+    "sodium": 12,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "beras_ketan_hitam_matang",
@@ -16692,7 +16768,14 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "verification_status": "matched_printed_table",
     "verification_note": "Energi dan makronutrien dicocokkan dengan baris kode TKPI 2017.",
-    "verification_source_url": "https://repository.kemkes.go.id/book/777"
+    "verification_source_url": "https://repository.kemkes.go.id/book/777",
+    "fiber": 0,
+    "sodium": 26,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "bika_ambon",
