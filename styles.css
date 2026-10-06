@@ -2,3 +2,9 @@
 /* KaloriKu v1.3 — kamera dan galeri terpisah */
 .photo-upload-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}
 @media(max-width:520px){.photo-upload-actions{grid-template-columns:1fr}}
+
+/* v1.4: portions, edit and macro goals */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.v14-subtitle{font-size:14px;margin:15px 0 4px}
+.log-edit-btn{width:auto;padding:5px 7px;font-size:12px;flex-shrink:0}
+@media(max-width:520px){.grid3 input{padding:8px 5px}}
