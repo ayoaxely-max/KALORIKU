@@ -153,11 +153,14 @@
     "carbs": 14.7,
     "fat": 0.2,
     "source": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 150/100 dari pangan sumber Pepaya, segar per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "portion_derived_from": "pepaya",
+    "portion_multiplier": 1.5,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "portion_pepaya_segar_200_g",
@@ -169,11 +172,14 @@
     "carbs": 19.6,
     "fat": 0.3,
     "source": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 200/100 dari pangan sumber Pepaya, segar per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "portion_derived_from": "pepaya",
+    "portion_multiplier": 2,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "portion_pepaya_segar_250_g",
@@ -185,11 +191,14 @@
     "carbs": 24.5,
     "fat": 0.4,
     "source": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 250/100 dari pangan sumber Pepaya, segar per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "portion_derived_from": "pepaya",
+    "portion_multiplier": 2.5,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "pisang_ambon",
@@ -217,11 +226,14 @@
     "carbs": 36.5,
     "fat": 1.2,
     "source": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 150/100 dari pangan sumber Pisang ambon, segar per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "portion_derived_from": "pisang_ambon",
+    "portion_multiplier": 1.5,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "portion_pisang_ambon_segar_200_g",
@@ -233,11 +245,14 @@
     "carbs": 48.6,
     "fat": 1.6,
     "source": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 200/100 dari pangan sumber Pisang ambon, segar per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "portion_derived_from": "pisang_ambon",
+    "portion_multiplier": 2,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "portion_pisang_ambon_segar_50_g",
@@ -249,11 +264,14 @@
     "carbs": 12.2,
     "fat": 0.4,
     "source": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 50/100 dari pangan sumber Pisang ambon, segar per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "portion_derived_from": "pisang_ambon",
+    "portion_multiplier": 0.5,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "pisang_kepok",
@@ -9659,8 +9677,8 @@
     "carbs": 20.2,
     "fat": 13.2,
     "source": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 150/100 dari pangan sumber Tempe kedelai murni, mentah per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
     "tkpi_code": "CP077",
@@ -9669,7 +9687,10 @@
     "nutrient_basis": "Konversi dari CP077 per 100 g BDD",
     "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
-    "nutrient_source_method": "proportional_calculation_from_2020_transcription"
+    "nutrient_source_method": "proportional_calculation_from_2020_transcription",
+    "portion_derived_from": "tempe_100",
+    "portion_multiplier": 1.5,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "portion_tempe_kedelai_murni_mentah_50_g",
@@ -9681,8 +9702,8 @@
     "carbs": 6.8,
     "fat": 4.4,
     "source": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 50/100 dari pangan sumber Tempe kedelai murni, mentah per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
     "tkpi_code": "CP077",
@@ -9691,7 +9712,10 @@
     "nutrient_basis": "Konversi dari CP077 per 100 g BDD",
     "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
-    "nutrient_source_method": "proportional_calculation_from_2020_transcription"
+    "nutrient_source_method": "proportional_calculation_from_2020_transcription",
+    "portion_derived_from": "tempe_100",
+    "portion_multiplier": 0.5,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "portion_tempe_kedelai_murni_mentah_75_g",
@@ -9703,8 +9727,8 @@
     "carbs": 10.1,
     "fat": 6.6,
     "source": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
-    "source_type": "tkpi",
-    "source_ref": "TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
+    "source_type": "calculated",
+    "source_ref": "Konversi aritmetis 75/100 dari pangan sumber Tempe kedelai murni, mentah per 100 g BDD; bukan pengukuran tersendiri. TKPI 2020, Kementerian Kesehatan RI · kode CP077 · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
     "tkpi_code": "CP077",
@@ -9713,7 +9737,10 @@
     "nutrient_basis": "Konversi dari CP077 per 100 g BDD",
     "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
-    "nutrient_source_method": "proportional_calculation_from_2020_transcription"
+    "nutrient_source_method": "proportional_calculation_from_2020_transcription",
+    "portion_derived_from": "tempe_100",
+    "portion_multiplier": 0.75,
+    "verification_status": "calculated_from_tkpi"
   },
   {
     "id": "tkpi_cp082",
