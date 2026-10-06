@@ -1,3 +1,4 @@
+let v24RestoreRevision=null;
 /* KaloriKu v1.7 — monthly reporting, source-aware optional nutrients and safer restore.
    No IndexedDB schema migration; older backups remain supported. */
 const V17_FIELDS=[
@@ -164,6 +165,9 @@ function v17ValidateBackup(x){
  }
  if(x.waterGoal!==undefined&&(!v17Numeric(Number(x.waterGoal))||Number(x.waterGoal)<250||Number(x.waterGoal)>6000))
   errors.push('Target air minum tidak valid');
+ if(x.foodMeasures!==undefined){
+  if(!x.foodMeasures||typeof x.foodMeasures!=='object'||Array.isArray(x.foodMeasures)||Object.entries(x.foodMeasures).some(([id,m])=>['__proto__','constructor','prototype'].includes(id)||!m||typeof m!=='object'||Array.isArray(m)||Object.entries(m).some(([u,n])=>!NutritionTools.units.includes(u)||!NutritionTools.positive(n)||n>10000)))errors.push('Takaran makanan tidak valid');
+ }
  const ids=new Set((x.mealPhotos||[]).map(p=>p.id));
  const missing=x.logs.filter(l=>l.mealPhotoId&&!ids.has(l.mealPhotoId)).length;
  if(missing)warnings.push(missing+' catatan berhubungan dengan foto yang tidak ada di backup.');
@@ -221,7 +225,12 @@ async function v17ExecuteRestore(){
    transaction.oncomplete=resolve;
    transaction.onabort=()=>reject(transaction.error||Error('Transaksi dibatalkan'));
    transaction.onerror=()=>{/* onabort handles rollback */};
+   const guard=transaction.objectStore('kv').get('v24DataRevision');
+   guard.onsuccess=()=>{
    try{
+    const currentRevision=Number(guard.result?.value)||0;
+    if(v24RestoreRevision!==null&&currentRevision!==v24RestoreRevision)throw Error('Data lokal berubah. Tinjau ulang penggabungan.');
+    transaction.objectStore('kv').put({key:'v24DataRevision',value:currentRevision+1});
     for(const k of stores.slice(0,4))transaction.objectStore(k).clear();
     for(const l of x.logs)transaction.objectStore('logs').put(l);
     for(const f of x.customFoods)transaction.objectStore('customFoods').put(f);
@@ -232,13 +241,16 @@ async function v17ExecuteRestore(){
     kv.put({key:'favorites',value:x.favorites||[]});
     kv.put({key:'packs',value:x.packs||[]});
     if(x.waterRecords!==undefined)kv.put({key:'v15WaterRecords',value:x.waterRecords});
+    kv.put({key:'foodMeasures',value:x.foodMeasures||{}});
     if(x.waterGoal!==undefined)kv.put({key:'v15WaterGoal',value:Number(x.waterGoal)});
    }catch(e){transaction.abort();reject(e)}
+   };
   });
   profile=x.profile;favorites=x.favorites||[];packs=x.packs||[];
   logs=x.logs;customFoods=x.customFoods;weights=x.weights;mealPhotos=photos;
   if(x.waterRecords!==undefined)v15WaterRecords=x.waterRecords;
   if(x.waterGoal!==undefined)v15WaterGoal=Number(x.waterGoal);
+  foodMeasures=x.foodMeasures||{};
   allFoods=[...staticFoods,...customFoods];
   $('v17RestoreDialog').close();v17PendingBackup=null;
   renderAll();renderPhotoMeals();updatePhotoStorageStatus();v15RenderAudit();

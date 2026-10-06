@@ -23,7 +23,7 @@ async function v20Sha(message){
 }
 function v20SetBusy(value){
  v20Busy=value;
- for(const id of ['v20Create','v20Connect','v20Upload','v20Download','v20Disconnect','v20DeleteCloud'])$(id).disabled=value;
+ for(const id of ['v20Create','v20Connect','v20Upload','v20Download','v20Disconnect','v20DeleteCloud','v20ReviewCancel','v24ConflictPolicy'])$(id).disabled=value;
  $('v20ReviewContinue').disabled=value||!$('v20BackupConfirmed').checked;
  if(value)$('v20Progress').classList.remove('hidden');
  else $('v20Progress').classList.add('hidden');
@@ -121,16 +121,17 @@ async function v20Disconnect(){
   v20Panel();
  }catch(e){v20Status('Tidak dapat melepas akun: '+e.message,true)}
 }
+let v24SnapshotRevision=null;
 async function v20Snapshot(){
+ const revision=await dbGetKV('v24DataRevision',0);
+ const [savedLogs,savedFoods,savedWeights,savedPhotos,savedProfile,savedFavorites,savedPacks,waterRecords,waterGoal,savedMeasures]=await Promise.all([
+  dbAll('logs'),dbAll('customFoods'),dbAll('weights'),dbAll('mealPhotos'),dbGetKV('profile',profile),dbGetKV('favorites',[]),dbGetKV('packs',[]),dbGetKV('v15WaterRecords',{}),dbGetKV('v15WaterGoal',2000),dbGetKV('foodMeasures',{})
+ ]);
  const photos=[];
- for(const p of mealPhotos){
-  const {image,...rest}=p;
-  photos.push({...rest,imageData:image?await blobToDataURL(image):null});
- }
- const waterRecords=await dbGetKV('v15WaterRecords',{});
- const waterGoal=await dbGetKV('v15WaterGoal',2000);
- return {version:4,exportedAt:new Date().toISOString(),profile,favorites,packs,logs,customFoods,weights,
-   mealPhotos:photos,waterRecords,waterGoal};
+ for(const p of savedPhotos){const {image,...rest}=p;photos.push({...rest,imageData:image?await blobToDataURL(image):null});}
+ if(await dbGetKV('v24DataRevision',0)!==revision)throw Error('Data lokal berubah selama pembacaan. Ulangi proses.');
+ v24SnapshotRevision=revision;
+ return {version:4,exportedAt:new Date().toISOString(),profile:savedProfile,favorites:savedFavorites,packs:savedPacks,logs:savedLogs,customFoods:savedFoods,weights:savedWeights,mealPhotos:photos,waterRecords,waterGoal,foodMeasures:savedMeasures};
 }
 async function v20Encrypt(snapshot){
  const key=await v20KeyForSecret(v20Secret);
@@ -212,7 +213,8 @@ async function v20Download(){
     '\nBerat badan: '+snapshot.weights.length+
     '\nCatatan air: '+Object.keys(snapshot.waterRecords||{}).length+
     '\n\nData lokal Anda saat ini: '+logs.length+' catatan makan, '+mealPhotos.length+' foto.'+
-    '\nData akan DIGANTI, bukan digabung.';
+    '\nData akan DIGABUNG berdasarkan ID; konflik perlu ditinjau.';
+  await v24PreviewMerge();
   $('v20BackupConfirmed').checked=false;
   $('v20ReviewContinue').disabled=true;
   $('v20ReviewDialog').showModal();
@@ -220,19 +222,38 @@ async function v20Download(){
  }catch(e){v20Status('Unduhan gagal: '+e.message,true)}
  finally{v20SetBusy(false);v20Panel()}
 }
-function v20ReviewContinue(){
- if(!v20Downloaded||!$('v20BackupConfirmed').checked){toast('Simpan backup lokal terlebih dahulu');return}
- const {snapshot,revision}=v20Downloaded;
- v20PendingCloudRestore={account:v20AccountId,revision};
- v17PendingBackup=snapshot;
- $('v17RestoreDetails').textContent=
-  'Sumber: Cloud terenkripsi\nRevisi: '+revision+
-  '\nCatatan makan: '+snapshot.logs.length+'\nFoto makanan: '+(snapshot.mealPhotos||[]).length+
-  '\nData lokal akan DIGANTI setelah Anda mengonfirmasi.';
- v17SetBackupPreview('Cadangan sudah diperiksa. Klik Ganti data dengan backup untuk melakukan pemulihan. Data tidak digabung.');
- $('v17RestoreConfirm').disabled=false;
- $('v20ReviewDialog').close();v20Downloaded=null;
- $('v17RestoreDialog').showModal();
+let v24MergePreview=null;
+function v24ConflictText(value){
+ if(value&&typeof value==='object'){if(value.imageData!==undefined||value.items&&value.date)return (value.date||'')+' · '+(value.items?.length||0)+' komponen foto';if(value.recipe)return value.name+' · '+value.serving+' · '+value.calories+' kcal';if(value.foodId)return value.name+' · '+value.date+' · '+value.qty+' porsi';}
+ return JSON.stringify(value);
+}
+async function v24PreviewMerge(){
+ if(!v20Downloaded)return;
+ const local=await v20Snapshot(),merged=NutritionTools.merge(local,v20Downloaded.snapshot,$('v24ConflictPolicy').value);
+ v24MergePreview={local,merged};
+ const labels={logs:'Catatan makan',customFoods:'Makanan sendiri',mealPhotos:'Foto',weights:'Berat badan',packs:'Paket',waterRecords:'Air minum',foodMeasures:'Takaran',profile:'Profil',waterGoal:'Target air'};
+ $('v24MergeConflicts').textContent=merged.added+' entri baru dari cloud · '+merged.conflicts.length+' konflik. Tidak menjumlahkan air pada tanggal sama. Penghapusan belum disinkronkan; catatan lama dari cloud dapat muncul lagi. Konflik foto memakai foto dan seluruh komponen dari sumber yang dipilih.';
+ $('v20ReviewDetails').textContent='Revisi cloud: '+v20Downloaded.revision+'\nHasil: '+merged.snapshot.logs.length+' catatan makan, '+merged.snapshot.customFoods.length+' makanan sendiri, '+merged.snapshot.weights.length+' berat badan.\n'+merged.conflicts.map(c=>(labels[c.field]||c.field)+' — '+c.key+': perangkat '+v24ConflictText(c.local)+' | cloud '+v24ConflictText(c.cloud)).join('\n');
+}
+async function v20ReviewContinue(){
+ if(v20Busy||!v20Downloaded||!$('v20BackupConfirmed').checked)return;
+ v20SetBusy(true);
+ try{
+  const local=await v20Snapshot();
+  const same=x=>{const {exportedAt,...rest}=x;return NutritionTools.canonical(rest);};
+  if(!v24MergePreview||same(local)!==same(v24MergePreview.local)){await v24PreviewMerge();throw Error('Data lokal berubah. Tinjau kembali hasil penggabungan lalu klik Gabungkan data.');}
+  const merged=NutritionTools.merge(local,v20Downloaded.snapshot,$('v24ConflictPolicy').value);
+  const check=v17ValidateBackup(merged.snapshot);if(check.errors.length)throw Error(check.errors.join('; '));
+  v17PendingBackup=merged.snapshot;
+  v24RestoreRevision=v24SnapshotRevision;
+  // Existing restore commits all stores in one transaction; only a reviewed union is supplied.
+  await v17ExecuteRestore();
+  if(v17PendingBackup)throw Error('Penggabungan gagal. Data lokal belum diganti.');
+  await v20SaveRevision(v20Downloaded.revision);
+  $('v20ReviewDialog').close();v20Downloaded=null;v24MergePreview=null;
+  v20Status('Data berhasil digabung. Tekan Unggah untuk mengirim hasil gabungan ke cloud.');
+ }catch(e){v20Status(e.message,true);toast(e.message);}
+ finally{v24RestoreRevision=null;v20SetBusy(false);v20Panel();}
 }
 document.addEventListener('DOMContentLoaded',async()=>{
  $('v20Create').onclick=v20Create;$('v20Connect').onclick=v20Connect;
@@ -243,6 +264,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
  $('v20ReviewCancel').onclick=()=>{$('v20ReviewDialog').close();v20Downloaded=null};
  $('v20BackupConfirmed').onchange=v=>{$('v20ReviewContinue').disabled=!$('v20BackupConfirmed').checked};
  $('v20ReviewContinue').onclick=v20ReviewContinue;
+ $('v24ConflictPolicy').onchange=()=>v24PreviewMerge().catch(e=>v20Status(e.message,true));
  $('v20CopyKey').onclick=async()=>{
   const secret=$('v20NewKey').value;
   try{await navigator.clipboard.writeText(secret);toast('Kode pemulihan disalin')}

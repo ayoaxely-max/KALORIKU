@@ -1,10 +1,6 @@
 let mealPhotos=[],photoDraftItems=[],photoDraftBlob=null,photoDraftUrl=null,photoDraftSource=null;
 
-function photoServingGrams(food){
-  const s=String(food.serving||'').toLowerCase().replace(',','.');
-  const m=s.match(/(\d+(?:\.\d+)?)\s*g(?:\b|\/)/);
-  return m?Number(m[1]):null;
-}
+function photoServingGrams(food){return NutritionTools.servingGrams(food,foodMeasures[food.id])}
 function photoItemQty(item){
   if(item.grams && item.servingGrams) return Math.max(.01,item.grams/item.servingGrams);
   return Math.max(.01,Number(item.qty)||1);
@@ -82,12 +78,12 @@ async function savePhotoMeal(){
   const id='mp_'+crypto.randomUUID(),date=$('photoEntryDate').value||localDate(),meal=$('photoMeal').value,createdAt=Date.now();
   const items=photoDraftItems.map(i=>{
     const q=photoItemQty(i),m=photoItemMacros(i);
-    return {foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?Math.round(i.grams||i.servingGrams):null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,...v17NutrientSnapshot(i.food),total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
+    return {id:i.id||'pi_'+crypto.randomUUID(),foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?Math.round(i.grams||i.servingGrams):null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,...v17NutrientSnapshot(i.food),total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
   });
   const rec={id,date,meal,note:$('photoNote').value.trim(),image:photoDraftBlob,items,createdAt,photoOrigin:photoDraftSource,source:items.some(i=>i.aiEstimate)?'photo_ai_confirmed':'photo_manual_confirmed'};
   await dbPut('mealPhotos',rec);mealPhotos.push(rec);
   for(const i of items){
-    const l={id:'l_'+crypto.randomUUID(),date,meal,foodId:i.foodId,name:i.name,serving:i.grams?`${i.grams} g (foto)`:i.serving,qty:i.qty,calories:i.calories,protein:i.protein,carbs:i.carbs,fat:i.fat,...v17NutrientSnapshot(i),createdAt:createdAt+Math.random(),mealPhotoId:id,entrySource:i.aiEstimate?'photo_ai':'photo',aiEstimate:i.aiEstimate};
+    const l={id:'l_'+crypto.randomUUID(),date,meal,foodId:i.foodId,name:i.name,serving:i.grams?`${i.grams} g (foto)`:i.serving,servingGrams:i.servingGrams,photoItemId:i.id,qty:i.qty,calories:i.calories,protein:i.protein,carbs:i.carbs,fat:i.fat,...v17NutrientSnapshot(i),createdAt:createdAt+Math.random(),mealPhotoId:id,entrySource:i.aiEstimate?'photo_ai':'photo',aiEstimate:i.aiEstimate};
     await dbPut('logs',l);logs.push(l);
   }
   closePhotoMeal();renderToday();renderHistory();renderStats();renderPhotoMeals();updatePhotoStorageStatus();toast('Foto dan makanan tersimpan');

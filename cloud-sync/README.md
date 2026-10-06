@@ -17,7 +17,10 @@ KaloriKu tetap **offline-first**. Sinkronisasi berlangsung secara **manual** ket
 - Cloudflare D1 menyimpan data yang telah dienkripsi, ID akun turunan hash, hash token autentikasi, dan nomor revisi. Data makanan atau foto tidak dikirim sebagai plaintext ke backend sinkronisasi.
 - Semua request diterima hanya dari origin GitHub Pages yang dikonfigurasi. Ini **bukan** pengganti autentikasi: kepemilikan kode pemulihan tetap diperlukan.
 - Perubahan cloud memakai kontrol versi optimistik. Jika revisi berubah karena perangkat lain, unggah ditolak.
-- **Tidak ada penggabungan otomatis.** Unduh dan pulihkan *mengganti* catatan lokal setelah konfirmasi eksplisit. Simpan backup JSON lokal sebelum mengunduh.
+- **Penggabungan ditinjau pengguna.** Unduh cloud menampilkan gabungan berdasarkan ID (berat badan berdasarkan tanggal), daftar konflik, dan pilihan sumber konflik: perangkat ini atau cloud. Air minum pada tanggal sama tidak dijumlahkan. Simpan backup JSON lokal, konfirmasi gabungan, lalu unggah hasilnya.
+- Resep tersimpan bersama makanan sendiri; takaran pribadi ikut backup dan cloud.
+- Penghapusan belum disinkronkan: catatan yang hanya ada di cloud dapat muncul lagi. Dua input dengan ID berbeda tetap dianggap dua catatan meskipun nama dan waktu mirip.
+- Revisi lokal diperiksa saat penerapan dalam satu transaksi IndexedDB. Perubahan data selama pratinjau membatalkan penerapan dan memerlukan tinjauan ulang. Pemulihan JSON lokal tetap menggunakan mode penggantian.
 - Tidak ada sinkronisasi latar belakang; jangan mengira perubahan di HP langsung terlihat di laptop sebelum menekan sinkronisasi.
 - Pengguna dapat memutuskan akun dari perangkat tanpa menghapus data lokal atau menghapus backup terenkripsi dari cloud lewat dua kali konfirmasi.
 - Jika kode pemulihan hilang dan tidak ada perangkat yang masih menyimpannya, pihak pengelola tidak dapat membuka cadangan yang sudah terenkripsi.

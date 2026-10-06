@@ -1,6 +1,6 @@
-const CACHE='kaloriku-github-pages-v2.3.5';
+const CACHE='kaloriku-github-pages-v2.4.0';
 const BASE=new URL('./',self.location.href);
-const SHELL=['','styles.css?v=2.3.5','db.js','app.js?v=2.3.5','photo.js?v=2.3.5','ai-photo.js?v=2.3.5','v14.js?v=2.3.5','v15.js?v=2.3.5','v16.js?v=2.3.5','v17.js?v=2.3.5','v20.js?v=2.3.5','data/foods-extra.json','data/foods-daily.json','data/foods-regional.json','data/foods-expanded.json','data/foods-tkpi-2017.json','data/foods-tkpi-2020.json','manifest.webmanifest','data/foods.json','icons/icon-192.png','icons/icon-512.png'].map(path=>new URL(path,BASE).toString());
+const SHELL=['','styles.css?v=2.4.0','db.js?v=2.4.0','nutrition-tools.js?v=2.4.0','v24.js?v=2.4.0','app.js?v=2.4.0','photo.js?v=2.4.0','ai-photo.js?v=2.4.0','v14.js?v=2.4.0','v15.js?v=2.4.0','v16.js?v=2.4.0','v17.js?v=2.4.0','v20.js?v=2.4.0','data/foods-extra.json','data/foods-daily.json','data/foods-regional.json','data/foods-expanded.json','data/foods-tkpi-2017.json','data/foods-tkpi-2020.json','manifest.webmanifest','data/foods.json','icons/icon-192.png','icons/icon-512.png'].map(path=>new URL(path,BASE).toString());
 const DATA_PREFIX=new URL('data/',BASE).pathname;
 const HOME=new URL('',BASE).toString();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()))});
