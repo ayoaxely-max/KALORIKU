@@ -2772,7 +2772,9 @@
     "fat": 9,
     "source_type": "estimate",
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
-    "bdd_percent": 100
+    "bdd_percent": 100,
+    "verification_status": "independent_source_needed",
+    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
   },
   {
     "id": "community26_0214",
@@ -2876,7 +2878,9 @@
     "fat": 0.7,
     "source_type": "estimate",
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
-    "bdd_percent": 100
+    "bdd_percent": 100,
+    "verification_status": "independent_source_needed",
+    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
   },
   {
     "id": "community26_0222",
@@ -3136,7 +3140,9 @@
     "fat": 6.5,
     "source_type": "estimate",
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
-    "bdd_percent": 100
+    "bdd_percent": 100,
+    "verification_status": "independent_source_needed",
+    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
   },
   {
     "id": "community26_0242",
@@ -3266,7 +3272,9 @@
     "fat": 10.4,
     "source_type": "estimate",
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
-    "bdd_percent": 100
+    "bdd_percent": 100,
+    "verification_status": "independent_source_needed",
+    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
   },
   {
     "id": "community26_0252",
@@ -4823,7 +4831,9 @@
     "fat": 6.5,
     "source_type": "estimate",
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
-    "bdd_percent": 100
+    "bdd_percent": 100,
+    "verification_status": "independent_source_needed",
+    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
   },
   {
     "id": "community26_0369",
