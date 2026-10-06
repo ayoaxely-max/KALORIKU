@@ -3131,18 +3131,34 @@
   },
   {
     "id": "community26_0241",
-    "name": "Ikan tepung mentah",
+    "name": "Ikan, tepung, mentah",
     "category": "Makanan Indonesia",
-    "serving": "100 g (perkiraan)",
+    "serving": "100 g BDD",
     "calories": 316,
-    "protein": 60.1,
+    "protein": 60,
     "carbs": 22.4,
     "fat": 6.5,
-    "source_type": "estimate",
-    "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
+    "source_type": "tkpi",
+    "source_ref": "Kementerian Kesehatan RI, Tabel Komposisi Pangan Indonesia (2020), GP039, per 100 g BDD; dicocokkan dengan transkripsi. Energi dan makronutrien tidak konsisten dan perlu konfirmasi sumber asli.",
     "bdd_percent": 100,
-    "verification_status": "independent_source_needed",
-    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
+    "verification_status": "printed_source_anomaly",
+    "verification_note": "Energi 316 kkal, protein 60 g, lemak 6,5 g, karbohidrat 22,4 g mengikuti GP039, tetapi energi teoritis makronutrien jauh berbeda. Belum ada errata resmi yang dikonfirmasi.",
+    "tkpi_code": "GP039",
+    "tkpi_edition_crosschecked": 2020,
+    "source": "TKPI 2020 (transkripsi), kode GP039",
+    "source_url": "https://repository.kemkes.go.id/book/668",
+    "source_transcription_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "fiber": 0,
+    "sodium": 320,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD",
+    "aliases": [
+      "tepung ikan mentah",
+      "ikan tepung"
+    ]
   },
   {
     "id": "community26_0242",
@@ -3540,7 +3556,15 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "MP009",
     "tkpi_edition": 2017,
-    "verification_status": "printed_source_anomaly"
+    "verification_status": "printed_source_anomaly",
+    "fiber": 0,
+    "sodium": 72,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD",
+    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata."
   },
   {
     "id": "community26_0272",
@@ -3819,7 +3843,14 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "BP049",
     "tkpi_edition": 2017,
-    "verification_status": "matched_printed_table"
+    "verification_status": "matched_printed_table",
+    "fiber": 0.1,
+    "sodium": 0,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "community26_0293",
@@ -3903,7 +3934,14 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "BP051",
     "tkpi_edition": 2017,
-    "verification_status": "matched_printed_table"
+    "verification_status": "matched_printed_table",
+    "fiber": 1.4,
+    "sodium": 10,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "community26_0299",
@@ -4000,7 +4038,14 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "AP002",
     "tkpi_edition": 2017,
-    "verification_status": "matched_printed_table"
+    "verification_status": "matched_printed_table",
+    "fiber": 0.5,
+    "sodium": 0,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD"
   },
   {
     "id": "community26_0306",
@@ -5664,7 +5709,15 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "MP016",
     "tkpi_edition": 2017,
-    "verification_status": "printed_source_anomaly"
+    "verification_status": "printed_source_anomaly",
+    "fiber": 9.6,
+    "sodium": 60,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD",
+    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata."
   },
   {
     "id": "community26_0432",
@@ -5683,7 +5736,15 @@
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "MP018",
     "tkpi_edition": 2017,
-    "verification_status": "printed_source_anomaly"
+    "verification_status": "printed_source_anomaly",
+    "fiber": 9.7,
+    "sodium": 70,
+    "nutrient_source_edition": 2020,
+    "nutrient_source_method": "table_transcription_crosscheck",
+    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
+    "nutrient_basis": "per 100 g BDD",
+    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata."
   },
   {
     "id": "community26_0433",
