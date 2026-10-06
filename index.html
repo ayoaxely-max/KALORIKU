@@ -8,7 +8,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=1.7.0">
+  <link rel="stylesheet" href="./styles.css?v=2.0.0">
   <title>KaloriKu</title>
 </head>
 <body>
@@ -88,8 +88,34 @@
       <article class="card form-card"><h2>AI Foto Makanan</h2><p class="small muted">Analisis foto diproses lewat Cloudflare Worker. Gemini API key disimpan sebagai secret di backend dan tidak pernah masuk ke HP atau GitHub Pages.</p><label>URL backend AI<input id="aiBackendUrl" type="url" placeholder="https://kaloriku-ai....workers.dev"></label><div class="grid2"><label>Status<div id="aiBackendStatus" class="ai-status">Belum terhubung</div></label><label>Model<div class="ai-status">Gemini 3.8 Flash</div></label></div><div class="row"><button id="saveAiBackendBtn" class="primary grow">Simpan & tes</button><button id="clearAiBackendBtn" class="secondary">Hapus URL</button></div></article>
       <article class="card form-card"><h2>Target air minum</h2><label>Target pribadi (ml/hari)<input id="v15WaterGoalInput" type="number" min="250" max="6000" step="50" value="2000"></label><button id="v15WaterGoalSave" class="secondary full" type="button">Simpan target air</button><p class="small muted">Angka awal hanyalah contoh dan bukan anjuran medis. Sesuaikan dengan kebutuhan masing-masing.</p></article>
       <article class="card"><h2>Audit nilai gizi produk</h2><div id="v15NutritionAudit"><p class="small muted">Memeriksa produk...</p></div></article>
-      <article class="card"><h2>Data & backup</h2><div class="stack"><button id="backupBtn" class="secondary full">Backup JSON</button><button id="restoreBtn" class="secondary full">Periksa & pulihkan backup JSON</button><input id="restoreFile" type="file" accept="application/json,.json" hidden><button id="csvBtn" class="secondary full">Export CSV</button></div><p class="small muted">Data utama disimpan di IndexedDB pada perangkat ini. Backup berkala tetap disarankan.</p></article>
-      <article class="card"><h2>Aplikasi</h2><div class="kv"><span>Status</span><strong id="pwaStatus">Web</strong></div><div class="kv"><span>Database</span><strong id="foodCountProfile">—</strong></div><div class="kv"><span>Penyimpanan</span><strong>IndexedDB</strong></div><div class="kv"><span>Foto makanan</span><strong id="photoStorageStatus">0</strong></div><div class="kv"><span>Versi</span><strong>1.7.0</strong></div><button id="installBtn2" class="primary full hidden">Pasang KaloriKu ke Home Screen</button></article>
+      <article class="card v20-sync-card">
+  <div class="section-head no-pad"><h2>☁ Sinkronisasi perangkat</h2><span class="v20-sync-label">Opsional</span></div>
+  <p class="small muted">Gunakan KaloriKu di HP dan laptop dengan <strong>akun berbasis kode pemulihan</strong>, tanpa email atau password. Data selalu disimpan lokal dahulu; sinkronisasi dilakukan manual dan terenkripsi sebelum dikirim ke cloud.</p>
+  <div id="v20Disconnected">
+    <button id="v20Create" class="primary full" type="button">Buat akun sinkronisasi baru</button>
+    <label>Kode pemulihan dari perangkat lain
+      <input id="v20RecoveryInput" type="password" spellcheck="false" autocomplete="off" placeholder="Tempel 43 karakter kode pemulihan"></label>
+    <button id="v20Connect" class="secondary full" type="button">Hubungkan perangkat ini</button>
+  </div>
+  <div id="v20Connected" class="hidden">
+    <div class="kv"><span>Status akun</span><strong id="v20AccountLabel">Terenkripsi</strong></div>
+    <p class="small muted" id="v20KnownRevision">Belum sinkron</p>
+    <div class="v20-sync-actions"><button id="v20Upload" class="primary" type="button">⬆ Unggah ke cloud</button>
+      <button id="v20Download" class="secondary" type="button">⬇ Unduh dari cloud</button></div>
+    <button id="v20Disconnect" class="text-btn" type="button">Lepas akun dari perangkat</button>
+  </div>
+  <div id="v20NewKeyWrap" class="hidden v20-recovery-box">
+    <strong>Kode pemulihan — simpan di tempat aman!</strong>
+    <p class="small">Kode ini adalah satu-satunya cara menghubungkan perangkat baru dan membuka data cloud. KaloriKu tidak bisa mengembalikannya jika hilang.</p>
+    <label>Kode rahasia pribadi<input id="v20NewKey" type="text" readonly spellcheck="false"></label>
+    <button id="v20CopyKey" type="button" class="secondary full">Salin kode pemulihan</button>
+  </div>
+  <p id="v20Progress" class="info-note hidden" role="status"></p>
+  <p id="v20Status" class="small muted" role="status">Memeriksa dukungan sinkronisasi…</p>
+  <p class="small muted">Mengunggah menimpa <strong>revisi cloud sebelumnya</strong>, tetapi tidak pernah otomatis. Jika perangkat lain telah mengubah cloud, unggah akan ditolak. Mengunduh meminta konfirmasi sebelum mengganti data lokal; tidak ada penggabungan otomatis. Backup JSON lokal tetap disarankan.</p>
+</article>
+<article class="card"><h2>Data & backup</h2><div class="stack"><button id="backupBtn" class="secondary full">Backup JSON</button><button id="restoreBtn" class="secondary full">Periksa & pulihkan backup JSON</button><input id="restoreFile" type="file" accept="application/json,.json" hidden><button id="csvBtn" class="secondary full">Export CSV</button></div><p class="small muted">Data utama disimpan di IndexedDB pada perangkat ini. Backup berkala tetap disarankan.</p></article>
+      <article class="card"><h2>Aplikasi</h2><div class="kv"><span>Status</span><strong id="pwaStatus">Web</strong></div><div class="kv"><span>Database</span><strong id="foodCountProfile">—</strong></div><div class="kv"><span>Penyimpanan</span><strong>IndexedDB</strong></div><div class="kv"><span>Foto makanan</span><strong id="photoStorageStatus">0</strong></div><div class="kv"><span>Versi</span><strong>2.0.0</strong></div><button id="installBtn2" class="primary full hidden">Pasang KaloriKu ke Home Screen</button></article>
     </section>
   </main>
   <button id="fab" class="fab">＋ Catat</button>
@@ -158,6 +184,15 @@
    <button class="secondary" type="button" onclick="document.getElementById('v17RestoreCancel').click()">Batal</button>
  </div>
  <p class="small muted">Backup dicek lebih dulu. Jika transaksi penyimpanan gagal, data lokal sebelumnya tidak ditimpa sebagian.</p>
-</div></dialog><div id="toast" class="toast"></div>
-<script src="./db.js"></script><script src="./app.js?v=1.7.0"></script><script src="./photo.js?v=1.7.0"></script><script src="./ai-photo.js?v=1.7.0"></script><script src="./v14.js?v=1.7.0"></script><script src="./v15.js?v=1.7.0"></script><script src="./v16.js?v=1.7.0"></script><script src="./v17.js?v=1.7.0"></script>
+</div></dialog><dialog class="modal" id="v20ReviewDialog"><div class="modal-card">
+  <div class="sheet-head"><h2>Pratinjau unduhan cloud</h2>
+    <button id="v20ReviewCancel" type="button" class="icon-btn">×</button></div>
+  <p class="small muted">Data cloud sudah diunduh dan didekripsi hanya di perangkat ini. Periksa sebelum mengganti data lokal.</p>
+  <pre id="v20ReviewDetails" class="v17-restore-details"></pre>
+  <label class="v20-confirm-checkbox"><input id="v20BackupConfirmed" type="checkbox">
+    Saya sudah menyimpan backup JSON dari data lokal yang sekarang. Saya memahami pemulihan ini menggantikan, bukan menggabungkan, data.</label>
+  <button id="v20ReviewContinue" class="primary full" type="button" disabled>Lanjut ke konfirmasi pemulihan</button>
+</div></dialog>
+<div id="toast" class="toast"></div>
+<script src="./db.js"></script><script src="./app.js?v=2.0.0"></script><script src="./photo.js?v=2.0.0"></script><script src="./ai-photo.js?v=2.0.0"></script><script src="./v14.js?v=2.0.0"></script><script src="./v15.js?v=2.0.0"></script><script src="./v16.js?v=2.0.0"></script><script src="./v17.js?v=2.0.0"></script><script src="./v20.js?v=2.0.0"></script>
 </body></html>
