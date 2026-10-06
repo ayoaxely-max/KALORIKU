@@ -8,7 +8,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=1.6.0">
+  <link rel="stylesheet" href="./styles.css?v=1.7.0">
   <title>KaloriKu</title>
 </head>
 <body>
@@ -70,6 +70,17 @@
     <section id="page-stats" class="page">
       <article class="card"><div class="section-head no-pad"><h2>Kalori 14 hari</h2><span id="avg7"></span></div><canvas id="calChart" width="700" height="240"></canvas></article>
       <article class="card"><h2>Ringkasan 7 hari</h2><div id="v15WeeklySummary"></div></article>
+      <article class="card">
+        <div class="section-head no-pad"><h2>Analisis bulanan</h2><label class="v17-month-picker">Bulan
+          <input id="v17MonthPicker" type="month" aria-label="Pilih bulan laporan"></label></div>
+        <div id="v17MonthlySummary"></div>
+        <h3 class="v17-section-title">Tren rata-rata kalori 6 bulan</h3>
+        <div id="v17MonthTrend" class="v17-month-trend"></div>
+      </article>
+      <article class="card"><h2>Nutrisi tambahan</h2>
+        <p class="small muted">Jumlah hanya dari catatan yang menyediakan nilai per porsi. Kekosongan bukan berarti nol.</p>
+        <div id="v17MonthlyNutrients"></div>
+      </article>
       <article class="card"><div class="section-head no-pad"><h2>Berat badan</h2><button class="text-btn" id="addWeightBtn">+ Catat</button></div><div id="weightSummary"></div><canvas id="weightChart" width="700" height="220"></canvas><div id="weightRecent"></div></article><article class="card"><h2>Progres menuju target berat badan</h2><div id="v16WeightProgress"></div></article>
     </section>
     <section id="page-profile" class="page">
@@ -77,15 +88,22 @@
       <article class="card form-card"><h2>AI Foto Makanan</h2><p class="small muted">Analisis foto diproses lewat Cloudflare Worker. Gemini API key disimpan sebagai secret di backend dan tidak pernah masuk ke HP atau GitHub Pages.</p><label>URL backend AI<input id="aiBackendUrl" type="url" placeholder="https://kaloriku-ai....workers.dev"></label><div class="grid2"><label>Status<div id="aiBackendStatus" class="ai-status">Belum terhubung</div></label><label>Model<div class="ai-status">Gemini 3.8 Flash</div></label></div><div class="row"><button id="saveAiBackendBtn" class="primary grow">Simpan & tes</button><button id="clearAiBackendBtn" class="secondary">Hapus URL</button></div></article>
       <article class="card form-card"><h2>Target air minum</h2><label>Target pribadi (ml/hari)<input id="v15WaterGoalInput" type="number" min="250" max="6000" step="50" value="2000"></label><button id="v15WaterGoalSave" class="secondary full" type="button">Simpan target air</button><p class="small muted">Angka awal hanyalah contoh dan bukan anjuran medis. Sesuaikan dengan kebutuhan masing-masing.</p></article>
       <article class="card"><h2>Audit nilai gizi produk</h2><div id="v15NutritionAudit"><p class="small muted">Memeriksa produk...</p></div></article>
-      <article class="card"><h2>Data & backup</h2><div class="stack"><button id="backupBtn" class="secondary full">Backup JSON</button><button id="restoreBtn" class="secondary full">Restore backup</button><input id="restoreFile" type="file" accept="application/json,.json" hidden><button id="csvBtn" class="secondary full">Export CSV</button></div><p class="small muted">Data utama disimpan di IndexedDB pada perangkat ini. Backup berkala tetap disarankan.</p></article>
-      <article class="card"><h2>Aplikasi</h2><div class="kv"><span>Status</span><strong id="pwaStatus">Web</strong></div><div class="kv"><span>Database</span><strong id="foodCountProfile">—</strong></div><div class="kv"><span>Penyimpanan</span><strong>IndexedDB</strong></div><div class="kv"><span>Foto makanan</span><strong id="photoStorageStatus">0</strong></div><div class="kv"><span>Versi</span><strong>1.6.0</strong></div><div class="kv"><span>Versi</span><strong>1.3.1 · Galeri</strong></div><button id="installBtn2" class="primary full hidden">Pasang KaloriKu ke Home Screen</button></article>
+      <article class="card"><h2>Data & backup</h2><div class="stack"><button id="backupBtn" class="secondary full">Backup JSON</button><button id="restoreBtn" class="secondary full">Periksa & pulihkan backup JSON</button><input id="restoreFile" type="file" accept="application/json,.json" hidden><button id="csvBtn" class="secondary full">Export CSV</button></div><p class="small muted">Data utama disimpan di IndexedDB pada perangkat ini. Backup berkala tetap disarankan.</p></article>
+      <article class="card"><h2>Aplikasi</h2><div class="kv"><span>Status</span><strong id="pwaStatus">Web</strong></div><div class="kv"><span>Database</span><strong id="foodCountProfile">—</strong></div><div class="kv"><span>Penyimpanan</span><strong>IndexedDB</strong></div><div class="kv"><span>Foto makanan</span><strong id="photoStorageStatus">0</strong></div><div class="kv"><span>Versi</span><strong>1.7.0</strong></div><button id="installBtn2" class="primary full hidden">Pasang KaloriKu ke Home Screen</button></article>
     </section>
   </main>
   <button id="fab" class="fab">＋ Catat</button>
   <nav class="bottom-nav"><button class="nav active" data-page="today"><b>⌂</b><span>Hari Ini</span></button><button class="nav" data-page="history"><b>▣</b><span>Riwayat</span></button><button class="nav" data-page="database"><b>⌕</b><span>Database</span></button><button class="nav" data-page="stats"><b>▥</b><span>Statistik</span></button><button class="nav" data-page="profile"><b>○</b><span>Profil</span></button></nav>
 </div>
 <dialog id="addDialog" class="sheet"><div class="sheet-inner"><div class="sheet-handle"></div><div class="sheet-head"><h2>Tambah asupan</h2><button class="icon-btn" data-close="addDialog">×</button></div><label>Tanggal makan<input id="entryDate" type="date" required></label><div class="grid2"><label>Waktu makan<select id="mealSelect"><option>Sarapan</option><option selected>Makan Siang</option><option>Makan Malam</option><option>Snack</option><option>Minuman</option></select></label><label>Jumlah porsi / takaran<input id="qtyInput" type="number" value="1" min="0.1" step="0.1"></label></div><label>Takaran (opsional)<select id="qtyUnit"><option value="porsi">Porsi sesuai database</option><option value="gram">Gram</option><option value="sdm">Sendok makan (≈15 g)</option><option value="centong">Centong (≈70–100 g)</option><option value="potong">Potong (≈75 g)</option><option value="gelas">Gelas (≈200 g)</option></select></label><p class="small muted">Perkiraan takaran berbeda sesuai jenis makanan. Takaran gram hanya tersedia bila berat porsi makanan diketahui.</p><div class="quick-actions photo-actions"><button id="scanBtn" class="secondary">▦ Scan barcode</button><button id="photoFoodBtn" class="secondary">📷 Foto makanan</button><button id="pickGalleryQuickBtn" class="secondary" type="button">🖼️ Pilih dari Galeri</button></div><label>Input cepat<input id="quickInput" placeholder="nasi 2, ayam goreng 1, tempe 2"></label><div id="quickPreview"></div><label>Cari makanan<input id="foodSearch" class="search" placeholder="Ketik nama makanan..."></label><div class="chips" id="addModeChips"><button class="chip on" data-mode="recent">Terakhir</button><button class="chip" data-mode="favorite">Favorit</button><button class="chip" data-mode="all">Semua</button><button class="chip" data-mode="packs">Paket</button></div><div id="addResults" class="scroll-list"></div></div></dialog>
-<dialog id="customDialog" class="modal"><form method="dialog" class="modal-card" id="customForm"><div class="sheet-head"><h2>Makanan / produk sendiri</h2><button class="icon-btn" value="cancel">×</button></div><label>Nama<input id="customName" required></label><label>Porsi<input id="customServing" required placeholder="100 g / 1 bungkus"></label><label>Barcode (opsional)<input id="customBarcode" inputmode="numeric"></label><div class="grid2"><label>Kalori<input id="customCal" type="number" step="0.1" required></label><label>Protein (g)<input id="customP" type="number" step="0.1"></label><label>Karbo (g)<input id="customC" type="number" step="0.1"></label><label>Lemak (g)<input id="customF" type="number" step="0.1"></label></div><div id="v15NutritionAlert" class="v15-warning hidden" role="status"></div><button class="primary full" value="default" id="saveCustomSubmit">Simpan</button></form></dialog>
+<dialog id="customDialog" class="modal"><form method="dialog" class="modal-card" id="customForm"><div class="sheet-head"><h2>Makanan / produk sendiri</h2><button class="icon-btn" value="cancel">×</button></div><label>Nama<input id="customName" required></label><label>Porsi<input id="customServing" required placeholder="100 g / 1 bungkus"></label><label>Barcode (opsional)<input id="customBarcode" inputmode="numeric"></label><div class="grid2"><label>Kalori<input id="customCal" type="number" step="0.1" required></label><label>Protein (g)<input id="customP" type="number" step="0.1"></label><label>Karbo (g)<input id="customC" type="number" step="0.1"></label><label>Lemak (g)<input id="customF" type="number" step="0.1"></label></div><div id="v15NutritionAlert" class="v15-warning hidden" role="status"></div><h3 class="v17-section-title">Nutrisi tambahan per porsi (opsional)</h3>
+<div class="grid2">
+<label>Serat (g)<input id="customFiber" type="number" min="0" step="0.01" placeholder="Belum diketahui"></label>
+<label>Gula (g)<input id="customSugar" type="number" min="0" step="0.01" placeholder="Belum diketahui"></label>
+<label>Natrium (mg)<input id="customSodium" type="number" min="0" step="0.1" placeholder="Belum diketahui"></label>
+<label>Lemak jenuh (g)<input id="customSaturatedFat" type="number" min="0" step="0.01" placeholder="Belum diketahui"></label>
+</div><p class="small muted">Isi hanya jika tercantum pada label; jangan mengganti nilai kosong dengan nol.</p>
+<button class="primary full" value="default" id="saveCustomSubmit">Simpan</button></form></dialog>
 <dialog id="weightDialog" class="modal"><form method="dialog" class="modal-card" id="weightForm"><div class="sheet-head"><h2>Catat berat badan</h2><button class="icon-btn" value="cancel">×</button></div><label>Tanggal<input id="weightDate" type="date"></label><label>Berat (kg)<input id="weightValue" type="number" min="20" max="300" step="0.1" required></label><button class="primary full" value="default">Simpan</button></form></dialog>
 <dialog id="scannerDialog" class="modal scanner-modal"><div class="modal-card"><div class="sheet-head"><h2>Scan barcode</h2><button class="icon-btn" id="closeScanner">×</button></div><video id="scannerVideo" playsinline autoplay muted></video><div id="scanStatus" class="info-note">Arahkan kamera ke barcode produk.</div><div class="row"><input id="manualBarcode" inputmode="numeric" placeholder="Atau ketik barcode"><button id="manualLookup" class="secondary">Cari</button></div></div></dialog>
 <dialog id="photoDialog" class="modal photo-modal"><div class="modal-card">
@@ -114,7 +132,14 @@
     <label>Protein (g)<input id="v15EditProductP" type="number" min="0" step="0.1" required></label>
     <label>Karbohidrat (g)<input id="v15EditProductC" type="number" min="0" step="0.1" required></label>
     <label>Lemak (g)<input id="v15EditProductF" type="number" min="0" step="0.1" required></label>
-  </div><div class="v15-warning" id="v15EditProductWarning" role="status"></div>
+  </div><h3 class="v17-section-title">Nutrisi tambahan per porsi (opsional)</h3>
+<div class="grid2">
+<label>Serat (g)<input id="v15EditProductFiber" type="number" min="0" step="0.01" placeholder="Tidak diketahui"></label>
+<label>Gula (g)<input id="v15EditProductSugar" type="number" min="0" step="0.01" placeholder="Tidak diketahui"></label>
+<label>Natrium (mg)<input id="v15EditProductSodium" type="number" min="0" step="0.1" placeholder="Tidak diketahui"></label>
+<label>Lemak jenuh (g)<input id="v15EditProductSaturatedFat" type="number" min="0" step="0.01" placeholder="Tidak diketahui"></label>
+</div>
+<div class="v15-warning" id="v15EditProductWarning" role="status"></div>
   <p class="small muted">Koreksi ini memperbarui database produk, tidak mengubah catatan makan yang sudah tersimpan.</p>
   <button class="primary full" type="submit">Simpan koreksi</button>
 </form></dialog>
@@ -124,6 +149,15 @@
   <p class="small muted">Anda dapat mengedit atau menghapus makanan custom dan produk hasil pemindaian. Katalog referensi bawaan dilindungi. Menghapus database tidak menghapus riwayat yang sudah dicatat.</p>
   <div id="v16CustomList" class="v16-custom-list"></div>
 </div></dialog>
-<div id="toast" class="toast"></div>
-<script src="./db.js"></script><script src="./app.js?v=1.6.0"></script><script src="./photo.js?v=1.6.0"></script><script src="./ai-photo.js?v=1.6.0"></script><script src="./v14.js?v=1.6.0"></script><script src="./v15.js?v=1.6.0"></script><script src="./v16.js?v=1.6.0"></script>
+<dialog id="v17RestoreDialog" class="modal"><div class="modal-card">
+ <div class="sheet-head"><h2>Periksa backup JSON</h2><button id="v17RestoreCancel" class="icon-btn" type="button">×</button></div>
+ <pre id="v17RestoreDetails" class="v17-restore-details">Belum ada file.</pre>
+ <div id="v17RestoreMessage" class="info-note" role="status"></div>
+ <div class="v17-restore-buttons">
+   <button id="v17RestoreConfirm" class="primary" type="button" disabled>Ganti data dengan backup</button>
+   <button class="secondary" type="button" onclick="document.getElementById('v17RestoreCancel').click()">Batal</button>
+ </div>
+ <p class="small muted">Backup dicek lebih dulu. Jika transaksi penyimpanan gagal, data lokal sebelumnya tidak ditimpa sebagian.</p>
+</div></dialog><div id="toast" class="toast"></div>
+<script src="./db.js"></script><script src="./app.js?v=1.7.0"></script><script src="./photo.js?v=1.7.0"></script><script src="./ai-photo.js?v=1.7.0"></script><script src="./v14.js?v=1.7.0"></script><script src="./v15.js?v=1.7.0"></script><script src="./v16.js?v=1.7.0"></script><script src="./v17.js?v=1.7.0"></script>
 </body></html>
