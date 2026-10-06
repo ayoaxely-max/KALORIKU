@@ -1,7 +1,7 @@
 const DEFAULT_AI_BACKEND='https://kaloriku-ai.ayoaxely.workers.dev';
 let aiBackendUrl='';
 
-function aiNorm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
+function aiNorm(s){return foodSearchNorm(s)}
 function aiTokens(s){return new Set(aiNorm(s).split(' ').filter(x=>x.length>1&&!['dan','dengan','yang','goreng','rebus','masak','porsi'].includes(x)))}
 function aiFoodScore(foodName,query){
   const a=aiNorm(foodName),b=aiNorm(query);if(a===b)return 100;if(a.includes(b)||b.includes(a))return 85;
@@ -9,7 +9,7 @@ function aiFoodScore(foodName,query){
   return hit/Math.max(1,Math.max(A.size,B.size))*75-Math.abs(a.length-b.length)*.08;
 }
 function findBestFoodMatch(name){
-  let best=null,score=-999;for(const f of allFoods){const s=aiFoodScore(f.name,name);if(s>score){score=s;best=f}}
+  let best=null,score=-999;for(const f of allFoods){const s=Math.max(...[f.name,...(Array.isArray(f.aliases)?f.aliases:[])].map(v=>aiFoodScore(v,name)));if(s>score){score=s;best=f}}
   return score>=80?{food:best,score}:null;
 }
 async function blobBase64(blob){

@@ -17,3 +17,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Penambahan makanan sehari-hari 2.1.0
+- `data/foods-daily.json`: 168 makanan tambahan: lauk telur, gorengan, sayur, makanan pokok, jajanan, minuman, buah. Takaran dinyatakan per buah/porsi/butir dengan perkiraan massa.
+- Semua nilai penambahan ini berstatus **estimasi**, bukan TKPI tervalidasi. Kalori didekati dari protein, karbohidrat, dan lemak (4/4/9 kkal/g). Jenis minyak, gula, saus, serta ukuran porsi mengubah hasil secara signifikan.
+- Alias pencarian memudahkan ejaan umum seperti telor/telur dan mata sapi/ceplok tanpa menggandakan nutrisi yang sama. Hasil AI tetap harus dikonfirmasi sebelum disimpan.
+- Database lama dan catatan pengguna tidak diubah.

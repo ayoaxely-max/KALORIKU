@@ -30,6 +30,16 @@ jobs:
           test -s icons/icon-512.png
           echo "All KaloriKu runtime assets are stored in GitHub."
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate expanded food catalog
+        run: |
+          node --check app.js
+          node --check ai-photo.js
+          node --test tests/catalog.test.mjs
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
