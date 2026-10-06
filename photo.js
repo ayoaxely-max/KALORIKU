@@ -1,4 +1,4 @@
-let mealPhotos=[],photoDraftItems=[],photoDraftBlob=null,photoDraftUrl=null;
+let mealPhotos=[],photoDraftItems=[],photoDraftBlob=null,photoDraftUrl=null,photoDraftSource=null;
 
 function photoServingGrams(food){
   const s=String(food.serving||'').toLowerCase().replace(',','.');
@@ -32,15 +32,19 @@ function setPhotoPreview(blob){
 }
 function openPhotoMeal(){
   try{if($('addDialog')?.open)$('addDialog').close()}catch{}
-  photoDraftItems=[];photoDraftBlob=null;setPhotoPreview(null);
+  photoDraftItems=[];photoDraftBlob=null;photoDraftSource=null;setPhotoPreview(null);
   $('photoSearch').value='';$('photoNote').value='';
+  $('analyzePhotoBtn').disabled=true;
+  $('analyzePhotoBtn').textContent='✨ Analisis foto dengan AI';
+  $('aiSuggestions').innerHTML='';
+  $('aiPhotoStatus').classList.add('hidden');
   if($('mealSelect'))$('photoMeal').value=$('mealSelect').value;
   renderPhotoSearch();renderPhotoSelected();
   $('photoDialog').showModal();
 }
 function closePhotoMeal(){
   if(photoDraftUrl)URL.revokeObjectURL(photoDraftUrl);
-  photoDraftUrl=null;photoDraftBlob=null;photoDraftItems=[];
+  photoDraftUrl=null;photoDraftBlob=null;photoDraftSource=null;photoDraftItems=[];
   $('photoDialog').close();
 }
 function renderPhotoSearch(){
@@ -79,7 +83,7 @@ async function savePhotoMeal(){
     const q=photoItemQty(i),m=photoItemMacros(i);
     return {foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?Math.round(i.grams||i.servingGrams):null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
   });
-  const rec={id,date,meal,note:$('photoNote').value.trim(),image:photoDraftBlob,items,createdAt,source:items.some(i=>i.aiEstimate)?'photo_ai_confirmed':'photo_manual_confirmed'};
+  const rec={id,date,meal,note:$('photoNote').value.trim(),image:photoDraftBlob,items,createdAt,photoOrigin:photoDraftSource,source:items.some(i=>i.aiEstimate)?'photo_ai_confirmed':'photo_manual_confirmed'};
   await dbPut('mealPhotos',rec);mealPhotos.push(rec);
   for(const i of items){
     const l={id:'l_'+crypto.randomUUID(),date,meal,foodId:i.foodId,name:i.name,serving:i.grams?`${i.grams} g (foto)`:i.serving,qty:i.qty,calories:i.calories,protein:i.protein,carbs:i.carbs,fat:i.fat,createdAt:createdAt+Math.random(),mealPhotoId:id,entrySource:i.aiEstimate?'photo_ai':'photo',aiEstimate:i.aiEstimate};
@@ -117,13 +121,37 @@ document.addEventListener('DOMContentLoaded',async()=>{
   mealPhotos=await dbAll('mealPhotos');
   $('photoFoodBtn').onclick=openPhotoMeal;
   $('closePhotoDialog').onclick=closePhotoMeal;
-  $('takePhotoBtn').onclick=()=>$('photoInput').click();
-  $('photoInput').onchange=async e=>{
-    const file=e.target.files?.[0];if(!file)return;
+  $('takePhotoBtn').onclick=()=>$('photoCameraInput').click();
+  $('uploadPhotoBtn').onclick=()=>$('photoGalleryInput').click();
+  async function chooseMealPhoto(event,origin){
+    const input=event.target,file=input.files?.[0];
+    input.value='';
+    if(!file)return;
+    if(!file.type.startsWith('image/')){toast('Pilih file gambar yang valid');return}
+    const analyze=$('analyzePhotoBtn');
+    analyze.disabled=true;
     toast('Memproses foto…');
-    try{photoDraftBlob=await compressMealPhoto(file);setPhotoPreview(photoDraftBlob);toast('Foto siap')}catch(err){console.error(err);toast('Foto gagal diproses')}
-    e.target.value='';
-  };
+    try{
+      const compressed=await compressMealPhoto(file);
+      if(!compressed)throw new Error('Tidak dapat memproses gambar');
+      photoDraftBlob=compressed;
+      photoDraftSource=origin;
+      photoDraftItems=[];
+      renderPhotoSelected();
+      $('aiSuggestions').innerHTML='';
+      $('aiPhotoStatus').classList.add('hidden');
+      setPhotoPreview(compressed);
+      analyze.disabled=false;
+      analyze.textContent='✨ Analisis foto dengan AI';
+      toast(origin==='gallery'?'Foto galeri siap':'Foto kamera siap');
+    }catch(error){
+      console.error(error);
+      analyze.disabled=!photoDraftBlob;
+      toast('Foto gagal diproses. Pilih foto lain.');
+    }
+  }
+  $('photoCameraInput').onchange=e=>chooseMealPhoto(e,'camera');
+  $('photoGalleryInput').onchange=e=>chooseMealPhoto(e,'gallery');
   $('photoSearch').oninput=renderPhotoSearch;
   $('savePhotoMealBtn').onclick=savePhotoMeal;
   renderPhotoMeals();updatePhotoStorageStatus();

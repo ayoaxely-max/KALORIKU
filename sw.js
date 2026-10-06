@@ -1,4 +1,4 @@
-const CACHE='kaloriku-github-pages-v1.2.1';
+const CACHE='kaloriku-github-pages-v1.3.0';
 const BASE=new URL('./',self.location.href);
 const SHELL=['','styles.css','db.js','app.js','photo.js','ai-photo.js','manifest.webmanifest','data/foods.json','icons/icon-192.png','icons/icon-512.png'].map(path=>new URL(path,BASE).toString());
 const HOME=new URL('',BASE).toString();

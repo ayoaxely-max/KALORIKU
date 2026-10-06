@@ -60,8 +60,12 @@
 <dialog id="photoDialog" class="modal photo-modal"><div class="modal-card">
   <div class="sheet-head"><h2>Foto makanan</h2><button class="icon-btn" id="closePhotoDialog">×</button></div>
   <p class="small muted">Foto disimpan lokal di HP. Kalori dihitung dari makanan dan berat/porsi yang Anda konfirmasi; kamera tidak dapat menimbang makanan secara otomatis.</p>
-  <input id="photoInput" type="file" accept="image/*" capture="environment" hidden>
-  <button id="takePhotoBtn" class="secondary full">📷 Ambil / pilih foto</button>
+  <input id="photoCameraInput" type="file" accept="image/*" capture="environment" hidden>
+  <input id="photoGalleryInput" type="file" accept="image/*" hidden>
+  <div class="photo-upload-actions">
+    <button id="takePhotoBtn" type="button" class="secondary full">📷 Ambil foto sekarang</button>
+    <button id="uploadPhotoBtn" type="button" class="secondary full">🖼️ Pilih dari Galeri</button>
+  </div>
   <div id="photoPreviewWrap" class="photo-preview-wrap hidden"><img id="photoPreview" class="photo-preview" alt="Foto makanan"></div><button id="analyzePhotoBtn" class="primary full" disabled>✨ Analisis foto dengan AI</button><div id="aiPhotoStatus" class="info-note ai-photo-status hidden"></div><div id="aiSuggestions"></div>
   <div class="grid2"><label>Waktu makan<select id="photoMeal"><option>Sarapan</option><option selected>Makan Siang</option><option>Makan Malam</option><option>Snack</option><option>Minuman</option></select></label><label>Catatan<input id="photoNote" placeholder="mis. nasi campur warung"></label></div>
   <label>Cari komponen makanan<input id="photoSearch" class="search" placeholder="nasi, ayam, sayur..."></label>
