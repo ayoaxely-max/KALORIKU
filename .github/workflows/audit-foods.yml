@@ -1,0 +1,28 @@
+name: Audit KaloriKu food database
+on:
+  push:
+    paths:
+      - 'data/*.json'
+      - 'scripts/audit-foods.cjs'
+      - '.github/workflows/audit-foods.yml'
+  pull_request:
+    paths:
+      - 'data/*.json'
+      - 'scripts/audit-foods.cjs'
+      - '.github/workflows/audit-foods.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Validate food records and TKPI provenance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify database integrity
+        run: node scripts/audit-foods.cjs
