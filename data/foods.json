@@ -121,7 +121,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 70%",
     "barcode": "",
     "bdd_percent": 70,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "duku_langsat",
@@ -1376,7 +1378,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_beef_teriyaki_masakan",
@@ -1392,7 +1396,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_beef_yakiniku_masakan",
@@ -1408,7 +1414,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_botok_lamtoro",
@@ -1424,7 +1432,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "brongkos",
@@ -1440,7 +1450,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_gudeg_sayur",
@@ -1456,7 +1468,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "gulai_ikan",
@@ -1472,7 +1486,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "gulai_kambing",
@@ -1488,7 +1504,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_gulai_pakis",
@@ -1504,7 +1522,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_gurame_asem_manis_masakan",
@@ -1520,7 +1540,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kalio_ayam_masakan",
@@ -1536,7 +1558,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kalio_kikil_tunjang_masakan",
@@ -1552,7 +1576,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kalio_telur_masakan",
@@ -1568,7 +1594,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "asam_padeh_ikan",
@@ -6672,7 +6700,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 60%",
     "barcode": "",
     "bdd_percent": 60,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bebek_alabio_daging_segar",
@@ -6688,7 +6718,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "bebek_goreng",
@@ -6704,7 +6736,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_gp060",
@@ -6736,7 +6770,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 70%",
     "barcode": "",
     "bdd_percent": 70,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "bandeng_presto",
@@ -6752,7 +6788,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_bandeng_segar",
@@ -6768,7 +6806,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_bawal_segar",
@@ -6784,7 +6824,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_cakalang_asap_mentah",
@@ -6800,7 +6842,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 70%",
     "barcode": "",
     "bdd_percent": 70,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_cakalang_asin_mentah",
@@ -6816,7 +6860,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 70%",
     "barcode": "",
     "bdd_percent": 70,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_cakalang_segar",
@@ -6832,7 +6878,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_ekor_kuning_segar",
@@ -6848,7 +6896,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_gabus_segar",
@@ -6864,7 +6914,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_kakap_segar",
@@ -6880,7 +6932,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_layang_segar",
@@ -6896,7 +6950,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_lemuru_segar",
@@ -6912,7 +6968,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_mas_segar",
@@ -6928,7 +6986,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_gp022",
@@ -6960,7 +7020,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "ikan_kembung",
@@ -6976,7 +7038,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "ikan_patin_matang",
@@ -6992,7 +7056,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_sarden_segar",
@@ -7008,7 +7074,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "ikan_teri_kering",
@@ -7024,7 +7092,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ikan_teri_segar",
@@ -7040,7 +7110,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "ikan_tongkol",
@@ -7056,7 +7128,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "daging_kambing_matang",
@@ -7072,7 +7146,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_hr001",
@@ -9511,7 +9587,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kacang_merah_segar",
@@ -9527,7 +9605,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "kacang_mete",
@@ -9575,7 +9655,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 43%",
     "barcode": "",
     "bdd_percent": 43,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "kacang_tanah",
@@ -9655,7 +9737,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kacang_tanah_rebus",
@@ -10580,7 +10664,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_batatas_kelapa_ubi_segar",
@@ -10596,7 +10682,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 85%",
     "barcode": "",
     "bdd_percent": 85,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_batatas_tali_ubi_rebus",
@@ -10612,7 +10700,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_belitung_talas_kukus",
@@ -10628,7 +10718,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_belitung_talas_segar",
@@ -10665,7 +10757,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 86%",
     "barcode": "",
     "bdd_percent": 86,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bentul_talas_kukus",
@@ -10681,7 +10775,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_beras_cerdas",
@@ -10896,7 +10992,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ar011",
@@ -10956,7 +11054,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ar012",
@@ -11064,7 +11164,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ganyong_segar",
@@ -11101,7 +11203,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_jagung_kuning_pipil_kering_mentah",
@@ -11117,7 +11221,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_jagung_kuning_pipil_rebus",
@@ -11133,7 +11239,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_jagung_kuning_tepung",
@@ -11149,7 +11257,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_jagung_muda_kuning_mentah",
@@ -11165,7 +11275,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "jagung_rebus",
@@ -11181,7 +11293,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tepung_maizena",
@@ -11213,7 +11327,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bp050",
@@ -15177,7 +15293,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 94%",
     "barcode": "",
     "bdd_percent": 94,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bawang_merah_segar",
@@ -15193,7 +15311,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 90%",
     "barcode": "",
     "bdd_percent": 90,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bawang_putih_segar",
@@ -15209,7 +15329,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 88%",
     "barcode": "",
     "bdd_percent": 88,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bayam_merah_segar",
@@ -15225,7 +15347,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 71%",
     "barcode": "",
     "bdd_percent": 71,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bayam_kukus",
@@ -15241,7 +15365,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "bayam_rebus",
@@ -15257,7 +15383,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bayam_segar",
@@ -15273,7 +15401,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 71%",
     "barcode": "",
     "bdd_percent": 71,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_bit_segar",
@@ -15289,7 +15419,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%",
     "barcode": "",
     "bdd_percent": 75,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_genjer_segar",
@@ -15305,7 +15437,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 70%",
     "barcode": "",
     "bdd_percent": 70,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_jagung_muda_semi_segar",
@@ -15321,7 +15455,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kacang_panjang_kukus",
@@ -15337,7 +15473,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "kacang_panjang_rebus",
@@ -15353,7 +15491,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kacang_panjang_segar",
@@ -15369,7 +15509,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 92%",
     "barcode": "",
     "bdd_percent": 92,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kangkung_kukus",
@@ -15385,7 +15527,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "kangkung_rebus",
@@ -15401,7 +15545,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kangkung_segar",
@@ -15417,7 +15563,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 60%",
     "barcode": "",
     "bdd_percent": 60,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_labu_air_segar",
@@ -15433,7 +15581,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_labu_kuning_segar",
@@ -15449,7 +15599,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 74%",
     "barcode": "",
     "bdd_percent": 74,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_labu_siam_segar",
@@ -15465,7 +15617,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 83%",
     "barcode": "",
     "bdd_percent": 83,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_labu_waluh_segar",
@@ -15481,7 +15635,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 77%",
     "barcode": "",
     "bdd_percent": 77,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_paria_putih_kukus",
@@ -15497,7 +15653,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "pare_rebus",
@@ -15513,7 +15671,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 80%",
     "barcode": "",
     "bdd_percent": 80,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "plecing_kangkung",
@@ -15529,7 +15689,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_petai_segar",
@@ -15545,7 +15707,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 36%",
     "barcode": "",
     "bdd_percent": 36,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "est_acar_kuning",
@@ -16981,7 +17145,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "biskuit",
@@ -16997,7 +17163,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_brem",
@@ -17013,7 +17181,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_mp002",
@@ -17141,7 +17311,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_getuk_pisang",
@@ -17157,7 +17329,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "getuk_singkong",
@@ -17173,7 +17347,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ap059",
@@ -17397,7 +17573,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "pastel",
@@ -17413,7 +17591,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_pempek_adaan_masakan",
@@ -17429,7 +17609,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "pempek_kapal_selam",
@@ -17445,7 +17627,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_pempek_tenggiri_masakan",
@@ -17461,7 +17645,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_ap109",
@@ -20021,7 +20207,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "gula",
@@ -20085,7 +20273,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_kp001",
@@ -20133,7 +20323,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "tkpi_petis_udang_kering",
@@ -20149,7 +20341,9 @@
     "source_ref": "TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%",
     "barcode": "",
     "bdd_percent": 100,
-    "tkpi_code": ""
+    "tkpi_code": "",
+    "verification_status": "code_not_recorded",
+    "verification_note": "Entri ini berlabel TKPI tetapi kode barisnya belum dicatat/dicocokkan secara individual dengan halaman tabel 2020. Nilai dipertahankan sementara; jangan dianggap sudah diaudit."
   },
   {
     "id": "bumbu_kacang",
