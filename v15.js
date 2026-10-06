@@ -87,6 +87,7 @@ function v15EditProduct(id){
   $('v15EditProductP').value=f.protein||0;
   $('v15EditProductC').value=f.carbs||0;
   $('v15EditProductF').value=f.fat||0;
+  for(const {key} of V17_FIELDS){$('v15EditProduct'+key[0].toUpperCase()+key.slice(1)).value=v17Numeric(f[key])?f[key]:''}
   $('v15EditProductWarning').textContent=v15NutritionFlag(f);
   $('v15ProductDialog').showModal();
 }
@@ -100,6 +101,8 @@ async function v15SaveProduct(event){
     protein:Number($('v15EditProductP').value),
     carbs:Number($('v15EditProductC').value),
     fat:Number($('v15EditProductF').value)};
+  for(const {key} of V17_FIELDS)delete revised[key];
+  Object.assign(revised,v17ReadOptionalNutrients('v15EditProduct'));
   if(!revised.name||!revised.serving||[revised.calories,revised.protein,revised.carbs,revised.fat].some(x=>!Number.isFinite(x)||x<0)){toast('Data produk tidak valid');return}
   const warning=v15NutritionFlag(revised);
   if(warning&&!confirm(warning+'\n\nSimpan meskipun masih berbeda?'))return;
