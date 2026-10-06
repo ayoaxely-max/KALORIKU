@@ -10,7 +10,7 @@ function aiFoodScore(foodName,query){
 }
 function findBestFoodMatch(name){
   let best=null,score=-999;for(const f of allFoods){const s=aiFoodScore(f.name,name);if(s>score){score=s;best=f}}
-  return score>=60?{food:best,score}:null;
+  return score>=80?{food:best,score}:null;
 }
 async function blobBase64(blob){
   const buf=await blob.arrayBuffer(),bytes=new Uint8Array(buf);let bin='';
@@ -71,7 +71,7 @@ function applyAiSuggestions(result){
   const foods=Array.isArray(result?.foods)?result.foods:[],matched=[],unmatched=[];
   for(const s of foods){
     const m=findBestFoodMatch(s.name);
-    if(m){
+    if(m&&Number(s.confidence)>=.50){
       const sg=photoServingGrams(m.food),grams=Math.max(1,Math.round(Number(s.estimated_grams)||sg||100));
       matched.push({id:'pi_'+crypto.randomUUID(),food:m.food,servingGrams:sg,grams:sg?grams:null,qty:sg?grams/sg:1,ai:{name:s.name,grams,min:Math.round(Number(s.min_grams)||grams*.7),max:Math.round(Number(s.max_grams)||grams*1.3),confidence:Math.max(0,Math.min(1,Number(s.confidence)||0)),portion:s.portion_description||'',basis:s.visual_basis||'',matchScore:m.score}});
     }else unmatched.push(s);
@@ -79,13 +79,27 @@ function applyAiSuggestions(result){
   photoDraftItems=matched;renderPhotoSelected();renderAiSuggestions(result,unmatched);
   if(result?.meal_description&&!$('photoNote').value)$('photoNote').value=result.meal_description;
   const high=matched.filter(x=>x.ai.confidence>=.7).length;
-  setAiStatus(`AI menemukan ${foods.length} komponen; ${matched.length} cocok ke database KaloriKu. ${high} confidence tinggi. Koreksi gram/porsi sebelum simpan.`,'ok');
+  setAiStatus(`AI menemukan ${foods.length} komponen; ${matched.length} cocok dengan syarat ketat. ${high} keyakinan visual tinggi. Periksa nama dan gram/porsi sebelum simpan. Hasil foto tidak dapat menentukan berat pasti.`,'ok');
 }
 function renderAiSuggestions(result,unmatched){
-  const el=$('aiSuggestions');if(!el)return;
-  const rows=photoDraftItems.map(i=>`<div class="ai-suggestion"><div><strong>${esc(i.ai.name)}</strong><small>→ ${esc(i.food.name)}</small></div><div class="ai-range">≈ ${i.ai.grams} g<br><small>${i.ai.min}–${i.ai.max} g · ${Math.round(i.ai.confidence*100)}%</small></div></div>`).join('');
-  const miss=unmatched.map(s=>`<div class="ai-suggestion ai-unmatched"><div><strong>${esc(s.name)}</strong><small>Belum cocok secara aman — cari manual bila perlu</small></div><div class="ai-range">≈ ${fmt(s.estimated_grams)} g</div></div>`).join('');
-  el.innerHTML=(rows||miss)?`<div class="ai-suggestion-box"><div class="section-head no-pad"><h2>Saran AI</h2><span>estimasi visual</span></div>${rows}${miss}</div>`:'';
+ const el=$('aiSuggestions');if(!el)return;
+ const rows=photoDraftItems.filter(i=>i.ai).map(i=>'<div class="ai-suggestion"><div><strong>'+
+   esc(i.ai.name)+'</strong><small>→ '+esc(i.food.name)+'</small><small>Referensi: '+
+   esc(sourceLabel(i.food.source_type||i.food.sourceType))+'</small>'+
+   (!i.servingGrams?'<small class="ai-hint">Estimasi '+fmt(i.ai.grams)+
+      ' g TIDAK digunakan untuk menghitung kalori: database hanya punya nilai per porsi. Sesuaikan jumlah porsi.</small>':
+      '<small>Estimasi berat '+fmt(i.ai.grams)+' g; koreksi gram di bawah.</small>')+
+   '<button class="text-btn" type="button" data-v16find="'+esc(i.ai.name)+'">Cari padanan lain</button></div>'+
+   '<div class="ai-range">≈ '+fmt(i.ai.grams)+' g<br><small>'+fmt(i.ai.min)+'–'+
+   fmt(i.ai.max)+' g · keyakinan visual '+Math.round(i.ai.confidence*100)+'%</small></div></div>').join('');
+ const miss=unmatched.map(s=>'<div class="ai-suggestion ai-unmatched"><div><strong>'+esc(s.name)+
+    '</strong><small>Nama/kondisi foto belum cocok secara aman. Pilih manual, jangan asumsikan kalori.</small>'+
+    '<button type="button" class="text-btn" data-v16find="'+esc(s.name)+'">Cari makanan ini</button></div>'+
+    '<div class="ai-range">≈ '+fmt(s.estimated_grams)+' g</div></div>').join('');
+ el.innerHTML=(rows||miss)?'<div class="ai-suggestion-box"><div class="section-head no-pad"><h2>Saran AI</h2><span>estimasi visual, bukan timbangan</span></div>'+rows+miss+'</div>':'';
+ el.querySelectorAll('[data-v16find]').forEach(btn=>btn.onclick=()=>{
+    $('photoSearch').value=btn.dataset.v16find;renderPhotoSearch();$('photoSearch').focus();
+ });
 }
 function decorateAiSelected(){
   document.querySelectorAll('.photo-selected-row').forEach((row,idx)=>{
