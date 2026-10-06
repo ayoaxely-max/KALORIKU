@@ -34,3 +34,33 @@
 .v15-water-custom-actions{display:flex;gap:6px;flex:1;min-width:185px}
 .v15-water-custom-actions button{flex:1;min-width:0;white-space:nowrap}
 @media(max-width:420px){.v15-water-custom label{flex-basis:100%;width:100%}.v15-water-custom input{flex:0 0 85px}}
+
+/* KaloriKu 1.6 — calendar, historical hydration and custom food management */
+.v16-calendar-nav{display:flex;align-items:center;gap:9px}
+.v16-calendar-nav strong{font-size:13px;min-width:96px;text-align:center}
+.v16-calendar-nav .icon-btn{height:34px;width:34px;font-size:20px}
+.v16-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:12px 0 8px}
+.v16-weekday{text-align:center;font-size:10px;color:var(--muted);font-weight:700;padding-bottom:3px}
+.v16-empty{min-height:43px}
+.v16-day{background:#f8fafc;color:var(--ink);border:1px solid #e5e7eb;border-radius:10px;min-width:0;min-height:46px;display:flex;align-items:center;flex-direction:column;justify-content:space-around;font-size:12px;padding:4px}
+.v16-day strong{font-weight:650}
+.v16-day.selected{background:#111827;color:#fff;border-color:#111827}
+.v16-day.today:not(.selected){border:1.5px solid #111827}
+.v16-day:disabled{opacity:.23;cursor:default}
+.v16-dots{min-height:6px;display:flex;justify-content:center;gap:3px}
+.v16-dots i{width:5px;height:5px;border-radius:50%}
+.v16-dots i.food{background:#64748b}
+.v16-dots i.water{background:#0284c7}
+.v16-day.selected .v16-dots i.food{background:#f8fafc}
+.v16-history-water label{display:block;font-size:12px;color:var(--muted);margin:8px 0}
+.v16-history-water input{margin-top:5px}
+.v16-history-water .progress{background:#e0f2fe;margin:11px 0}
+.v16-history-water .progress span{background:#0284c7}
+.v16-water-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.v16-custom-list{max-height:65vh;overflow:auto}
+.v16-custom-row{display:flex;gap:7px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.v16-custom-row .food-info{flex:1;min-width:0}
+.v16-custom-row .food-info small{display:block;color:var(--muted)}
+.v16-custom-row button.secondary{padding:8px;font-size:12px}
+.v16-goal-bar{margin:13px 0 6px}
+@media(max-width:430px){.v16-calendar-nav{gap:4px}.v16-calendar-nav strong{min-width:83px;font-size:11px}.v16-calendar-grid{gap:3px}.v16-day{min-height:41px;border-radius:8px}}
