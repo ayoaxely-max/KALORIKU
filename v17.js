@@ -116,7 +116,7 @@ function v17BackupCheckDate(s){
 function v17ValidateBackup(x){
  const errors=[],warnings=[];
  if(!x||typeof x!=='object'||Array.isArray(x))return {errors:['File bukan objek backup JSON'],warnings};
- if(!Number.isInteger(x.version)||x.version<2||x.version>4)errors.push('Versi backup tidak didukung (perlu v2–v4)');
+ if(!Number.isInteger(x.version)||x.version<2||x.version>5)errors.push('Versi backup tidak didukung (perlu v2–v5)');
  if(!x.profile||typeof x.profile!=='object'||Array.isArray(x.profile))errors.push('Profil tidak tersedia');
  for(const field of ['logs','customFoods','weights']){
   if(!Array.isArray(x[field]))errors.push('Daftar '+field+' tidak valid');
@@ -167,6 +167,14 @@ function v17ValidateBackup(x){
   errors.push('Target air minum tidak valid');
  if(x.foodMeasures!==undefined){
   if(!x.foodMeasures||typeof x.foodMeasures!=='object'||Array.isArray(x.foodMeasures)||Object.entries(x.foodMeasures).some(([id,m])=>['__proto__','constructor','prototype'].includes(id)||!m||typeof m!=='object'||Array.isArray(m)||Object.entries(m).some(([u,n])=>!NutritionTools.units.includes(u)||!NutritionTools.positive(n)||n>10000)))errors.push('Takaran makanan tidak valid');
+ }
+ if(x.syncDeletions!==undefined){
+  if(!Array.isArray(x.syncDeletions)||x.syncDeletions.length>150000)errors.push('Status penghapusan tidak valid');
+  else {const recordKeys=new Map(NutritionTools.syncFields.map(field=>[field,new Set((x[field]||[]).map(item=>item[field==='weights'?'date':'id']))]));const seen=new Set();for(const state of x.syncDeletions){
+   if(!state||!NutritionTools.syncFields.includes(state.field)||typeof state.key!=='string'||!state.key||typeof state.deleted!=='boolean'||!Number.isSafeInteger(state.version)||state.version<1||typeof state.changeId!=='string'||!state.changeId||!Number.isFinite(state.changedAt)||state.changedAt<0){errors.push('Entri penghapusan tidak valid');break;}
+   const id=NutritionTools.conflictId(state.field,state.key);if(seen.has(id)){errors.push('Status penghapusan duplikat');break;}seen.add(id);
+   if(state.deleted&&recordKeys.get(state.field).has(state.key)){errors.push('Data dan status penghapusan bertentangan');break;}
+  }}
  }
  const ids=new Set((x.mealPhotos||[]).map(p=>p.id));
  const missing=x.logs.filter(l=>l.mealPhotoId&&!ids.has(l.mealPhotoId)).length;
@@ -226,7 +234,12 @@ async function v17ExecuteRestore(){
    transaction.onabort=()=>reject(transaction.error||Error('Transaksi dibatalkan'));
    transaction.onerror=()=>{/* onabort handles rollback */};
    const guard=transaction.objectStore('kv').get('v24DataRevision');
-   guard.onsuccess=()=>{
+   const deletionRequest=transaction.objectStore('kv').get('v25DeletionStates');
+   const oldKeys={};let reads=2+NutritionTools.syncFields.length;
+   const ready=()=>{if(--reads)return;applyRestore();};
+   guard.onsuccess=ready;deletionRequest.onsuccess=ready;
+   for(const field of NutritionTools.syncFields){const request=transaction.objectStore(field).getAllKeys();request.onsuccess=()=>{oldKeys[field]=request.result;ready();};}
+   const applyRestore=()=>{
    try{
     const currentRevision=Number(guard.result?.value)||0;
     if(v24RestoreRevision!==null&&currentRevision!==v24RestoreRevision)throw Error('Data lokal berubah. Tinjau ulang penggabungan.');
@@ -237,6 +250,15 @@ async function v17ExecuteRestore(){
     for(const w of x.weights)transaction.objectStore('weights').put(w);
     for(const p of photos){const item={...p};delete item.imageData;transaction.objectStore('mealPhotos').put(item)}
     const kv=transaction.objectStore('kv');
+    let deletionStates=x.syncDeletions||[];
+    if(v24RestoreRevision===null){
+     deletionStates=NutritionTools.deletionUnion(deletionRequest.result?.value||[],deletionStates);
+     for(const field of NutritionTools.syncFields){const key=field==='weights'?'date':'id',present=new Set((x[field]||[]).map(item=>item[key]));
+      for(const id of oldKeys[field])if(!present.has(id))deletionStates=NutritionTools.nextDeletion(deletionStates,field,id,true);
+      for(const id of present)if(deletionStates.some(state=>state.field===field&&state.key===id&&state.deleted))deletionStates=NutritionTools.nextDeletion(deletionStates,field,id,false);
+     }
+    }
+    kv.put({key:'v25DeletionStates',value:deletionStates});
     kv.put({key:'profile',value:x.profile});
     kv.put({key:'favorites',value:x.favorites||[]});
     kv.put({key:'packs',value:x.packs||[]});

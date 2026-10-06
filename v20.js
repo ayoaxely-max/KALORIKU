@@ -24,7 +24,8 @@ async function v20Sha(message){
 function v20SetBusy(value){
  v20Busy=value;
  for(const id of ['v20Create','v20Connect','v20Upload','v20Download','v20Disconnect','v20DeleteCloud','v20ReviewCancel','v24ConflictPolicy'])$(id).disabled=value;
- $('v20ReviewContinue').disabled=value||!$('v20BackupConfirmed').checked;
+ $('v20ReviewContinue').disabled=value||!$('v20BackupConfirmed').checked||(v24MergePreview?.merged?.unresolved||0)>0;
+ for(const select of $('v25ConflictList').querySelectorAll('select'))select.disabled=value;
  if(value)$('v20Progress').classList.remove('hidden');
  else $('v20Progress').classList.add('hidden');
 }
@@ -124,14 +125,14 @@ async function v20Disconnect(){
 let v24SnapshotRevision=null;
 async function v20Snapshot(){
  const revision=await dbGetKV('v24DataRevision',0);
- const [savedLogs,savedFoods,savedWeights,savedPhotos,savedProfile,savedFavorites,savedPacks,waterRecords,waterGoal,savedMeasures]=await Promise.all([
-  dbAll('logs'),dbAll('customFoods'),dbAll('weights'),dbAll('mealPhotos'),dbGetKV('profile',profile),dbGetKV('favorites',[]),dbGetKV('packs',[]),dbGetKV('v15WaterRecords',{}),dbGetKV('v15WaterGoal',2000),dbGetKV('foodMeasures',{})
+ const [savedLogs,savedFoods,savedWeights,savedPhotos,savedProfile,savedFavorites,savedPacks,waterRecords,waterGoal,savedMeasures,syncDeletions]=await Promise.all([
+  dbAll('logs'),dbAll('customFoods'),dbAll('weights'),dbAll('mealPhotos'),dbGetKV('profile',profile),dbGetKV('favorites',[]),dbGetKV('packs',[]),dbGetKV('v15WaterRecords',{}),dbGetKV('v15WaterGoal',2000),dbGetKV('foodMeasures',{}),dbGetKV('v25DeletionStates',[])
  ]);
  const photos=[];
  for(const p of savedPhotos){const {image,...rest}=p;photos.push({...rest,imageData:image?await blobToDataURL(image):null});}
  if(await dbGetKV('v24DataRevision',0)!==revision)throw Error('Data lokal berubah selama pembacaan. Ulangi proses.');
  v24SnapshotRevision=revision;
- return {version:4,exportedAt:new Date().toISOString(),profile:savedProfile,favorites:savedFavorites,packs:savedPacks,logs:savedLogs,customFoods:savedFoods,weights:savedWeights,mealPhotos:photos,waterRecords,waterGoal,foodMeasures:savedMeasures};
+ return {version:5,syncDeletions,exportedAt:new Date().toISOString(),profile:savedProfile,favorites:savedFavorites,packs:savedPacks,logs:savedLogs,customFoods:savedFoods,weights:savedWeights,mealPhotos:photos,waterRecords,waterGoal,foodMeasures:savedMeasures};
 }
 async function v20Encrypt(snapshot){
  const key=await v20KeyForSecret(v20Secret);
@@ -205,6 +206,8 @@ async function v20Download(){
   const check=v17ValidateBackup(snapshot);
   if(check.errors.length)throw Error('Data cloud gagal divalidasi: '+check.errors.join('; '));
   v20Downloaded={snapshot,revision:manifest.revision};
+  v25ConflictChoices={};
+  $('v24ConflictPolicy').value='';
   $('v20ReviewDetails').textContent=
     'Revisi cloud: '+manifest.revision+'\nTanggal: '+(snapshot.exportedAt||'—')+
     '\nCatatan makan: '+snapshot.logs.length+
@@ -222,18 +225,41 @@ async function v20Download(){
  }catch(e){v20Status('Unduhan gagal: '+e.message,true)}
  finally{v20SetBusy(false);v20Panel()}
 }
-let v24MergePreview=null;
+let v24MergePreview=null,v25ConflictChoices={};
 function v24ConflictText(value){
- if(value&&typeof value==='object'){if(value.imageData!==undefined||value.items&&value.date)return (value.date||'')+' · '+(value.items?.length||0)+' komponen foto';if(value.recipe)return value.name+' · '+value.serving+' · '+value.calories+' kcal';if(value.foodId)return value.name+' · '+value.date+' · '+value.qty+' porsi';}
+ if(value&&typeof value==='object'){
+  if(value.photo)return (value.photo.note||value.photo.meal||'Foto')+' · '+value.photo.date+' · '+value.logs.length+' komponen · '+fmt(total(value.logs).cal)+' kcal';
+  if(value.recipe)return value.name+' · '+value.serving+' · '+fmt(value.calories)+' kcal';
+  if(value.foodId)return value.name+' · '+value.date+' · '+value.meal+' · '+value.qty+' porsi · '+fmt(value.qty*value.calories)+' kcal';
+ }
  return JSON.stringify(value);
+}
+function v25RefreshMerge(){
+ if(!v24MergePreview||!v20Downloaded)return;
+ const merged=NutritionTools.merge(v24MergePreview.local,v20Downloaded.snapshot,{default:'',choices:v25ConflictChoices});
+ v24MergePreview.merged=merged;
+ $('v24MergeConflicts').textContent=merged.added+' entri baru · '+merged.removed+' entri dihapus sesuai perubahan tersinkron · '+merged.conflicts.length+' konflik ('+merged.unresolved+' belum dipilih). Air pada tanggal sama tidak dijumlahkan. Foto dan komponennya dipilih bersama.';
+ $('v20ReviewDetails').textContent='Revisi cloud: '+v20Downloaded.revision+'\nHasil: '+merged.snapshot.logs.length+' catatan makan, '+merged.snapshot.customFoods.length+' makanan sendiri, '+merged.snapshot.weights.length+' berat badan.';
+ const list=$('v25ConflictList');list.replaceChildren();
+ const labels={logs:'Catatan makan',customFoods:'Makanan sendiri',mealPhotos:'Foto dan komponennya',weights:'Berat badan',packs:'Paket',waterRecords:'Air minum',foodMeasures:'Takaran',profile:'Profil',waterGoal:'Target air'};
+ for(const conflict of merged.conflicts){
+  const card=document.createElement('article');card.className='v25-conflict';
+  const title=document.createElement('strong');title.textContent=(labels[conflict.field]||conflict.field)+' · '+(conflict.local?.name||conflict.local?.date||conflict.local?.photo?.note||conflict.key);
+  const a=document.createElement('p');a.textContent='Perangkat: '+v24ConflictText(conflict.local);
+  const b=document.createElement('p');b.textContent='Cloud: '+v24ConflictText(conflict.cloud);
+  const label=document.createElement('label');label.textContent='Pilihan untuk konflik ini';
+  const select=document.createElement('select');select.dataset.conflictId=conflict.id;select.setAttribute('aria-label','Pilihan '+labels[conflict.field]+' '+conflict.key);
+  for(const [value,text] of [['','Pilih sumber…'],['local','Gunakan perangkat ini'],['cloud','Gunakan cloud']]){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option);}
+  select.value=conflict.selection;
+  select.onchange=()=>{v25ConflictChoices[conflict.id]=select.value;v25RefreshMerge();};
+  label.append(select);card.append(title,a,b,label);list.append(card);
+ }
+ $('v20ReviewContinue').disabled=v20Busy||!$('v20BackupConfirmed').checked||merged.unresolved>0;
 }
 async function v24PreviewMerge(){
  if(!v20Downloaded)return;
- const local=await v20Snapshot(),merged=NutritionTools.merge(local,v20Downloaded.snapshot,$('v24ConflictPolicy').value);
- v24MergePreview={local,merged};
- const labels={logs:'Catatan makan',customFoods:'Makanan sendiri',mealPhotos:'Foto',weights:'Berat badan',packs:'Paket',waterRecords:'Air minum',foodMeasures:'Takaran',profile:'Profil',waterGoal:'Target air'};
- $('v24MergeConflicts').textContent=merged.added+' entri baru dari cloud · '+merged.conflicts.length+' konflik. Tidak menjumlahkan air pada tanggal sama. Penghapusan belum disinkronkan; catatan lama dari cloud dapat muncul lagi. Konflik foto memakai foto dan seluruh komponen dari sumber yang dipilih.';
- $('v20ReviewDetails').textContent='Revisi cloud: '+v20Downloaded.revision+'\nHasil: '+merged.snapshot.logs.length+' catatan makan, '+merged.snapshot.customFoods.length+' makanan sendiri, '+merged.snapshot.weights.length+' berat badan.\n'+merged.conflicts.map(c=>(labels[c.field]||c.field)+' — '+c.key+': perangkat '+v24ConflictText(c.local)+' | cloud '+v24ConflictText(c.cloud)).join('\n');
+ const local=await v20Snapshot();
+ v24MergePreview={local,merged:null};v25RefreshMerge();
 }
 async function v20ReviewContinue(){
  if(v20Busy||!v20Downloaded||!$('v20BackupConfirmed').checked)return;
@@ -241,8 +267,9 @@ async function v20ReviewContinue(){
  try{
   const local=await v20Snapshot();
   const same=x=>{const {exportedAt,...rest}=x;return NutritionTools.canonical(rest);};
-  if(!v24MergePreview||same(local)!==same(v24MergePreview.local)){await v24PreviewMerge();throw Error('Data lokal berubah. Tinjau kembali hasil penggabungan lalu klik Gabungkan data.');}
-  const merged=NutritionTools.merge(local,v20Downloaded.snapshot,$('v24ConflictPolicy').value);
+  if(!v24MergePreview||same(local)!==same(v24MergePreview.local)){v25ConflictChoices={};$('v20BackupConfirmed').checked=false;await v24PreviewMerge();throw Error('Data lokal berubah. Tinjau kembali hasil penggabungan lalu klik Gabungkan data.');}
+  const merged=NutritionTools.merge(local,v20Downloaded.snapshot,{default:'',choices:v25ConflictChoices});
+  if(merged.unresolved)throw Error('Pilih sumber untuk setiap konflik terlebih dahulu.');
   const check=v17ValidateBackup(merged.snapshot);if(check.errors.length)throw Error(check.errors.join('; '));
   v17PendingBackup=merged.snapshot;
   v24RestoreRevision=v24SnapshotRevision;
@@ -262,9 +289,9 @@ document.addEventListener('DOMContentLoaded',async()=>{
  $('v20DeleteCloud').onclick=v20DeleteCloud;
  $('v20ShowKey').onclick=()=>{if(!v20Secret)return;if(!confirm('Tampilkan kode rahasia pada layar? Pastikan tidak ada orang lain yang melihat.'))return;$('v20NewKey').value=v20Secret;$('v20NewKeyWrap').classList.remove('hidden')};
  $('v20ReviewCancel').onclick=()=>{$('v20ReviewDialog').close();v20Downloaded=null};
- $('v20BackupConfirmed').onchange=v=>{$('v20ReviewContinue').disabled=!$('v20BackupConfirmed').checked};
+ $('v20BackupConfirmed').onchange=v25RefreshMerge;
  $('v20ReviewContinue').onclick=v20ReviewContinue;
- $('v24ConflictPolicy').onchange=()=>v24PreviewMerge().catch(e=>v20Status(e.message,true));
+ $('v24ConflictPolicy').onchange=()=>{for(const c of v24MergePreview?.merged.conflicts||[])v25ConflictChoices[c.id]=$('v24ConflictPolicy').value;v25RefreshMerge();};
  $('v20CopyKey').onclick=async()=>{
   const secret=$('v20NewKey').value;
   try{await navigator.clipboard.writeText(secret);toast('Kode pemulihan disalin')}

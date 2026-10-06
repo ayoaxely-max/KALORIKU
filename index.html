@@ -8,7 +8,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=2.4.1">
+  <link rel="stylesheet" href="./styles.css?v=2.5.0">
   <title>KaloriKu</title>
 </head>
 <body>
@@ -113,10 +113,10 @@
   </div>
   <p id="v20Progress" class="info-note hidden" role="status"></p>
   <p id="v20Status" class="small muted" role="status">Memeriksa dukungan sinkronisasi…</p>
-  <p class="small muted">Mengunggah menimpa <strong>revisi cloud sebelumnya</strong>, tetapi tidak pernah otomatis. Jika perangkat lain telah mengubah cloud, unggah akan ditolak. Mengunduh menampilkan penggabungan berdasarkan ID dan pilihan konflik sebelum konfirmasi. Setelah digabung, unggah hasilnya agar perangkat lain menerima gabungan terbaru. Backup JSON lokal tetap disarankan.</p>
+  <p class="small muted">Mengunggah menimpa <strong>revisi cloud sebelumnya</strong>, tetapi tidak pernah otomatis. Jika perangkat lain telah mengubah cloud, unggah akan ditolak. Mengunduh menampilkan penggabungan berdasarkan ID dan pilihan konflik sebelum konfirmasi. Setelah digabung, unggah hasilnya agar perangkat lain menerima gabungan terbaru. Backup JSON lokal tetap disarankan. Perbarui semua perangkat ke versi 2.5.0; aplikasi lama tidak dapat membaca cadangan baru.</p>
 </article>
 <article class="card"><h2>Data & backup</h2><div class="stack"><button id="backupBtn" class="secondary full">Backup JSON</button><button id="restoreBtn" class="secondary full">Periksa & pulihkan backup JSON</button><input id="restoreFile" type="file" accept="application/json,.json" hidden><button id="csvBtn" class="secondary full">Export CSV</button></div><p class="small muted">Data utama disimpan di IndexedDB pada perangkat ini. Backup berkala tetap disarankan.</p></article>
-      <article class="card"><h2>Aplikasi</h2><div class="kv"><span>Status</span><strong id="pwaStatus">Web</strong></div><div class="kv"><span>Database</span><strong id="foodCountProfile">—</strong></div><div class="kv"><span>Penyimpanan</span><strong>IndexedDB</strong></div><div class="kv"><span>Foto makanan</span><strong id="photoStorageStatus">0</strong></div><div class="kv"><span>Versi</span><strong>2.4.1</strong></div><button id="installBtn2" class="primary full hidden">Pasang KaloriKu ke Home Screen</button></article>
+      <article class="card"><h2>Aplikasi</h2><div class="kv"><span>Status</span><strong id="pwaStatus">Web</strong></div><div class="kv"><span>Database</span><strong id="foodCountProfile">—</strong></div><div class="kv"><span>Penyimpanan</span><strong>IndexedDB</strong></div><div class="kv"><span>Foto makanan</span><strong id="photoStorageStatus">0</strong></div><div class="kv"><span>Versi</span><strong>2.5.0</strong></div><button id="installBtn2" class="primary full hidden">Pasang KaloriKu ke Home Screen</button></article>
     </section>
   </main>
   <button id="fab" class="fab">＋ Catat</button>
@@ -189,14 +189,14 @@
   <div class="sheet-head"><h2>Pratinjau unduhan cloud</h2>
     <button id="v20ReviewCancel" type="button" class="icon-btn">×</button></div>
   <p class="small muted">Data cloud sudah diunduh dan didekripsi hanya di perangkat ini. Periksa sebelum menggabungkan data lokal.</p>
-  <label>Jika ID/tanggal sama tetapi isi berbeda<select id="v24ConflictPolicy"><option value="local">Gunakan data perangkat ini</option><option value="cloud">Gunakan data cloud</option></select></label><div id="v24MergeConflicts" class="info-note"></div><pre id="v20ReviewDetails" class="v17-restore-details"></pre>
+  <label>Tetapkan pilihan semua konflik (opsional)<select id="v24ConflictPolicy"><option value="">Pilih per catatan di bawah</option><option value="local">Semua memakai perangkat ini</option><option value="cloud">Semua memakai cloud</option></select></label><div id="v24MergeConflicts" class="info-note"></div><div id="v25ConflictList"></div><pre id="v20ReviewDetails" class="v17-restore-details"></pre>
   <label class="v20-confirm-checkbox"><input id="v20BackupConfirmed" type="checkbox">
-    Saya sudah menyimpan backup JSON dari data lokal yang sekarang. Saya memahami konflik akan memakai pilihan di bawah, dan catatan yang dihapus di satu perangkat dapat muncul kembali dari perangkat lain.</label>
+    Saya sudah menyimpan backup JSON dari data lokal yang sekarang. Saya telah meninjau penghapusan dan memilih sumber untuk setiap konflik.</label>
   <button id="v20ReviewContinue" class="primary full" type="button" disabled>Gabungkan data</button>
 </div></dialog>
 
 <dialog id="v24MeasureDialog" class="modal"><form id="v24MeasureForm" class="modal-card"><div class="sheet-head"><h2 id="v24MeasureTitle">Takaran khusus</h2><button class="icon-btn" type="button" data-close="v24MeasureDialog">×</button></div><p id="v24MeasureBase" class="small muted"></p><div id="v24MeasureFields" class="grid2"></div><p class="small muted">Kolom kosong memakai takaran database bila tersedia. Takaran lain tidak diasumsikan. Resep lengkap perlu kalkulator resep.</p><button class="primary full" type="submit">Simpan takaran pribadi</button></form></dialog>
 <dialog id="v24RecipeDialog" class="sheet"><form id="v24RecipeForm" class="sheet-inner"><div class="sheet-head"><h2>Kalkulator resep</h2><button class="icon-btn" type="button" data-close="v24RecipeDialog">×</button></div><label>Nama resep<input id="v24RecipeName" required maxlength="150"></label><p class="info-note">Pilih bahan sesuai kondisi saat ditimbang (mentah atau matang). Tambahkan minyak, gula, dan saus yang ikut dimakan. Berat matang mengubah konsentrasi per 100 g, bukan total energi. Ini estimasi dari database, belum memperhitungkan kehilangan zat gizi saat memasak.</p><label>Cari bahan (termasuk minyak)<input id="v24RecipeSearch" type="search" placeholder="Contoh: ayam segar, minyak kelapa"></label><div id="v24RecipeResults"></div><div id="v24RecipeItems"></div><div class="grid2"><label>Berat total setelah dimasak (g)<input id="v24CookedWeight" type="number" min="0.01" step="any" required></label><label>Jumlah porsi<input id="v24RecipePortions" type="number" min="0.01" step="any" value="1" required></label></div><p id="v24RecipePreview" class="info-note"></p><button id="v24RecipeSave" type="submit" class="primary full">Simpan resep ke database</button></form></dialog>
 <div id="toast" class="toast"></div>
-<script src="./nutrition-tools.js?v=2.4.1"></script><script src="./db.js?v=2.4.1"></script><script src="./app.js?v=2.4.1"></script><script src="./photo.js?v=2.4.1"></script><script src="./ai-photo.js?v=2.4.1"></script><script src="./v14.js?v=2.4.1"></script><script src="./v15.js?v=2.4.1"></script><script src="./v16.js?v=2.4.1"></script><script src="./v17.js?v=2.4.1"></script><script src="./v20.js?v=2.4.1"></script><script src="./v24.js?v=2.4.1"></script>
+<script src="./nutrition-tools.js?v=2.5.0"></script><script src="./db.js?v=2.5.0"></script><script src="./app.js?v=2.5.0"></script><script src="./photo.js?v=2.5.0"></script><script src="./ai-photo.js?v=2.5.0"></script><script src="./v14.js?v=2.5.0"></script><script src="./v15.js?v=2.5.0"></script><script src="./v16.js?v=2.5.0"></script><script src="./v17.js?v=2.5.0"></script><script src="./v20.js?v=2.5.0"></script><script src="./v24.js?v=2.5.0"></script>
 </body></html>
