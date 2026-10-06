@@ -10,7 +10,7 @@ function aiFoodScore(foodName,query){
 }
 function findBestFoodMatch(name){
   let best=null,score=-999;for(const f of allFoods){const s=aiFoodScore(f.name,name);if(s>score){score=s;best=f}}
-  return score>=24?{food:best,score}:null;
+  return score>=60?{food:best,score}:null;
 }
 async function blobBase64(blob){
   const buf=await blob.arrayBuffer(),bytes=new Uint8Array(buf);let bin='';
@@ -84,7 +84,7 @@ function applyAiSuggestions(result){
 function renderAiSuggestions(result,unmatched){
   const el=$('aiSuggestions');if(!el)return;
   const rows=photoDraftItems.map(i=>`<div class="ai-suggestion"><div><strong>${esc(i.ai.name)}</strong><small>→ ${esc(i.food.name)}</small></div><div class="ai-range">≈ ${i.ai.grams} g<br><small>${i.ai.min}–${i.ai.max} g · ${Math.round(i.ai.confidence*100)}%</small></div></div>`).join('');
-  const miss=unmatched.map(s=>`<div class="ai-suggestion ai-unmatched"><div><strong>${esc(s.name)}</strong><small>Belum cocok otomatis ke database — cari manual bila perlu</small></div><div class="ai-range">≈ ${fmt(s.estimated_grams)} g</div></div>`).join('');
+  const miss=unmatched.map(s=>`<div class="ai-suggestion ai-unmatched"><div><strong>${esc(s.name)}</strong><small>Belum cocok secara aman — cari manual bila perlu</small></div><div class="ai-range">≈ ${fmt(s.estimated_grams)} g</div></div>`).join('');
   el.innerHTML=(rows||miss)?`<div class="ai-suggestion-box"><div class="section-head no-pad"><h2>Saran AI</h2><span>estimasi visual</span></div>${rows}${miss}</div>`:'';
 }
 function decorateAiSelected(){
