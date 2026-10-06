@@ -27,6 +27,7 @@ function v15RenderWater(){
   $('v15WaterProgress').style.width=Math.min(100,100*ml/Math.max(1,v15WaterGoal))+'%';
   $('v15WaterMinus').disabled=ml<=0||v15WaterBusy;
   for(const id of ['v15Water250','v15Water500','v15WaterCustomButton'])$(id).disabled=v15WaterBusy;
+  $('v15WaterCustomMinus').disabled=v15WaterBusy||ml<=0;
 }
 async function v15WaterChange(amount){
   if(v15WaterBusy||!Number.isFinite(amount)||!amount)return;
@@ -154,10 +155,20 @@ document.addEventListener('DOMContentLoaded',async()=>{
   $('v15Water250').onclick=()=>v15WaterChange(250);
   $('v15Water500').onclick=()=>v15WaterChange(500);
   $('v15WaterMinus').onclick=()=>v15WaterChange(-250);
+  function v15ManualWaterAmount(){
+    const field=$('v15WaterCustom'),text=field.value.trim(),value=Number(text);
+    if(!text||!Number.isInteger(value)||value<1||value>3000){toast('Isi jumlah air 1–3000 ml');return null}
+    return value;
+  }
   $('v15WaterCustomButton').onclick=()=>{
-    const value=Number($('v15WaterCustom').value);
-    if(!Number.isFinite(value)||value<10||value>3000){toast('Isi air minum 10–3000 ml');return}
-    v15WaterChange(value);
+    const amount=v15ManualWaterAmount();if(amount!==null)v15WaterChange(amount);
+  };
+  $('v15WaterCustomMinus').onclick=()=>{
+    const amount=v15ManualWaterAmount();if(amount===null)return;
+    const existing=Number(v15WaterRecords[localDate()])||0;
+    if(existing<=0){toast('Belum ada air yang dapat dikurangi');return}
+    if(amount>existing)toast('Pengurangan dibatasi ke jumlah air yang tercatat');
+    v15WaterChange(-amount);
   };
   $('v15WaterGoalSave').onclick=v15SaveWaterGoal;
   $('v15UndoButton').onclick=v15UndoDelete;
