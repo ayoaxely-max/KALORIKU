@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   await dbOpen();
   mealPhotos=await dbAll('mealPhotos');
   $('photoFoodBtn').onclick=openPhotoMeal;
+  $('pickGalleryQuickBtn').onclick=()=>{openPhotoMeal();$('photoGalleryInput').click()};
   $('closePhotoDialog').onclick=closePhotoMeal;
   $('takePhotoBtn').onclick=()=>$('photoCameraInput').click();
   $('uploadPhotoBtn').onclick=()=>$('photoGalleryInput').click();
