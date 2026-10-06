@@ -69,7 +69,7 @@ async function v16EditHistoryWater(multiplier){
    v16RenderCalendar();v15RenderWeekly();
    toast('Air minum '+date+' disimpan');
  }catch(e){console.error(e);toast('Air minum gagal disimpan')}
- finally{v15WaterBusy=false;v16RenderHistoryWater()}
+ finally{v15WaterBusy=false;v15RenderWater();v16RenderHistoryWater()}
 }
 function v16RenderWeightGoal(){
  const target=Number(profile.weightTarget),el=$('v16WeightProgress');
