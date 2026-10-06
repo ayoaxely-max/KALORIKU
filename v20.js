@@ -23,7 +23,8 @@ async function v20Sha(message){
 }
 function v20SetBusy(value){
  v20Busy=value;
- for(const id of ['v20Create','v20Connect','v20Upload','v20Download','v20Disconnect','v20ReviewContinue'])$(id).disabled=value;
+ for(const id of ['v20Create','v20Connect','v20Upload','v20Download','v20Disconnect','v20DeleteCloud'])$(id).disabled=value;
+ $('v20ReviewContinue').disabled=value||!$('v20BackupConfirmed').checked;
  if(value)$('v20Progress').classList.remove('hidden');
  else $('v20Progress').classList.add('hidden');
 }
@@ -38,6 +39,7 @@ function v20Panel(){
  $('v20Upload').disabled=!v20Secret||v20Busy;
  $('v20Download').disabled=!v20Secret||v20Busy;
  $('v20Disconnect').disabled=!v20Secret||v20Busy;
+ $('v20DeleteCloud').disabled=!v20Secret||v20Busy;
  $('v20AccountLabel').textContent=v20AccountId?'Akun terenkripsi '+v20AccountId.slice(0,8)+'…':'Belum terhubung';
  $('v20KnownRevision').textContent=v20KnownRevision===null?'Belum sinkron':'Revisi terakhir pada perangkat ini: '+v20KnownRevision;
 }
@@ -91,6 +93,22 @@ async function v20Connect(){
  v20SetBusy(true);
  try{await v20Attach($('v20RecoveryInput').value);$('v20NewKeyWrap').classList.add('hidden');$('v20RecoveryInput').value=''}
  catch(e){v20Status(e.message,true)}
+ finally{v20SetBusy(false);v20Panel()}
+}
+async function v20DeleteCloud(){
+ if(v20Busy||!v20Secret)return;
+ const instruction=prompt('Tindakan ini menghapus seluruh cadangan terenkripsi di cloud dan tidak dapat dibatalkan. Data HP/laptop tetap ada.\n\nKetik HAPUS CLOUD untuk melanjutkan:');
+ if(instruction!=='HAPUS CLOUD')return;
+ v20SetBusy(true);
+ try{
+  const head=await v20Api('/sync/head');
+  if(!head.active){v20Status('Belum ada cadangan cloud yang perlu dihapus.');return}
+  if(!confirm('Hapus permanen data cloud revisi '+head.revision+'? Tidak ada cara memulihkan tanpa backup lokal.'))return;
+  const response=await v20Api('/sync/delete',{method:'POST',data:{confirm:'DELETE CLOUD',expectedRevision:head.revision}});
+  v20KnownRevision=null;
+  await dbSetKV('v20KnownRevision',null);
+  v20Status(response.deleted?'Cadangan cloud dihapus. Data lokal tetap aman.':'Permintaan penghapusan belum berhasil.');
+ }catch(e){v20Status('Gagal menghapus cloud: '+e.message,true)}
  finally{v20SetBusy(false);v20Panel()}
 }
 async function v20Disconnect(){
@@ -220,6 +238,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
  $('v20Create').onclick=v20Create;$('v20Connect').onclick=v20Connect;
  $('v20Upload').onclick=v20Upload;$('v20Download').onclick=v20Download;
  $('v20Disconnect').onclick=v20Disconnect;
+ $('v20DeleteCloud').onclick=v20DeleteCloud;
  $('v20ReviewCancel').onclick=()=>{$('v20ReviewDialog').close();v20Downloaded=null};
  $('v20BackupConfirmed').onchange=v=>{$('v20ReviewContinue').disabled=!$('v20BackupConfirmed').checked};
  $('v20ReviewContinue').onclick=v20ReviewContinue;
