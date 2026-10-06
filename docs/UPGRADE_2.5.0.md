@@ -23,3 +23,6 @@ Validasi bagian ciphertext sekarang menerima satu pemisah titik IV/ciphertext ya
 - Worker diuji dengan SQLite in-memory dan skema SQL asli: origin/token salah, ciphertext dengan pemisah, unggahan tidak lengkap, commit basi, dan unduhan revisi lama.
 - `RUN_LIVE_SYNC=1 node tests/live-sync.cjs`: dua penyimpanan terisolasi, akun acak, dan data buatan melalui endpoint cloud produksi; tidak memakai kode pemulihan atau catatan pengguna. Foto/resep/takaran ikut dienkripsi. Uji mencakup konflik berbeda per catatan, penghapusan lintas penyimpanan, pemulihan, penolakan revisi cloud lama, serta simulasi koneksi terputus. Ciphertext akun uji dibersihkan setelah pengujian.
 - Pengujian browser nyata menggunakan browser cloud Chrome dan antarmuka aplikasi yang diterbitkan. Dua penyimpanan uji API tidak sama dengan dua perangkat fisik. Pengujian langsung pada HP/laptop pengguna, jaringan perangkat tersebut, dan mode PWA Android/iOS membutuhkan akses ke perangkat pengguna.
+
+## Perbaikan antarmuka 2.5.1
+Pengujian Chrome menemukan tombol Catat mengambang menutupi Edit/Hapus di baris catatan. Tombol sekarang berada dalam header, tetap mudah diakses tanpa menutupi isi catatan.
