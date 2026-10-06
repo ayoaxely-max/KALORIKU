@@ -83,3 +83,18 @@
 .v17-restore-buttons button{font-size:12px}
 button:disabled{opacity:.48;cursor:not-allowed}
 @media(max-width:430px){.v17-month-line{grid-template-columns:46px minmax(0,1fr) 76px;gap:6px}.v17-restore-buttons{grid-template-columns:1fr}}
+
+/* KaloriKu 2.0 encrypted cloud pairing */
+.v20-sync-label{border:1px solid var(--line);background:var(--soft);border-radius:30px;padding:4px 9px;font-size:11px;color:var(--muted);font-weight:700}
+.v20-sync-card .section-head{margin-bottom:9px}
+.v20-sync-card label{display:block;margin:10px 0;font-size:12px}
+.v20-sync-card input{width:100%;margin-top:5px}
+.v20-sync-card .kv strong{font-size:12px}
+.v20-sync-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}
+.v20-sync-actions button{padding:12px 8px;font-size:12px;min-width:0}
+.v20-recovery-box{border:1px solid #93c5fd;border-radius:12px;background:#eff6ff;padding:12px;margin-top:13px}
+.v20-recovery-box strong{font-size:13px}
+.v20-recovery-box input{font:12px/1.4 ui-monospace,monospace}
+.v20-confirm-checkbox{display:flex;align-items:flex-start;gap:9px;font-size:13px;margin:14px 0;line-height:1.4}
+.v20-confirm-checkbox input{flex-shrink:0;width:18px;height:18px;margin-top:2px}
+@media(max-width:400px){.v20-sync-actions{grid-template-columns:1fr}}
