@@ -75,8 +75,13 @@ for (const food of entries) {
       if (food.verification_status !== 'code_not_recorded') errors.push('TKPI tanpa kode belum diberi status: ' + food.id);
     } else {
       const other = codeToFood.get(food.tkpi_code);
-      if (other) errors.push('Kode TKPI ganda pada sumber asli: ' + food.tkpi_code);
-      else codeToFood.set(food.tkpi_code, food.name);
+      if (other) {
+        const alias = food.tkpi_alias_of === other.id ? food : other.tkpi_alias_of === food.id ? other : null;
+        if (!alias || food.serving !== other.serving ||
+            !['calories','protein','carbs','fat'].every(k => Math.abs(food[k]-other[k]) < 0.011)) {
+          errors.push('Kode TKPI ganda tanpa alias yang identik: ' + food.tkpi_code);
+        } else warnings.push('Alias TKPI: ' + alias.id);
+      } else codeToFood.set(food.tkpi_code, food);
     }
   }
   if (!['tkpi', 'estimate', 'calculated'].includes(food.source_type)) {
@@ -120,6 +125,8 @@ const report = {
   duplicateNames: entries.length - byName.size,
   sourceCount,
   tkpiWithoutCode: withoutCode,
+  uniqueTkpiCodes: codeToFood.size,
+  tkpiAliases: entries.filter(x => x.source_type === 'tkpi' && x.tkpi_alias_of).length,
   calculatedCount,
   fiberEntries: entries.filter(f => typeof f.fiber === 'number').length,
   sodiumEntries: entries.filter(f => typeof f.sodium === 'number').length,
