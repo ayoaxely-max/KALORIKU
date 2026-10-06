@@ -161,7 +161,7 @@ async function v20Upload(){
  try{
   v20Progress('Memeriksa perubahan cloud…');
   const head=await v20Api('/sync/head');
-  if(head.revision>0&&v20KnownRevision!==head.revision){
+  if(head.active&&head.revision>0&&v20KnownRevision!==head.revision){
    throw Error('Cloud sudah memiliki data yang belum disinkronkan di perangkat ini. Unduh dan tinjau cloud terlebih dahulu. Pengunggahan diblokir untuk mencegah data tertimpa.');
   }
   v20Progress('Membuat cadangan lengkap dan mengenkripsinya…');
