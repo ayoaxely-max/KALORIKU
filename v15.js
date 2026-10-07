@@ -21,7 +21,7 @@ function v15NutritionInputAlert(){
   alert.classList.toggle('hidden',!warning);
 }
 function v15RenderWater(){
-  const today=localDate(),ml=Number(v15WaterRecords[today])||0;
+  const today=dashboardSelectedDate(),ml=Number(v15WaterRecords[today])||0;
   $('v15WaterConsumed').textContent=fmt(ml)+' ml';
   $('v15WaterGoalText').textContent='Target pribadi '+fmt(v15WaterGoal)+' ml';
   $('v15WaterProgress').style.width=Math.min(100,100*ml/Math.max(1,v15WaterGoal))+'%';
@@ -31,7 +31,7 @@ function v15RenderWater(){
 }
 async function v15WaterChange(amount){
   if(v15WaterBusy||!Number.isFinite(amount)||!amount)return;
-  const date=localDate(),value=Math.max(0,Math.min(30000,(Number(v15WaterRecords[date])||0)+amount));
+  const date=dashboardSelectedDate(),value=Math.max(0,Math.min(30000,(Number(v15WaterRecords[date])||0)+amount));
   v15WaterBusy=true;v15RenderWater();
   try{
     const next={...v15WaterRecords,[date]:value};
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   };
   $('v15WaterCustomMinus').onclick=()=>{
     const amount=v15ManualWaterAmount();if(amount===null)return;
-    const existing=Number(v15WaterRecords[localDate()])||0;
+    const existing=Number(v15WaterRecords[dashboardSelectedDate()])||0;
     if(existing<=0){toast('Belum ada air yang dapat dikurangi');return}
     if(amount>existing)toast('Pengurangan dibatasi ke jumlah air yang tercatat');
     v15WaterChange(-amount);

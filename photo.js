@@ -105,7 +105,7 @@ function photoCard(rec){
 }
 function renderPhotoMeals(){
   const el=$('todayPhotoMeals');if(!el)return;
-  const a=mealPhotos.filter(x=>x.date===localDate()).sort((a,b)=>b.createdAt-a.createdAt);
+  const a=mealPhotos.filter(x=>x.date===dashboardSelectedDate()).sort((a,b)=>b.createdAt-a.createdAt);
   el.innerHTML=a.length?`<div class="section-head"><h2>Foto makanan</h2><span>${a.length} foto</span></div>`+a.map(photoCard).join(''):'';
 }
 async function updatePhotoStorageStatus(){

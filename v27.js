@@ -39,7 +39,7 @@ function v27RenderRepeat(){
 }
 function v27OpenRepeat(id){
  const item=v27RepeatCandidates().find(x=>x.food.id===id);if(!item)return;
- openAdd();$('entryDate').value=localDate();$('qtyUnit').value='porsi';$('qtyInput').value=Number.isFinite(item.latest.qty)&&item.latest.qty>0?item.latest.qty:1;
+ openAdd();$('entryDate').value=selectedEntryDate();$('qtyUnit').value='porsi';$('qtyInput').value=Number.isFinite(item.latest.qty)&&item.latest.qty>0?item.latest.qty:1;
  if([...$('mealSelect').options].some(x=>x.value===item.latest.meal))$('mealSelect').value=item.latest.meal;
  $('foodSearch').value=item.food.name;renderAddResults();
  toast('Periksa tanggal, waktu makan, dan jumlah; tekan ＋ untuk mencatat.');

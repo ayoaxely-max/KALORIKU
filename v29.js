@@ -43,7 +43,7 @@ const v29BaseAdd=renderAddResults;
 renderAddResults=function(){v29BaseAdd();v29RenderSuggestions('foodSearch','addResults');};
 function v29OpenFavorite(id){
  const f=allFoods.find(x=>x.id===id);if(!f)return;
- openAdd();$('entryDate').value=localDate();$('qtyInput').value='1';$('qtyUnit').value='porsi';$('foodSearch').value=f.name;renderAddResults();
+ openAdd();$('entryDate').value=selectedEntryDate();$('qtyInput').value='1';$('qtyUnit').value='porsi';$('foodSearch').value=f.name;renderAddResults();
  toast('Periksa waktu makan dan porsi, lalu tekan ＋ untuk menyimpan.');
 }
 function v29RenderFavorites(){
