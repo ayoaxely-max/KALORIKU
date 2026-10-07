@@ -58,6 +58,19 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E('v20Busy=false;v28ApplyUpdate()');assert.equal(w.updateMessageCount,1);assert.equal(E('v28UpdateRequested'),true);
  const sw=fs.readFileSync('sw.js','utf8');assert.ok(sw.includes("event.data?.type==='SKIP_WAITING'"));assert.ok(!sw.slice(sw.indexOf("self.addEventListener('install'"),sw.indexOf("self.addEventListener('message'")).includes('skipWaiting'));
  // Provenance cannot promote unverified TKPI or recipes into verified data.
+ // Update button gives durable feedback, recovers after errors, and waits for installation.
+ const mockRegistration={waiting:null,installing:null,update:async()=>{}};
+ Object.defineProperty(w.navigator,'serviceWorker',{configurable:true,value:{controller:{},getRegistration:async()=>mockRegistration}});
+ E('v28Registration=null;v28UpdateRequested=false;v28WaitingWorker=null');
+ await E('v28CheckForUpdate()');assert.match(w.document.getElementById('v28CheckStatus').textContent,/Pemeriksaan selesai/);
+ let finishUpdate;mockRegistration.update=()=>new Promise(resolve=>{finishUpdate=resolve});
+ const checking=E('v28CheckForUpdate()');await new Promise(resolve=>setImmediate(resolve));assert.equal(w.document.getElementById('v28CheckUpdate').disabled,true);finishUpdate();await checking;assert.equal(w.document.getElementById('v28CheckUpdate').disabled,false);
+ mockRegistration.update=async()=>{throw Error('network')};await E('v28CheckForUpdate()');assert.match(w.document.getElementById('v28CheckStatus').textContent,/gagal/);assert.equal(w.document.getElementById('v28CheckUpdate').disabled,false);
+ mockRegistration.update=async()=>{};mockRegistration.waiting={postMessage(){}};await E('v28CheckForUpdate()');assert.match(w.document.getElementById('v28CheckStatus').textContent,/Versi baru siap/);assert.equal(w.document.getElementById('v28ProfileApply').classList.contains('hidden'),false);
+ const installing=new w.EventTarget();installing.state='installing';w.testInstalling=installing;const installed=E('v28WaitForInstall(window.testInstalling)');installing.state='installed';installing.dispatchEvent(new w.Event('statechange'));await installed;
+ await assert.rejects(E('v28WithTimeout(new Promise(()=>{}),5)'),/timeout/);
+ Object.defineProperty(w.navigator,'onLine',{configurable:true,value:false});await E('v28CheckForUpdate()');assert.match(w.document.getElementById('v28CheckStatus').textContent,/offline/);Object.defineProperty(w.navigator,'onLine',{configurable:true,value:true});delete w.navigator.serviceWorker;
+ E('v28Registration=null;v28WaitingWorker=null');
  assert.match(E("v29Quality({source_type:'tkpi',calories:100,protein:0,carbs:25,fat:0}).status"),/Belum diverifikasi/);
  assert.match(E("v29Quality({source_type:'tkpi',macro_verification_status:'primary_pdf_crosschecked',calories:100,protein:0,carbs:25,fat:0}).status"),/Energi dan makro/);
  assert.match(E("v29Quality({source_type:'estimate',calories:500,protein:0,carbs:0,fat:0}).warning"),/4–4–9/);

@@ -26,36 +26,64 @@ async function v28SaveInline(box){
  button.disabled=true;
  try{const next={...foodMeasures,[id]:{...(foodMeasures[id]||{}),[unit]:grams}};await dbSetKV('foodMeasures',next);foodMeasures=next;renderDatabase();renderAddResults();toast('Takaran disimpan: 1 '+unit+' = '+grams+' g');}catch{toast('Takaran gagal disimpan.');}finally{button.disabled=false;}
 }
-let v28WaitingWorker=null,v28UpdateRequested=false,v28Reloaded=false,v28Registration=null;
+let v28WaitingWorker=null,v28UpdateRequested=false,v28Reloaded=false,v28Registration=null,v28Checking=false,v28NeedsReload=false;
+function v28CheckStatus(text){$('v28CheckStatus').textContent=text;}
+function v28WithTimeout(promise,ms=15000){
+ let timer;return Promise.race([promise,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('timeout')),ms);})]).finally(()=>clearTimeout(timer));
+}
+function v28WaitForInstall(worker){
+ return new Promise((resolve,reject)=>{
+  let timer;const finish=()=>{worker.removeEventListener('statechange',changed);clearTimeout(timer);};
+  const changed=()=>{if(worker.state==='installed'||worker.state==='activated'){finish();resolve();}else if(worker.state==='redundant'){finish();reject(Error('install'));}};
+  worker.addEventListener('statechange',changed);timer=setTimeout(()=>{finish();reject(Error('timeout'));},15000);changed();
+ });
+}
+async function v28CheckForUpdate(){
+ if(v28Checking)return;
+ if(!navigator.onLine){v28CheckStatus('Sedang offline. Sambungkan internet lalu coba kembali.');return;}
+ if(!('serviceWorker' in navigator)){v28CheckStatus('Pembaruan aplikasi tidak didukung browser ini. Buka KaloriKu melalui Chrome.');return;}
+ v28Checking=true;const button=$('v28CheckUpdate');button.disabled=true;button.textContent='Memeriksa…';v28CheckStatus('Memeriksa pembaruan. Tunggu sebentar.');
+ try{
+  const registration=v28Registration||await v28WithTimeout(navigator.serviceWorker.getRegistration())||await v28WithTimeout(navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}));v28Registration=registration;
+  await v28WithTimeout(registration.update());
+  if(registration.installing){v28CheckStatus('Versi baru sedang diunduh.');await v28WaitForInstall(registration.installing);}
+  if(registration.waiting&&navigator.serviceWorker.controller)v28OfferUpdate(registration.waiting);
+  else v28CheckStatus('Pemeriksaan selesai. Belum ada pembaruan aplikasi yang tersedia.');
+ }catch(e){v28CheckStatus(e.message==='timeout'?'Pemeriksaan terlalu lama. Periksa koneksi lalu coba lagi.':'Pembaruan gagal diperiksa atau diunduh. Periksa koneksi lalu coba lagi.');}
+ finally{v28Checking=false;button.disabled=false;button.textContent='Periksa pembaruan';}
+}
 function v28OfferUpdate(worker){
  if(!worker||!navigator.serviceWorker?.controller)return;
- v28WaitingWorker=worker;$('v28UpdateNotice').classList.remove('hidden');$('v28ApplyUpdate').disabled=false;
+ v28WaitingWorker=worker;v28NeedsReload=false;$('v28UpdateNotice').classList.remove('hidden');$('v28ApplyUpdate').disabled=false;
+ $('v28ProfileApply').classList.remove('hidden');$('v28ProfileApply').disabled=false;v28CheckStatus('Versi baru siap. Tekan Perbarui sekarang setelah menyelesaikan formulir.');
 }
 function v28HasOpenForm(){return [...document.querySelectorAll('dialog')].some(d=>d.open)||!!document.querySelector('.v28-measure[open]');}
 function v28ApplyUpdate(){
- if(!v28WaitingWorker)return;
  const dialog=v28HasOpenForm();
- if(dialog||v20Busy||v17Restoring){toast('Selesaikan atau tutup formulir dan proses sinkronisasi sebelum memperbarui.');return}
- v28UpdateRequested=true;$('v28ApplyUpdate').disabled=true;v28WaitingWorker.postMessage({type:'SKIP_WAITING'});
+ if(dialog||v20Busy||v17Restoring){v28CheckStatus('Selesaikan atau tutup formulir dan proses sinkronisasi sebelum memperbarui.');toast('Selesaikan atau tutup formulir dan proses sinkronisasi sebelum memperbarui.');return}
+ if(v28NeedsReload){location.reload();return;}
+ if(!v28WaitingWorker){v28CheckStatus('Periksa pembaruan terlebih dahulu.');return;}
+ v28UpdateRequested=true;$('v28ApplyUpdate').disabled=true;$('v28ProfileApply').disabled=true;v28CheckStatus('Memasang pembaruan…');v28WaitingWorker.postMessage({type:'SKIP_WAITING'});
 }
 function v28ControllerChanged(){
  if(v28UpdateRequested&&!v28Reloaded){v28Reloaded=true;location.reload();}
- else if(!v28UpdateRequested){$('v28UpdateNotice').classList.remove('hidden');$('v28UpdateText').textContent='Aplikasi diperbarui dari tab lain. Muat ulang setelah menyelesaikan formulir.';$('v28ApplyUpdate').onclick=()=>{if(v28HasOpenForm()||v20Busy||v17Restoring){toast('Tutup formulir dan selesaikan proses sebelum memuat ulang.');return}location.reload();};}
+ else if(!v28UpdateRequested){v28NeedsReload=true;v28WaitingWorker=null;$('v28UpdateNotice').classList.remove('hidden');$('v28UpdateText').textContent='Aplikasi diperbarui dari tab lain. Muat ulang setelah menyelesaikan formulir.';$('v28ApplyUpdate').disabled=false;$('v28ProfileApply').classList.remove('hidden');$('v28ProfileApply').disabled=false;v28CheckStatus('Aplikasi diperbarui dari tab lain. Tekan Perbarui sekarang setelah menyelesaikan formulir.');}
 }
 registerSW=async function(){
  if(!('serviceWorker' in navigator))return;
  try{
   let wasControlled=!!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange',()=>{if(wasControlled||v28UpdateRequested)v28ControllerChanged();wasControlled=true;});
-  const registration=await navigator.serviceWorker.register('./sw.js');v28Registration=registration;
+  const registration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});v28Registration=registration;
   if(registration.waiting)v28OfferUpdate(registration.waiting);
   registration.addEventListener('updatefound',()=>{const worker=registration.installing;if(!worker)return;worker.addEventListener('statechange',()=>{if(worker.state==='installed'&&registration.waiting)v28OfferUpdate(registration.waiting);});});
  }catch(e){console.warn('Pemeriksaan pembaruan gagal',e);}
 };
 document.addEventListener('DOMContentLoaded',()=>{
  $('v28ApplyUpdate').onclick=v28ApplyUpdate;
+ $('v28ProfileApply').onclick=v28ApplyUpdate;
  $('v28UpdateLater').onclick=()=>{$('v28UpdateNotice').classList.add('hidden');};
- $('v28CheckUpdate').onclick=async()=>{if(!navigator.onLine){toast('Sambungkan internet untuk memeriksa pembaruan.');return}try{const registration=v28Registration||await navigator.serviceWorker?.getRegistration();if(!registration){toast('Pembaruan otomatis belum tersedia di browser ini.');return}await registration.update();if(registration.waiting)v28OfferUpdate(registration.waiting);else toast('Pemeriksaan pembaruan dijalankan.');}catch{toast('Pembaruan belum dapat diperiksa.');}};
+ $('v28CheckUpdate').onclick=v28CheckForUpdate;
  document.addEventListener('click',e=>{if(e.target.closest('[data-v28save]'))v28SaveInline(e.target.closest('.v28-measure'));});
  document.addEventListener('change',e=>{if(!e.target.matches('[data-v28unit]'))return;const box=e.target.closest('.v28-measure');box.querySelector('[data-v28grams]').value=foodMeasures[box.dataset.food]?.[e.target.value]||'';});
 });
