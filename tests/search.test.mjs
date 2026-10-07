@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const src=fs.readFileSync('app.js','utf8');
 const snippet=src.slice(src.indexOf('function foodSearchNorm('),src.indexOf('function sourceLabel('));
-const {foodMatches,foodMatchRank}=new Function(snippet+';return {foodMatches,foodMatchRank}')();
+const {foodMatches,foodMatchRank,foodSearchLabel}=new Function(snippet+';return {foodMatches,foodMatchRank,foodSearchLabel}')();
 const food=name=>({name,aliases:[]});
 test('search understands typos, transpositions, missing spaces, aliases and abbreviations',()=>{
  for(const [query,name] of [['tleur goreng','Telur goreng'],['telurr rebus','Telur rebus'],['teme goreng','Tempe goreng'],['nasigoreng','Nasi goreng'],['NASGOR','Nasi goreng'],['migor','Mie goreng'],['aym grg','Ayam goreng'],['goreng telur','Telur goreng'],['pisang goren','Pisang goreng'],['cappucino','Cappuccino']])assert.ok(foodMatches(food(name),query),query);
@@ -16,4 +16,11 @@ test('exact foods precede approximate ones and unrelated tokens/numbers stay exc
 });
 test('search cache notices changes in custom food names and aliases',()=>{
  const f=food('Tempe goreng');assert.ok(foodMatches(f,'tempe'));f.name='Tahu rebus';assert.equal(foodMatches(f,'tempe'),false);f.aliases=['tempe'];assert.ok(foodMatches(f,'tempe'));
+});
+
+test('result labels distinguish typo suggestions, word matches and spacing',()=>{
+ assert.equal(foodSearchLabel(food('Telur goreng'),'tleur goreng'),'Ejaan mendekati');
+ assert.equal(foodSearchLabel(food('Telur goreng'),'telur goreng'),'Cocok kata');
+ assert.equal(foodSearchLabel(food('Nasi goreng'),'nasigoreng'),'Spasi disesuaikan');
+ assert.equal(foodSearchLabel(food('Telur goreng'),''),'');
 });

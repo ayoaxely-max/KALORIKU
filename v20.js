@@ -43,6 +43,7 @@ function v20Panel(){
  $('v20DeleteCloud').disabled=!v20Secret||v20Busy;
  $('v20AccountLabel').textContent=v20AccountId?'Akun terenkripsi '+v20AccountId.slice(0,8)+'…':'Belum terhubung';
  $('v20KnownRevision').textContent=v20KnownRevision===null?'Belum sinkron':'Revisi terakhir pada perangkat ini: '+v20KnownRevision;
+ if(typeof v27RenderSync==='function')v27RenderSync();
 }
 async function v20KeyForSecret(secret){
  const bytes=new Uint8Array(await crypto.subtle.digest('SHA-256',v20Text.encode('kaloriku-e2ee-v2|'+secret)));
@@ -108,6 +109,7 @@ async function v20DeleteCloud(){
   const response=await v20Api('/sync/delete',{method:'POST',data:{confirm:'DELETE CLOUD',expectedRevision:head.revision}});
   v20KnownRevision=null;
   await dbSetKV('v20KnownRevision',null);
+  if(typeof v27RecordSync==='function')await v27RecordSync('delete');
   v20Status(response.deleted?'Cadangan cloud dihapus. Data lokal tetap aman.':'Permintaan penghapusan belum berhasil.');
  }catch(e){v20Status('Gagal menghapus cloud: '+e.message,true)}
  finally{v20SetBusy(false);v20Panel()}
@@ -168,6 +170,7 @@ async function v20Upload(){
   }
   v20Progress('Membuat cadangan lengkap dan mengenkripsinya…');
   const snapshot=await v20Snapshot();
+  const uploadedLocalRevision=v24SnapshotRevision;
   const check=v17ValidateBackup(snapshot);
   if(check.errors.length)throw Error('Data lokal harus diperbaiki sebelum sinkronisasi: '+check.errors.join('; '));
   const payload=await v20Encrypt(snapshot);
@@ -181,6 +184,7 @@ async function v20Upload(){
   v20Progress('Memastikan tidak ada perubahan dari perangkat lain…');
   const result=await v20Api('/sync/commit',{method:'POST',data:{uploadId,total,expectedRevision:head.revision}});
   await v20SaveRevision(result.revision);
+  if(typeof v27RecordSync==='function')await v27RecordSync('upload',uploadedLocalRevision);
   v20Status('Berhasil unggah revisi '+result.revision+'. Data termasuk foto dikirim terenkripsi. Perangkat lain dapat mengunduhnya.');
  }catch(e){v20Status('Unggah dibatalkan: '+e.message,true)}
  finally{v20SetBusy(false);v20Panel()}
@@ -206,6 +210,7 @@ async function v20Download(){
   const check=v17ValidateBackup(snapshot);
   if(check.errors.length)throw Error('Data cloud gagal divalidasi: '+check.errors.join('; '));
   v20Downloaded={snapshot,revision:manifest.revision};
+  if(typeof v27RecordSync==='function')await v27RecordSync('download');
   v25ConflictChoices={};
   $('v24ConflictPolicy').value='';
   $('v20ReviewDetails').textContent=
@@ -277,6 +282,7 @@ async function v20ReviewContinue(){
   await v17ExecuteRestore();
   if(v17PendingBackup)throw Error('Penggabungan gagal. Data lokal belum diganti.');
   await v20SaveRevision(v20Downloaded.revision);
+  if(typeof v27RecordSync==='function')await v27RecordSync('merge');
   $('v20ReviewDialog').close();v20Downloaded=null;v24MergePreview=null;
   v20Status('Data berhasil digabung. Tekan Unggah untuk mengirim hasil gabungan ke cloud.');
  }catch(e){v20Status(e.message,true);toast(e.message);}

@@ -48,7 +48,7 @@ function renderPhotoSearch(){
   const q=$('photoSearch').value.trim().toLowerCase();
   if(!q){$('photoSearchResults').innerHTML='<div class="empty small">Cari makanan untuk menambahkan komponen.</div>';return}
   const a=allFoods.filter(f=>foodMatches(f,q)).sort((a,b)=>foodMatchRank(a,q)-foodMatchRank(b,q)).slice(0,30);
-  $('photoSearchResults').innerHTML=a.map(f=>`<div class="log-row"><div class="food-info"><strong>${esc(f.name)}</strong><small>${esc(f.serving)} · ${fmt(f.calories)} kcal</small></div><button class="add-btn" onclick="addPhotoFood('${f.id}')">＋</button></div>`).join('')||'<div class="empty">Tidak ditemukan.</div>';
+  $('photoSearchResults').innerHTML=a.map(f=>`<div class="log-row"><div class="food-info"><strong>${esc(f.name)}</strong>${foodSearchBadge(f,q)}<small>${esc(f.serving)} · ${fmt(f.calories)} kcal</small></div><button class="add-btn" onclick="addPhotoFood('${f.id}')">＋</button></div>`).join('')||'<div class="empty">Tidak ditemukan.</div>';
 }
 window.addPhotoFood=id=>{
   const food=allFoods.find(f=>f.id===id);if(!food)return;

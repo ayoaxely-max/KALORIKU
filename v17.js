@@ -230,7 +230,7 @@ async function v17ExecuteRestore(){
   const stores=['logs','customFoods','weights','mealPhotos','kv'];
   await new Promise((resolve,reject)=>{
    const transaction=d.transaction(stores,'readwrite');
-   transaction.oncomplete=resolve;
+   transaction.oncomplete=()=>{window.dispatchEvent(new Event('kaloriku:datachanged'));resolve();};
    transaction.onabort=()=>reject(transaction.error||Error('Transaksi dibatalkan'));
    transaction.onerror=()=>{/* onabort handles rollback */};
    const guard=transaction.objectStore('kv').get('v24DataRevision');

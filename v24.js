@@ -17,7 +17,7 @@ async function v24SaveMeasure(e){
 function v24SearchRecipe(){
  const q=$('v24RecipeSearch').value.trim();const candidates=q?allFoods.filter(f=>foodMatches(f,q)&&NutritionTools.servingGrams(f,foodMeasures[f.id])).sort((a,b)=>foodMatchRank(a,q)-foodMatchRank(b,q)).slice(0,25):[];
  $('v24RecipeResults').replaceChildren();
- for(const f of candidates){const b=document.createElement('button');b.type='button';b.className='secondary full';b.textContent=f.name+' · '+f.serving;b.onclick=()=>{v24Ingredients.push({food:{...JSON.parse(JSON.stringify(f)),servingGrams:NutritionTools.servingGrams(f,foodMeasures[f.id])},grams:NutritionTools.servingGrams(f,foodMeasures[f.id])});$('v24RecipeSearch').value='';v24SearchRecipe();v24RenderRecipe();};$('v24RecipeResults').append(b);}
+ for(const f of candidates){const b=document.createElement('button');b.type='button';b.className='secondary full';b.textContent=f.name+' · '+f.serving+' · '+foodSearchLabel(f,q);b.onclick=()=>{v24Ingredients.push({food:{...JSON.parse(JSON.stringify(f)),servingGrams:NutritionTools.servingGrams(f,foodMeasures[f.id])},grams:NutritionTools.servingGrams(f,foodMeasures[f.id])});$('v24RecipeSearch').value='';v24SearchRecipe();v24RenderRecipe();};$('v24RecipeResults').append(b);}
 }
 function v24RecipeCalculation(){return NutritionTools.recipe(v24Ingredients,Number($('v24CookedWeight').value),Number($('v24RecipePortions').value));}
 function v24PreviewRecipe(){try{const r=v24RecipeCalculation();$('v24RecipePreview').textContent='Total: '+fmt(r.totals.calories)+' kcal · per porsi '+fmt(r.perPortion.calories)+' kcal ('+fmt(r.servingGrams)+' g) · per 100 g '+fmt(r.per100.calories)+' kcal. Protein '+fmt(r.perPortion.protein)+' g · Karbo '+fmt(r.perPortion.carbs)+' g · Lemak '+fmt(r.perPortion.fat)+' g per porsi.';}catch(e){$('v24RecipePreview').textContent=e.message;}}
@@ -35,7 +35,7 @@ async function v24SaveRecipe(e){
  }catch(e){$('v24RecipePreview').textContent=e.message;}finally{button.disabled=false;}
 }
 const v24OldFoodCard=foodCard;
-foodCard=function(f,add=true){return v24OldFoodCard(f,add)+'<div class="food-meta">'+esc(v24MeasureInfo(f))+' <button class="text-btn" type="button" onclick="v24OpenMeasure(\''+esc(f.id)+'\')">Atur takaran</button></div>';};
+foodCard=function(f,add=true,q=''){return v24OldFoodCard(f,add,q)+'<div class="food-meta">'+esc(v24MeasureInfo(f))+' <button class="text-btn" type="button" onclick="v24OpenMeasure(\''+esc(f.id)+'\')">Atur takaran</button></div>';};
 document.addEventListener('DOMContentLoaded',async()=>{
  $('v24MeasureForm').onsubmit=v24SaveMeasure;
  $('v24RecipeOpen').onclick=()=>{v24Ingredients=[];$('v24RecipeForm').reset();v24SearchRecipe();v24RenderRecipe();$('v24RecipeDialog').showModal();};

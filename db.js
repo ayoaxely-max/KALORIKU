@@ -7,7 +7,7 @@ async function dbMutation(store,action,changesData=true,syncOperations=[]){
  const d=await dbOpen();
  return new Promise((resolve,reject)=>{
   const t=d.transaction(store==='kv'?['kv']:[store,'kv'],'readwrite');
-  t.oncomplete=()=>resolve();t.onabort=()=>reject(t.error||Error('Transaksi dibatalkan'));t.onerror=()=>{};
+  t.oncomplete=()=>{if(changesData)window.dispatchEvent(new Event('kaloriku:datachanged'));resolve();};t.onabort=()=>reject(t.error||Error('Transaksi dibatalkan'));t.onerror=()=>{};
   try{action(t.objectStore(store));v25WriteDeletionStates(t,syncOperations);if(changesData){const kv=t.objectStore('kv'),r=kv.get('v24DataRevision');r.onsuccess=()=>kv.put({key:'v24DataRevision',value:(Number(r.result?.value)||0)+1});}}catch(e){t.abort();reject(e);}
  });
 }
@@ -30,7 +30,7 @@ async function dbDeleteMany(entries){
  const d=await dbOpen();
  return new Promise((resolve,reject)=>{
   const transaction=d.transaction([...new Set(entries.map(e=>e.store).concat('kv'))],'readwrite');
-  transaction.oncomplete=resolve;transaction.onabort=()=>reject(transaction.error||Error('Penghapusan dibatalkan'));transaction.onerror=()=>{};
+  transaction.oncomplete=()=>{window.dispatchEvent(new Event('kaloriku:datachanged'));resolve();};transaction.onabort=()=>reject(transaction.error||Error('Penghapusan dibatalkan'));transaction.onerror=()=>{};
   try{for(const e of entries)transaction.objectStore(e.store).delete(e.key);
    v25WriteDeletionStates(transaction,entries.filter(e=>NutritionTools.syncFields.includes(e.store)).map(e=>({field:e.store,key:e.key,deleted:true})));
    const kv=transaction.objectStore('kv'),r=kv.get('v24DataRevision');r.onsuccess=()=>kv.put({key:'v24DataRevision',value:(Number(r.result?.value)||0)+1});
