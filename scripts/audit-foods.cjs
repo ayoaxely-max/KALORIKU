@@ -107,6 +107,18 @@ for (const row of macroEvidence) {
   if (!food.macro_verification_status || !row.source_url) errors.push('Lingkup audit hilang: ' + row.id);
 }
 let calculatedCount = 0;
+// Keep visual source evidence separate from arithmetic screening.
+const nutritionEvidence = JSON.parse(fs.readFileSync(path.join(root, 'docs/NUTRITION_AUDIT_2026-10-07.json'), 'utf8'));
+if (nutritionEvidence.primary_rows.length !== 7 || new Set(nutritionEvidence.primary_rows.map(r => r.id)).size !== 7) errors.push('Audit primer harus mencakup 7 baris unik');
+for (const row of nutritionEvidence.primary_rows) {
+  const food = byId.get(row.id);
+  if (!food || food.tkpi_code !== row.tkpi_code || food.macro_verification_status !== 'primary_pdf_crosschecked' || food.macro_primary_pdf_page !== row.pdf_page) {
+    errors.push('Metadata bukti primer tidak cocok: ' + row.id); continue;
+  }
+  for (const [key, expected] of Object.entries(row.expected)) {
+    if (expected === null ? food[key] != null : typeof food[key] !== 'number' || Math.abs(food[key] - expected) > 0.011) errors.push('Berbeda dengan PDF primer: ' + row.id + '.' + key);
+  }
+}
 for (const food of entries) {
   if (food.source_type !== 'calculated') continue;
   calculatedCount++;
@@ -120,7 +132,11 @@ for (const food of entries) {
     continue;
   }
   for (const nutrient of ['calories', 'protein', 'carbs', 'fat', 'fiber', 'sodium']) {
-    if (typeof base[nutrient] !== 'number' || typeof food[nutrient] !== 'number') continue;
+    if (typeof base[nutrient] !== 'number') {
+      if (typeof food[nutrient] === 'number') errors.push('Konversi mengisi nutrien induk yang tidak diketahui: ' + food.id + '.' + nutrient);
+      continue;
+    }
+    if (typeof food[nutrient] !== 'number') { errors.push('Konversi kehilangan nutrien induk: ' + food.id + '.' + nutrient); continue; }
     if (Math.abs(food[nutrient] - base[nutrient] * food.portion_multiplier) > 0.155) {
       errors.push('Konversi usang: ' + food.id + '.' + nutrient);
     }
@@ -143,6 +159,10 @@ const report = {
   sodiumEntries: entries.filter(f => typeof f.sodium === 'number').length,
   macroFlags: macroFlags.map(f => ({ id: f.id, name: f.name, status: f.verification_status || null })),
   warningCount: warnings.length,
+  catalogWarnings: warnings,
+  nutritionFlagCount: macroFlags.length,
+  primaryPrintedAnomalies: macroFlags.filter(f => f.macro_verification_status === 'primary_pdf_crosschecked' && f.verification_status === 'printed_source_anomaly').length,
+  unresolvedEstimates: macroFlags.filter(f => f.source_type === 'estimate').map(f => f.id),
   errorCount: errors.length,
   errors: errors.slice(0, 50)
 };

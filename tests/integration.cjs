@@ -63,6 +63,8 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  assert.match(E("v29Quality({source_type:'estimate',calories:500,protein:0,carbs:0,fat:0}).warning"),/4–4–9/);
  assert.match(E("v29Quality({source_type:'label',calories:null,protein:0,carbs:0,fat:0}).warning"),/tidak valid/);
  assert.equal(E("v29SourceDetails({source_url:'javascript:alert(1)',name:'x'}).includes('href=')"),false);
+ assert.match(E("v29Quality({source_type:'tkpi',macro_verification_status:'primary_pdf_crosschecked',verification_status:'printed_source_anomaly',calories:316,protein:60.1,carbs:22.4,fat:6.5}).warning"),/tercetak/);
+ assert.match(E("v29SourceDetails({verification_note:'<script>bad</script>',usage_note:'Bahan kering'} )"),/&lt;script&gt;bad&lt;\/script&gt;/);
  E(`$('foodSearch').value='tleur goreng';renderAddResults();`);
  const suggestion=w.document.querySelector('#addResults .v29-suggestions button');assert.ok(suggestion);
  const suggestionCount=E('logs.length');suggestion.click();assert.equal(E('logs.length'),suggestionCount);assert.equal(w.document.querySelector('#addResults .v29-suggestions'),null);

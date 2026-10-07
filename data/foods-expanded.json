@@ -12,7 +12,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Belimbing, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 86%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "belimbing",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 1.6,
+    "sodium": 2.0
   },
   {
     "id": "portion26_belimbing_150",
@@ -27,7 +29,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Belimbing, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 86%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "belimbing",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 4.8,
+    "sodium": 6.0
   },
   {
     "id": "portion26_bengkuang_50",
@@ -42,7 +46,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Bengkuang, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 84%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "bengkuang",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 0.5,
+    "sodium": 1.0
   },
   {
     "id": "portion26_bengkuang_150",
@@ -57,7 +63,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Bengkuang, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 84%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "bengkuang",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 1.5,
+    "sodium": 3.0
   },
   {
     "id": "portion26_buah_naga_50",
@@ -72,7 +80,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Buah Naga Merah, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 66.5%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "buah_naga",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 1.6,
+    "sodium": 5.0
   },
   {
     "id": "portion26_buah_naga_150",
@@ -87,7 +97,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Buah Naga Merah, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 66.5%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "buah_naga",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 4.8,
+    "sodium": 15.0
   },
   {
     "id": "portion26_tkpi_buah_naga_putih_segar_50",
@@ -102,7 +114,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Buah Naga Putih, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 73.6%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "tkpi_buah_naga_putih_segar",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 1.6,
+    "sodium": 3.5
   },
   {
     "id": "portion26_tkpi_buah_naga_putih_segar_150",
@@ -117,7 +131,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Buah Naga Putih, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 73.6%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "tkpi_buah_naga_putih_segar",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 4.8,
+    "sodium": 10.5
   },
   {
     "id": "portion26_tkpi_gandaria_masak_50",
@@ -162,7 +178,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Langsat, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 64%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "duku_langsat",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 0.7,
+    "sodium": 0.5
   },
   {
     "id": "portion26_duku_langsat_150",
@@ -177,7 +195,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Langsat, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 64%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "duku_langsat",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 2.1,
+    "sodium": 1.5
   },
   {
     "id": "portion26_lemon_50",
@@ -192,7 +212,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Lemon, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "lemon",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 0.05,
+    "sodium": 15.5
   },
   {
     "id": "portion26_lemon_150",
@@ -207,7 +229,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Lemon, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 100%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "lemon",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 0.15,
+    "sodium": 46.5
   },
   {
     "id": "portion26_tkpi_pepaya_muda_segar_50",
@@ -222,7 +246,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Pepaya muda, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 65%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "tkpi_pepaya_muda_segar",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 1.05,
+    "sodium": 11.0
   },
   {
     "id": "portion26_tkpi_pepaya_muda_segar_150",
@@ -237,7 +263,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Pepaya muda, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 65%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "tkpi_pepaya_muda_segar",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 3.15,
+    "sodium": 33.0
   },
   {
     "id": "portion26_pepaya_50",
@@ -271,7 +299,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Pisang kepok, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "pisang_kepok",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 2.85,
+    "sodium": 5.0
   },
   {
     "id": "portion26_pisang_kepok_150",
@@ -286,7 +316,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Pisang kepok, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "pisang_kepok",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 8.55,
+    "sodium": 15.0
   },
   {
     "id": "portion26_tkpi_pisang_lampung_segar_50",
@@ -301,7 +333,9 @@
     "source_ref": "Konversi aritmetis 50/100 dari komposisi 100 g BDD pada entri Pisang lampung, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "tkpi_pisang_lampung_segar",
     "portion_multiplier": 0.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 2.15,
+    "sodium": 14.0
   },
   {
     "id": "portion26_tkpi_pisang_lampung_segar_150",
@@ -316,7 +350,9 @@
     "source_ref": "Konversi aritmetis 150/100 dari komposisi 100 g BDD pada entri Pisang lampung, segar; TKPI 2020, Kementerian Kesehatan RI · komposisi per 100 g BDD; BDD 75%. Bukan pengukuran porsi baru.",
     "portion_derived_from": "tkpi_pisang_lampung_segar",
     "portion_multiplier": 1.5,
-    "aliases": []
+    "aliases": [],
+    "fiber": 6.45,
+    "sodium": 42.0
   },
   {
     "id": "portion26_tkpi_beef_burger_50",

@@ -2774,7 +2774,8 @@
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
     "bdd_percent": 100,
     "verification_status": "independent_source_needed",
-    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
+    "verification_note": "Kandidat FP014 pada TKPI 2020 halaman cetak 50: dendeng sapi mentah 301 kkal, protein 55 g, lemak 9 g, karbohidrat 0 g. Nama komunitas tidak menentukan mentah atau matang; nilai 433 kkal belum dapat disahkan dan tidak otomatis diganti.",
+    "nutrition_audit_date": "2026-10-07"
   },
   {
     "id": "community26_0214",
@@ -2880,7 +2881,8 @@
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
     "bdd_percent": 100,
     "verification_status": "independent_source_needed",
-    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
+    "verification_note": "Kandidat NP003 pada TKPI 2020 halaman cetak 71: Bekasang 78 kkal, protein 11,4 g, lemak 2 g, karbohidrat 3,6 g. Identitas/resep komunitas belum dipastikan; nilai 138 kkal belum dapat disahkan.",
+    "nutrition_audit_date": "2026-10-07"
   },
   {
     "id": "community26_0222",
@@ -3135,29 +3137,42 @@
     "category": "Makanan Indonesia",
     "serving": "100 g BDD",
     "calories": 316,
-    "protein": 60,
+    "protein": 60.1,
     "carbs": 22.4,
     "fat": 6.5,
     "source_type": "tkpi",
-    "source_ref": "Kementerian Kesehatan RI, Tabel Komposisi Pangan Indonesia (2020), GP039, per 100 g BDD; dicocokkan dengan transkripsi. Energi dan makronutrien tidak konsisten dan perlu konfirmasi sumber asli.",
-    "bdd_percent": 100,
+    "source_ref": "Kementerian Kesehatan RI, TKPI 2020, GP039, halaman cetak 61 (PDF 65), per 100 g BDD; energi, makro, serat, natrium dan BDD diperiksa langsung pada baris tabel.",
+    "bdd_percent": null,
     "verification_status": "printed_source_anomaly",
-    "verification_note": "Energi 316 kkal, protein 60 g, lemak 6,5 g, karbohidrat 22,4 g mengikuti GP039, tetapi energi teoritis makronutrien jauh berbeda. Belum ada errata resmi yang dikonfirmasi.",
+    "verification_note": "Angka energi dan makro sesuai PDF primer TKPI 2020, tetapi tidak konsisten dengan pemeriksaan sederhana 4–4–9. Angka tercetak dipertahankan; audit ini tidak menemukan errata resmi. Protein diperbaiki menjadi 60,1 g. Natrium dan persentase BDD kosong pada tabel, sehingga tidak dianggap nol atau 100%. Angka 320 berada di kolom retinol, bukan natrium.",
     "tkpi_code": "GP039",
     "tkpi_edition_crosschecked": 2020,
     "source": "TKPI 2020 (transkripsi), kode GP039",
     "source_url": "https://repository.kemkes.go.id/book/668",
     "source_transcription_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
     "fiber": 0,
-    "sodium": 320,
     "nutrient_source_edition": 2020,
-    "nutrient_source_method": "table_transcription_crosscheck",
-    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_source_method": "primary_pdf_row_visual_crosscheck",
+    "nutrient_source_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_basis": "per 100 g BDD",
     "aliases": [
       "tepung ikan mentah",
       "ikan tepung"
+    ],
+    "macro_verification_status": "primary_pdf_crosschecked",
+    "macro_verification_date": "2026-10-07",
+    "macro_source_url": "https://repository.kemkes.go.id/book/668",
+    "macro_primary_pdf_page": 65,
+    "macro_primary_printed_page": 61,
+    "nutrient_verification_scope": [
+      "calories",
+      "protein",
+      "fat",
+      "carbs",
+      "fiber",
+      "sodium",
+      "bdd_percent"
     ]
   },
   {
@@ -3290,7 +3305,8 @@
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
     "bdd_percent": 100,
     "verification_status": "independent_source_needed",
-    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
+    "verification_note": "Belum ditemukan sumber primer yang cocok untuk resep jagung sayur tumis ini; energi dan makro belum dapat disahkan.",
+    "nutrition_audit_date": "2026-10-07"
   },
   {
     "id": "community26_0252",
@@ -3549,10 +3565,10 @@
     "carbs": 35,
     "fat": 0.5,
     "source_type": "tkpi",
-    "source_ref": "Tabel Komposisi Pangan Indonesia 2017, kode MP009, per 100 g BDD; nilai dicocokkan dengan transkripsi publikasi.",
-    "bdd_percent": null,
+    "source_ref": "Kementerian Kesehatan RI, TKPI 2020, MP009, halaman cetak 69 (PDF 73), per 100 g BDD; energi, makro, serat, natrium dan BDD diperiksa langsung pada baris tabel.",
+    "bdd_percent": 100,
     "source": "TKPI 2017 Kemenkes RI, kode MP009",
-    "source_url": "https://repository.kemkes.go.id/book/777",
+    "source_url": "https://repository.kemkes.go.id/book/668",
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "MP009",
     "tkpi_edition": 2017,
@@ -3560,11 +3576,26 @@
     "fiber": 0,
     "sodium": 72,
     "nutrient_source_edition": 2020,
-    "nutrient_source_method": "table_transcription_crosscheck",
-    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_source_method": "primary_pdf_row_visual_crosscheck",
+    "nutrient_source_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_basis": "per 100 g BDD",
-    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata."
+    "verification_note": "Angka energi dan makro sesuai PDF primer TKPI 2020, tetapi tidak konsisten dengan pemeriksaan sederhana 4–4–9. Angka tercetak dipertahankan; audit ini tidak menemukan errata resmi.",
+    "macro_verification_status": "primary_pdf_crosschecked",
+    "macro_verification_date": "2026-10-07",
+    "macro_source_url": "https://repository.kemkes.go.id/book/668",
+    "macro_primary_pdf_page": 73,
+    "macro_primary_printed_page": 69,
+    "usage_note": "Nilai untuk bubuk/daun kering, bukan satu cangkir minuman seduhan. Gunakan data minuman siap konsumsi atau resep dengan berat bahan yang benar.",
+    "nutrient_verification_scope": [
+      "calories",
+      "protein",
+      "fat",
+      "carbs",
+      "fiber",
+      "sodium",
+      "bdd_percent"
+    ]
   },
   {
     "id": "community26_0272",
@@ -4878,7 +4909,8 @@
     "source_ref": "Dataset komunitas panjiBytes (MIT, 2026), kompilasi TKPI 2018; belum diverifikasi individual; bukan TKPI 2020 tervalidasi",
     "bdd_percent": 100,
     "verification_status": "independent_source_needed",
-    "verification_note": "Terdapat perbedaan besar antara energi dan makronutrien yang tercatat. Belum ditemukan baris TKPI 2017 yang dapat dicocokkan secara andal untuk item ini; jangan menganggap nilainya sudah terverifikasi."
+    "verification_note": "Angka sama dengan kandidat tepung ikan mentah GP039 (TKPI 2020 halaman cetak 61), yang memiliki anomali energi-makro tercetak. Entri komunitas tidak menyebut kondisi bahan; gunakan entri Ikan, tepung, mentah bila memang bahan mentah.",
+    "nutrition_audit_date": "2026-10-07"
   },
   {
     "id": "community26_0369",
@@ -5702,10 +5734,10 @@
     "carbs": 53.6,
     "fat": 4.8,
     "source_type": "tkpi",
-    "source_ref": "Tabel Komposisi Pangan Indonesia 2017, kode MP016, per 100 g BDD; nilai dicocokkan dengan transkripsi publikasi.",
-    "bdd_percent": null,
+    "source_ref": "Kementerian Kesehatan RI, TKPI 2020, MP016, halaman cetak 69 (PDF 73), per 100 g BDD; energi, makro, serat, natrium dan BDD diperiksa langsung pada baris tabel.",
+    "bdd_percent": 100,
     "source": "TKPI 2017 Kemenkes RI, kode MP016",
-    "source_url": "https://repository.kemkes.go.id/book/777",
+    "source_url": "https://repository.kemkes.go.id/book/668",
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "MP016",
     "tkpi_edition": 2017,
@@ -5713,11 +5745,26 @@
     "fiber": 9.6,
     "sodium": 60,
     "nutrient_source_edition": 2020,
-    "nutrient_source_method": "table_transcription_crosscheck",
-    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_source_method": "primary_pdf_row_visual_crosscheck",
+    "nutrient_source_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_basis": "per 100 g BDD",
-    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata."
+    "verification_note": "Angka energi dan makro sesuai PDF primer TKPI 2020, tetapi tidak konsisten dengan pemeriksaan sederhana 4–4–9. Angka tercetak dipertahankan; audit ini tidak menemukan errata resmi.",
+    "macro_verification_status": "primary_pdf_crosschecked",
+    "macro_verification_date": "2026-10-07",
+    "macro_source_url": "https://repository.kemkes.go.id/book/668",
+    "macro_primary_pdf_page": 73,
+    "macro_primary_printed_page": 69,
+    "usage_note": "Nilai untuk bubuk/daun kering, bukan satu cangkir minuman seduhan. Gunakan data minuman siap konsumsi atau resep dengan berat bahan yang benar.",
+    "nutrient_verification_scope": [
+      "calories",
+      "protein",
+      "fat",
+      "carbs",
+      "fiber",
+      "sodium",
+      "bdd_percent"
+    ]
   },
   {
     "id": "community26_0432",
@@ -5729,10 +5776,10 @@
     "carbs": 59,
     "fat": 3.5,
     "source_type": "tkpi",
-    "source_ref": "Tabel Komposisi Pangan Indonesia 2017, kode MP018, per 100 g BDD; nilai dicocokkan dengan transkripsi publikasi.",
-    "bdd_percent": null,
+    "source_ref": "Kementerian Kesehatan RI, TKPI 2020, MP018, halaman cetak 69 (PDF 73), per 100 g BDD; energi, makro, serat, natrium dan BDD diperiksa langsung pada baris tabel.",
+    "bdd_percent": 100,
     "source": "TKPI 2017 Kemenkes RI, kode MP018",
-    "source_url": "https://repository.kemkes.go.id/book/777",
+    "source_url": "https://repository.kemkes.go.id/book/668",
     "source_transcription_url": "https://id.scribd.com/document/507074682/Tabel-Komposisi-Pangan-Indonesia-2017-Dikonversi",
     "tkpi_code": "MP018",
     "tkpi_edition": 2017,
@@ -5740,11 +5787,26 @@
     "fiber": 9.7,
     "sodium": 70,
     "nutrient_source_edition": 2020,
-    "nutrient_source_method": "table_transcription_crosscheck",
-    "nutrient_source_url": "https://id.scribd.com/document/678341848/TKPI-Kemenkes-2020-Perhitungan-Gizi",
+    "nutrient_source_method": "primary_pdf_row_visual_crosscheck",
+    "nutrient_source_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_original_catalog_url": "https://repository.kemkes.go.id/book/668",
     "nutrient_basis": "per 100 g BDD",
-    "verification_note": "Energi dan makronutrien cocok dengan transkripsi TKPI 2017 dan 2020, tetapi terdapat ketidaksesuaian internal. Angka dipertahankan sambil menunggu konfirmasi halaman asli/errata."
+    "verification_note": "Angka energi dan makro sesuai PDF primer TKPI 2020, tetapi tidak konsisten dengan pemeriksaan sederhana 4–4–9. Angka tercetak dipertahankan; audit ini tidak menemukan errata resmi.",
+    "macro_verification_status": "primary_pdf_crosschecked",
+    "macro_verification_date": "2026-10-07",
+    "macro_source_url": "https://repository.kemkes.go.id/book/668",
+    "macro_primary_pdf_page": 73,
+    "macro_primary_printed_page": 69,
+    "usage_note": "Nilai untuk bubuk/daun kering, bukan satu cangkir minuman seduhan. Gunakan data minuman siap konsumsi atau resep dengan berat bahan yang benar.",
+    "nutrient_verification_scope": [
+      "calories",
+      "protein",
+      "fat",
+      "carbs",
+      "fiber",
+      "sodium",
+      "bdd_percent"
+    ]
   },
   {
     "id": "community26_0433",

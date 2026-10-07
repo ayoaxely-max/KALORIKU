@@ -12,12 +12,14 @@ function v29Quality(f){
  else if(type==='calculated')status='Konversi porsi; mengikuti kualitas data asal';
  else if(type==='tkpi'&&f.macro_verification_status==='primary_pdf_crosschecked')status='Energi dan makro dicocokkan dengan PDF primer';
  else if(type==='tkpi'&&(f.verification_status==='transcription_crosschecked_original_pending'||f.macro_verification_status==='transcription_crosschecked_original_pending'))status='Cocok dengan salinan tabel; sumber primer belum diperiksa lengkap';
- return {status,warning:bad?'Nilai gizi kosong, negatif, atau tidak valid':conflict?'Konflik sumber; perlu pemeriksaan ulang':(flagged||nutrientMismatch(f))?'Kalori dan makro berbeda dari perkiraan 4–4–9; perlu ditinjau':''};
+ const printedAnomaly=f.verification_status==='printed_source_anomaly'&&f.macro_verification_status==='primary_pdf_crosschecked';
+ if(printedAnomaly)status='Sesuai PDF primer; terdapat anomali pada angka tercetak';
+ return {status,warning:bad?'Nilai gizi kosong, negatif, atau tidak valid':conflict?'Konflik sumber; perlu pemeriksaan ulang':printedAnomaly?'Anomali energi–makro tercetak di TKPI; angka sumber dipertahankan':(flagged||nutrientMismatch(f))?'Kalori dan makro berbeda dari perkiraan 4–4–9; perlu ditinjau':''};
 }
 function v29SourceDetails(f){
  const q=v29Quality(f);let link='';
  try{const u=new URL(f.source_url);if(u.protocol==='https:'||u.protocol==='http:')link='<a target="_blank" rel="noopener noreferrer" href="'+esc(u.href)+'">Buka sumber rujukan</a>';}catch{}
- return '<details class="v29-quality"><summary>Sumber &amp; kualitas: '+esc(q.status)+'</summary><p>'+esc(f.source_ref||f.source||'Sumber rinci belum dicatat.')+'</p><p class="small muted">Dasar nilai: '+esc(f.nutrient_basis||f.serving)+'. Status ini tidak memverifikasi seluruh zat gizi atau ketepatan porsi yang dimakan.</p>'+link+'</details>'+(q.warning?'<p class="v29-warning" role="status">⚠ '+esc(q.warning)+'</p>':'');
+ return '<details class="v29-quality"><summary>Sumber &amp; kualitas: '+esc(q.status)+'</summary><p>'+esc(f.source_ref||f.source||'Sumber rinci belum dicatat.')+'</p><p class="small muted">Dasar nilai: '+esc(f.nutrient_basis||f.serving)+'. Status ini tidak memverifikasi seluruh zat gizi atau ketepatan porsi yang dimakan.</p>'+(f.verification_note?'<p>'+esc(f.verification_note)+'</p>':'')+(f.usage_note?'<p>'+esc(f.usage_note)+'</p>':'')+link+'</details>'+(q.warning?'<p class="v29-warning" role="status">⚠ '+esc(q.warning)+'</p>':'');
 }
 const v29BaseFoodCard=foodCard;
 foodCard=function(f,add=true,q=''){return v29BaseFoodCard(f,add,q)+v29SourceDetails(f);};
