@@ -1,10 +1,57 @@
 const $=id=>document.getElementById(id);const fmt=n=>Math.round(Number(n)||0).toLocaleString('id-ID');const localDate=(d=new Date())=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`};const parseDate=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};const offsetDate=(s,delta)=>{const d=parseDate(s);d.setDate(d.getDate()+delta);return localDate(d)};const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let staticFoods=[],customFoods=[],allFoods=[],logs=[],weights=[],favorites=[],packs=[],profile={sex:'male',age:30,weight:70,height:170,activity:1.375,goal:-250};let currentPage='today',historyDate=localDate(),dbSource='Semua',dbCategory='Semua',addMode='recent',installPrompt=null,scannerStream=null,scanTimer=null;
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
-function foodSearchNorm(s){return String(s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').replace(/\btelor\b/g,'telur').replace(/\bsego\b/g,'nasi').replace(/\bsambel\b/g,'sambal').replace(/\bgethuk\b/g,'getuk').replace(/\bmata sapi\b/g,'ceplok').replace(/\bmie\b/g,'mi').replace(/\bbakmie\b/g,'bakmi').replace(/\bsup\b/g,'sop').replace(/\btoge\b/g,'tauge').replace(/\btempeh\b/g,'tempe').replace(/\bcoklat\b/g,'cokelat').replace(/\bcappucino\b/g,'cappuccino').replace(/\bkwetiaw\b/g,'kwetiau').replace(/\bkrispi\b/g,'crispy').replace(/\bbaso\b/g,'bakso').trim().replace(/\s+/g,' ')}
+function foodSearchNorm(s){return String(s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').replace(/\btelor\b/g,'telur').replace(/\bsego\b/g,'nasi').replace(/\bsambel\b/g,'sambal').replace(/\bgethuk\b/g,'getuk').replace(/\bmata sapi\b/g,'ceplok').replace(/\bmie\b/g,'mi').replace(/\bbakmie\b/g,'bakmi').replace(/\bsup\b/g,'sop').replace(/\btoge\b/g,'tauge').replace(/\btempeh\b/g,'tempe').replace(/\bcoklat\b/g,'cokelat').replace(/\bcappucino\b/g,'cappuccino').replace(/\bkwetiaw\b/g,'kwetiau').replace(/\bkrispi\b/g,'crispy').replace(/\bbaso\b/g,'bakso').replace(/\bnasgor\b|\bnasi grg\b/g,'nasi goreng').replace(/\bmigor\b|\bmi grg\b/g,'mi goreng').replace(/\bgrg\b/g,'goreng').replace(/\brbs\b/g,'rebus').replace(/\baym\b/g,'ayam').trim().replace(/\s+/g,' ')}
 function foodSearchNames(f){return [f.name,...(Array.isArray(f.aliases)?f.aliases:[])].map(foodSearchNorm)}
-function foodMatches(f,q){const b=foodSearchNorm(q);if(!b)return true;const words=b.split(' ');return foodSearchNames(f).some(a=>a.includes(b)||words.every(w=>a.split(' ').includes(w)))}
-function foodMatchRank(f,q){const b=foodSearchNorm(q),main=foodSearchNorm(f.name),names=foodSearchNames(f);if(!b)return 0;if(main===b)return 0;if(main.startsWith(b))return 1;if(names.includes(b))return 2;if(names.some(a=>a.startsWith(b)))return 3;if(main.includes(b))return 4;return 5}
+// Restricted Damerau-Levenshtein: includes adjacent swapped letters.
+function foodTypoDistance(a,b,limit){
+ if(Math.abs(a.length-b.length)>limit)return limit+1;
+ let prev=Array.from({length:b.length+1},(_,i)=>i),older=null;
+ for(let i=1;i<=a.length;i++){
+  const row=[i];let min=i;
+  for(let j=1;j<=b.length;j++){
+   let n=Math.min(prev[j]+1,row[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+   if(older&&i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])n=Math.min(n,older[j-2]+1);
+   row[j]=n;min=Math.min(min,n);
+  }
+  if(min>limit)return limit+1;older=prev;prev=row;
+ }
+ return prev[b.length];
+}
+function foodSearchScore(f,q){
+ const b=foodSearchNorm(q);if(!b)return 0;
+ const signature=String(f.name)+'|'+JSON.stringify(f.aliases||[]);
+ const cache=foodSearchScore.cache||(foodSearchScore.cache=new WeakMap());let entry=cache.get(f);
+ if(!entry||entry.signature!==signature){entry={signature,names:foodSearchNames(f),query:null};cache.set(f,entry)}
+ if(entry.query===b)return entry.score;
+ const names=entry.names,main=names[0],words=b.split(' ');
+ let score=Infinity;
+ if(main===b)score=0;else if(main.startsWith(b))score=1;else if(names.includes(b))score=2;
+ else if(names.some(a=>a.startsWith(b)))score=3;else if(main.includes(b))score=4;
+ else if(names.some(a=>a.includes(b)||words.every(w=>a.split(' ').includes(w))))score=5;
+ else if(b.replace(/ /g,'').length>=5&&names.some(a=>a.replace(/ /g,'').includes(b.replace(/ /g,'')))){const compact=b.replace(/ /g,'');score=main.replace(/ /g,'')===compact?5.1:names.some(a=>a.replace(/ /g,'')===compact)?5.2:5.5;}
+ else {
+  for(const name of names){
+   const tokens=name.split(' ');let cost=0;let matched=true;
+   for(const word of words){
+    let best=Infinity;
+    for(const token of tokens){
+     if(token===word){best=0;break}
+     if(word.length>=3&&token.startsWith(word)){best=Math.min(best,.25);continue}
+     // Short words and numbers require exact spelling to avoid unrelated results.
+     if(word.length<4||token.length<4||/\d/.test(word+token))continue;
+     const limit=word.length>=7?2:1,n=foodTypoDistance(word,token,limit);
+     if(n<=limit)best=Math.min(best,n);
+    }
+    if(!Number.isFinite(best)){matched=false;break}cost+=best;
+   }
+   if(matched)score=Math.min(score,6+cost+Math.max(0,tokens.length-words.length)*.01);
+  }
+ }
+ entry.query=b;entry.score=score;return score;
+}
+function foodMatches(f,q){return Number.isFinite(foodSearchScore(f,q))}
+function foodMatchRank(f,q){return foodSearchScore(f,q)}
 function sourceLabel(t){return t==='tkpi'?'TKPI':t==='calculated'?'TKPI (konversi)':t==='label'?'Label produk':t==='openfoodfacts'?'Open Food Facts':t==='user'?'Custom':'Estimasi'}function badge(f){const t=f.source_type||f.sourceType||'estimate',cl=t==='tkpi'||t==='calculated'?'tkpi':t==='label'?'label':t==='openfoodfacts'?'off':'';return `<span class="badge ${cl}">${t==='tkpi'?(f.verification_status==='name_code_matched_macro_pending'?'TKPI (kode cocok)':f.verification_status==='matched_duplicate_code_alias'?'TKPI (alias)':f.tkpi_code?'TKPI (rujukan)':'TKPI (kode belum dicatat)'):sourceLabel(t)}</span>`}function nutrientMismatch(f){const c=Number(f.calories),p=Number(f.protein),k=Number(f.carbs),fat=Number(f.fat);if(![c,p,k,fat].every(Number.isFinite))return false;return Math.abs((p+k)*4+fat*9-c)>Math.max(30,c*.2)}
 function calcTarget(p=profile){const w=+p.weight,h=+p.height,a=+p.age;const bmr=p.sex==='male'?10*w+6.25*h-5*a+5:10*w+6.25*h-5*a-161;const tdee=bmr*(+p.activity);const cal=Math.max(1200,Math.round(tdee+(+p.goal)));const dProtein=Math.round(w*1.6),dFat=Math.round(cal*.27/9),dCarb=Math.max(0,Math.round((cal-dProtein*4-dFat*9)/4)),m=p.macroTargets||{};const safe=(v,d,max)=>v===undefined||v===null||v===''?d:Math.max(0,Math.min(max,Number(v)||0));const protein=safe(m.protein,dProtein,600),fat=safe(m.fat,dFat,300),carb=safe(m.carb,dCarb,900);return{bmr:Math.round(bmr),tdee:Math.round(tdee),cal,protein,fat,carb}}
 function total(a){return a.reduce((x,l)=>({cal:x.cal+l.calories*l.qty,p:x.p+l.protein*l.qty,c:x.c+l.carbs*l.qty,f:x.f+l.fat*l.qty}),{cal:0,p:0,c:0,f:0})}
