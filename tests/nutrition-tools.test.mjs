@@ -34,7 +34,7 @@ test('photo conflicts select a coherent photo and component log group',()=>{
  const a=snapshot(),b=snapshot();a.mealPhotos=[{id:'photo',items:[{qty:1}]}];b.mealPhotos=[{id:'photo',items:[{qty:2}]}];a.logs=[{id:'x',mealPhotoId:'photo',qty:1}];b.logs=[{id:'x',mealPhotoId:'photo',qty:2},{id:'y',mealPhotoId:'photo',qty:3}];const r=tools.merge(a,b);assert.equal(r.snapshot.logs.length,1);assert.equal(r.snapshot.logs[0].qty,1);assert.equal(tools.merge(a,b,'cloud').snapshot.logs.length,2);
 });
 test('all new assets are in the offline shell and backup paths include custom measures',()=>{
- const sw=fs.readFileSync('sw.js','utf8');for(const p of ['nutrition-tools.js','v24.js','db.js?v=2.8.0'])assert.ok(sw.includes(p));
+ const sw=fs.readFileSync('sw.js','utf8');for(const p of ['nutrition-tools.js','v24.js','db.js?v=2.8.1'])assert.ok(sw.includes(p));
  for(const f of ['v20.js','v17.js'])assert.ok(fs.readFileSync(f,'utf8').includes('foodMeasures'));
 });
 test('deletion markers suppress stale records in either direction and undo supersedes deletion',()=>{

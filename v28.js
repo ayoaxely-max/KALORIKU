@@ -31,15 +31,16 @@ function v28OfferUpdate(worker){
  if(!worker||!navigator.serviceWorker?.controller)return;
  v28WaitingWorker=worker;$('v28UpdateNotice').classList.remove('hidden');$('v28ApplyUpdate').disabled=false;
 }
+function v28HasOpenForm(){return [...document.querySelectorAll('dialog')].some(d=>d.open)||!!document.querySelector('.v28-measure[open]');}
 function v28ApplyUpdate(){
  if(!v28WaitingWorker)return;
- const dialog=[...document.querySelectorAll('dialog')].some(d=>d.open);
+ const dialog=v28HasOpenForm();
  if(dialog||v20Busy||v17Restoring){toast('Selesaikan atau tutup formulir dan proses sinkronisasi sebelum memperbarui.');return}
  v28UpdateRequested=true;$('v28ApplyUpdate').disabled=true;v28WaitingWorker.postMessage({type:'SKIP_WAITING'});
 }
 function v28ControllerChanged(){
  if(v28UpdateRequested&&!v28Reloaded){v28Reloaded=true;location.reload();}
- else if(!v28UpdateRequested){$('v28UpdateNotice').classList.remove('hidden');$('v28UpdateText').textContent='Aplikasi diperbarui dari tab lain. Muat ulang setelah menyelesaikan formulir.';$('v28ApplyUpdate').onclick=()=>{if([...document.querySelectorAll('dialog')].some(d=>d.open)||v20Busy||v17Restoring){toast('Tutup formulir dan selesaikan proses sebelum memuat ulang.');return}location.reload();};}
+ else if(!v28UpdateRequested){$('v28UpdateNotice').classList.remove('hidden');$('v28UpdateText').textContent='Aplikasi diperbarui dari tab lain. Muat ulang setelah menyelesaikan formulir.';$('v28ApplyUpdate').onclick=()=>{if(v28HasOpenForm()||v20Busy||v17Restoring){toast('Tutup formulir dan selesaikan proses sebelum memuat ulang.');return}location.reload();};}
 }
 registerSW=async function(){
  if(!('serviceWorker' in navigator))return;

@@ -53,7 +53,7 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E(`v28WaitingWorker={postMessage:()=>{window.updateMessageCount=(window.updateMessageCount||0)+1}};v20Busy=false;v17Restoring=false;`);
  for(const d of w.document.querySelectorAll('dialog'))d.open=false;
  w.document.getElementById('addDialog').open=true;E('v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);
- w.document.getElementById('addDialog').open=false;E('v20Busy=true;v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);
+ w.document.getElementById('addDialog').open=false;const openMeasure=w.document.querySelector('.v28-measure');openMeasure.open=true;E('v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);openMeasure.open=false;E('v20Busy=true;v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);
  E('v20Busy=false;v28ApplyUpdate()');assert.equal(w.updateMessageCount,1);assert.equal(E('v28UpdateRequested'),true);
  const sw=fs.readFileSync('sw.js','utf8');assert.ok(sw.includes("event.data?.type==='SKIP_WAITING'"));assert.ok(!sw.slice(sw.indexOf("self.addEventListener('install'"),sw.indexOf("self.addEventListener('message'")).includes('skipWaiting'));
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();

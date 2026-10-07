@@ -7,3 +7,5 @@ Ringkasan 7 hari ditambah rerata protein, perubahan berat badan dari dua tanggal
 Service worker baru menunggu pengguna memilih Perbarui sekarang. Formulir terbuka, pemulihan backup, atau sinkronisasi berjalan memblokir pembaruan. Pilihan Nanti menyembunyikan pemberitahuan; Periksa pembaruan di Profil dapat menampilkannya kembali. Tab lain menerima pemberitahuan muat ulang tanpa memaksa membuang formulir. Versi sebelum 2.8.0 perlu dibuka ulang satu kali untuk memuat kontrol baru; mekanisme menunggu klik berlaku sesudahnya. IndexedDB tidak dihapus saat pembaruan.
 
 Regresi: seluruh tes unit serta integrasi DOM/IndexedDB, termasuk takaran langsung, rerata hanya hari tercatat (dengan contoh nol yang valid), protein/BB mingguan, dan blokir pembaruan saat dialog atau sinkronisasi aktif.
+
+Perbaikan 2.8.1: formulir takaran yang terbuka langsung pada kartu juga memblokir pembaruan, sehingga isian belum tersimpan tidak hilang.
