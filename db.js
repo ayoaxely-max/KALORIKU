@@ -41,3 +41,17 @@ async function dbClear(store){
  const items=await dbAll(store);return dbDeleteMany(items.map(x=>({store,key:store==='kv'?x.key:store==='weights'?x.date:x.id})));
 }
 async function dbLogsByDate(date){return new Promise(async(res,rej)=>{const s=await tx('logs');const r=s.index('date').getAll(IDBKeyRange.only(date));r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+// Review and save a copied menu atomically, including a source-record guard.
+async function dbPutLogsReviewed(entries,sources){
+ const d=await dbOpen();
+ return new Promise((resolve,reject)=>{
+  const t=d.transaction(['logs','kv'],'readwrite'),s=t.objectStore('logs');
+  t.oncomplete=()=>{window.dispatchEvent(new Event('kaloriku:datachanged'));resolve();};t.onabort=()=>reject(t.error||Error('Catatan asal berubah'));t.onerror=()=>{};
+  try{
+   for(const old of sources){const request=s.get(old.id);request.onsuccess=()=>{if(NutritionTools.canonical(request.result)!==NutritionTools.canonical(old))t.abort();};}
+   for(const entry of entries)s.add(entry);
+   v25WriteDeletionStates(t,entries.map(l=>({field:'logs',key:l.id,deleted:false})));
+   const kv=t.objectStore('kv'),revision=kv.get('v24DataRevision');revision.onsuccess=()=>kv.put({key:'v24DataRevision',value:(Number(revision.result?.value)||0)+1});
+  }catch(e){t.abort();reject(e);}
+ });
+}

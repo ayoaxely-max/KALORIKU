@@ -5,7 +5,7 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
  w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({},{get:()=>()=>{}});w.fetch=async url=>{if(String(url).startsWith('./'))return {ok:true,json:async()=>JSON.parse(fs.readFileSync(String(url).slice(2),'utf8'))};throw Error('External request not mocked');};
  const errors=[];w.addEventListener('error',e=>errors.push(e.message));
- for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js'])E(fs.readFileSync(f,'utf8'));
+ for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js','v29.js'])E(fs.readFileSync(f,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
  for(let i=0;i<100&&!E('allFoods.length>2000');i++)await new Promise(r=>setTimeout(r,10));assert.equal(E('allFoods.length>2000'),true);
  await E(`(async()=>{v24OpenMeasure(allFoods.find(f=>f.name==='Tempe garit goreng').id);$('v24MeasureFields').querySelector('[data-measure="potong"]').value='60';await v24SaveMeasure({preventDefault(){}});})()`);
@@ -56,5 +56,24 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  w.document.getElementById('addDialog').open=false;const openMeasure=w.document.querySelector('.v28-measure');openMeasure.open=true;E('v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);openMeasure.open=false;E('v20Busy=true;v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);
  E('v20Busy=false;v28ApplyUpdate()');assert.equal(w.updateMessageCount,1);assert.equal(E('v28UpdateRequested'),true);
  const sw=fs.readFileSync('sw.js','utf8');assert.ok(sw.includes("event.data?.type==='SKIP_WAITING'"));assert.ok(!sw.slice(sw.indexOf("self.addEventListener('install'"),sw.indexOf("self.addEventListener('message'")).includes('skipWaiting'));
+ // Provenance cannot promote unverified TKPI or recipes into verified data.
+ assert.match(E("v29Quality({source_type:'tkpi',calories:100,protein:0,carbs:25,fat:0}).status"),/Belum diverifikasi/);
+ assert.match(E("v29Quality({source_type:'tkpi',macro_verification_status:'primary_pdf_crosschecked',calories:100,protein:0,carbs:25,fat:0}).status"),/Energi dan makro/);
+ assert.match(E("v29Quality({source_type:'estimate',calories:500,protein:0,carbs:0,fat:0}).warning"),/4–4–9/);
+ assert.match(E("v29Quality({source_type:'label',calories:null,protein:0,carbs:0,fat:0}).warning"),/tidak valid/);
+ assert.equal(E("v29SourceDetails({source_url:'javascript:alert(1)',name:'x'}).includes('href=')"),false);
+ E(`$('foodSearch').value='tleur goreng';renderAddResults();`);
+ const suggestion=w.document.querySelector('#addResults .v29-suggestions button');assert.ok(suggestion);
+ const suggestionCount=E('logs.length');suggestion.click();assert.equal(E('logs.length'),suggestionCount);assert.equal(w.document.querySelector('#addResults .v29-suggestions'),null);
+ const favId=E('allFoods[0].id');await E('toggleFav(allFoods[0].id)');assert.ok((await E("dbGetKV('favorites')")).includes(favId));
+ const favCount=E('logs.length');w.document.querySelector('#v29Favorites button').click();assert.equal(E('logs.length'),favCount);assert.equal(E("$('qtyInput').value"),'1');
+ await E(`(async()=>{const f=allFoods[0];const l={id:'copy-source',date:offsetDate(localDate(),-1),meal:'Sarapan',foodId:f.id,name:f.name,serving:f.serving,qty:1,calories:f.calories,protein:f.protein,carbs:f.carbs,fat:f.fat,createdAt:1};await dbPut('logs',l);logs.push(l);const photo={...l,id:'copy-photo-source',mealPhotoId:'photo-copy'};await dbPut('logs',photo);logs.push(photo);})()`);
+ const copyCount=E('logs.length');E('copyYesterday()');assert.equal(E('logs.length'),copyCount);assert.equal(w.document.querySelectorAll('#v29CopyRows > div').length,1);assert.match(w.document.getElementById('v29CopyNote').textContent,/1 item terkait foto/);
+ E("$('v29CopyDialog').close()");assert.equal(E('logs.length'),copyCount);
+ E('copyYesterday()');w.document.querySelector('[data-copy-qty]').value='2.5';
+ await E('v29SaveCopy({preventDefault(){}})');assert.equal(E('logs.length'),copyCount+1);assert.equal(E('logs.at(-1).qty'),2.5);assert.equal(E('logs.at(-1).date'),E('localDate()'));assert.equal(E('logs.at(-1).mealPhotoId'),undefined);
+ const copied=await E('v20Snapshot()');assert.deepEqual(Array.from(E('v17ValidateBackup').call(null,copied).errors),[]);
+ E('copyYesterday()');await E(`dbPut('logs',{...v29CopyDraft[0],qty:7})`);const preStale=await E("dbAll('logs')");await E('v29SaveCopy({preventDefault(){}})');assert.equal((await E("dbAll('logs')")).length,preStale.length);assert.equal(w.document.getElementById('v29CopyDialog').open,true);
+ assert.equal(E('logs.length'),copyCount+1);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
