@@ -187,14 +187,17 @@ function v17SetBackupPreview(message,type='info'){
 }
 async function v17OpenRestorePreview(file){
  if(!file)return;
+ if(v17Restoring){toast('Tunggu pemulihan selesai sebelum membuka file lain.');return;}
  const picker=$('restoreFile');if(picker)picker.value='';
  v17PendingBackup=null;
+ const previewSequence=++v210RestoreSequence;v210RestoreRevision=null;$('v210RestoreDiff').replaceChildren();
  $('v17RestoreConfirm').disabled=true;
  $('v17RestoreDetails').textContent='Membaca dan memeriksa file…';
  $('v17RestoreDialog').showModal();
  try{
   if(file.size>300*1024*1024)throw Error('Ukuran file lebih dari 300 MB');
   const x=JSON.parse(await file.text()),check=v17ValidateBackup(x);
+  if(previewSequence!==v210RestoreSequence||!$('v17RestoreDialog').open)return;
   const parts=[
    'File: '+file.name,
    'Versi backup: '+(x.version??'?'),
@@ -206,16 +209,19 @@ async function v17OpenRestorePreview(file){
   ];
   $('v17RestoreDetails').textContent=parts.join('\n');
   if(check.errors.length){v17SetBackupPreview('Pemulihan dibatalkan: '+check.errors.join(' • '),'error');return}
+  const current=await v20Snapshot(),revision=v24SnapshotRevision;
+  if(previewSequence!==v210RestoreSequence||!$('v17RestoreDialog').open)return;
+  v210RenderRestoreDiff(current,x);v210RestoreRevision=revision;
   v17PendingBackup=x;
   v17SetBackupPreview((check.warnings.length?check.warnings.join(' ' )+' ':'')+
    'Pemulihan akan MENGGANTI riwayat makanan, foto, produk sendiri, berat, dan profil yang ada. '+
    'Pengaturan AI tidak dihapus. Buat backup saat ini terlebih dahulu jika belum.','info');
   $('v17RestoreConfirm').disabled=false;
- }catch(e){v17SetBackupPreview('Tidak bisa membaca backup: '+String(e.message||e),'error')}
+ }catch(e){if(previewSequence!==v210RestoreSequence)return;v17SetBackupPreview('Tidak bisa membaca backup: '+String(e.message||e),'error')}
 }
 async function v17ExecuteRestore(){
  if(v17Restoring||!v17PendingBackup)return;
- const x=v17PendingBackup,check=v17ValidateBackup(x);
+ const x=v17PendingBackup,check=v17ValidateBackup(x),reviewedRevision=v24RestoreRevision??v210RestoreRevision;
  if(check.errors.length){v17SetBackupPreview(check.errors.join(' • '),'error');return}
  v17Restoring=true;$('v17RestoreConfirm').disabled=true;
  v17SetBackupPreview('Mempersiapkan foto, lalu memulihkan secara aman…');
@@ -242,7 +248,7 @@ async function v17ExecuteRestore(){
    const applyRestore=()=>{
    try{
     const currentRevision=Number(guard.result?.value)||0;
-    if(v24RestoreRevision!==null&&currentRevision!==v24RestoreRevision)throw Error('Data lokal berubah. Tinjau ulang penggabungan.');
+    if(reviewedRevision!==null&&currentRevision!==reviewedRevision)throw Error('Data lokal berubah. Buka ulang pratinjau backup atau penggabungan.');
     transaction.objectStore('kv').put({key:'v24DataRevision',value:currentRevision+1});
     for(const k of stores.slice(0,4))transaction.objectStore(k).clear();
     for(const l of x.logs)transaction.objectStore('logs').put(l);

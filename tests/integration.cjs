@@ -3,9 +3,10 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  const dom=new JSDOM(fs.readFileSync('index.html','utf8').replace(/<script[^>]*><\/script>/g,''),{url:'https://test.local/',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;const E=code=>require('vm').runInContext(code,dom.getInternalVMContext());await new Promise(r=>w.addEventListener('load',r));
  w.indexedDB=fidb.indexedDB;w.IDBKeyRange=fidb.IDBKeyRange;w.TextEncoder=TextEncoder;w.TextDecoder=TextDecoder;w.structuredClone=structuredClone;Object.defineProperty(w,'crypto',{value:webcrypto});w.isSecureContext=true;w.matchMedia=()=>({matches:false});
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
+ w.HTMLElement.prototype.scrollIntoView=function(){};
  w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({},{get:()=>()=>{}});w.fetch=async url=>{if(String(url).startsWith('./'))return {ok:true,json:async()=>JSON.parse(fs.readFileSync(String(url).slice(2),'utf8'))};throw Error('External request not mocked');};
  const errors=[];w.addEventListener('error',e=>errors.push(e.message));
- for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js','v29.js'])E(fs.readFileSync(f,'utf8'));
+ for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js','v29.js','v210.js'])E(fs.readFileSync(f,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
  for(let i=0;i<100&&!E('allFoods.length>2000');i++)await new Promise(r=>setTimeout(r,10));assert.equal(E('allFoods.length>2000'),true);
  await E(`(async()=>{v24OpenMeasure(allFoods.find(f=>f.name==='Tempe garit goreng').id);$('v24MeasureFields').querySelector('[data-measure="potong"]').value='60';await v24SaveMeasure({preventDefault(){}});})()`);
@@ -75,5 +76,26 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  const copied=await E('v20Snapshot()');assert.deepEqual(Array.from(E('v17ValidateBackup').call(null,copied).errors),[]);
  E('copyYesterday()');await E(`dbPut('logs',{...v29CopyDraft[0],qty:7})`);const preStale=await E("dbAll('logs')");await E('v29SaveCopy({preventDefault(){}})');assert.equal((await E("dbAll('logs')")).length,preStale.length);assert.equal(w.document.getElementById('v29CopyDialog').open,true);
  assert.equal(E('logs.length'),copyCount+1);
+ // Editing a recipe replaces its catalog entry and preserves recorded intake.
+ E(`$('v29CopyDialog').close();for(const d of document.querySelectorAll('dialog'))d.open=false;`);
+ const recipeBefore=E(`structuredClone(customFoods.find(f=>f.name==='Resep uji'))`),oldLog=E('structuredClone(logs.find(l=>l.foodId===customFoods.find(f=>f.name==="Resep uji").id))');
+ const foodCount=E('customFoods.length');E(`v15EditProduct(customFoods.find(f=>f.name==='Resep uji').id);$('v24RecipePortions').value='4';$('v24CookedWeight').value='100';`);
+ assert.equal(w.document.getElementById('v24RecipeDialog').open,true);await E('v24SaveRecipe({preventDefault(){}})');
+ const edited=await E(`dbAll('customFoods')`),editedRecipe=edited.find(f=>f.id===recipeBefore.id);assert.equal(E('customFoods.length'),foodCount);assert.equal(editedRecipe.calories,recipeBefore.calories/2);assert.equal(editedRecipe.servingGrams,25);
+ assert.deepEqual(JSON.parse(JSON.stringify(E('logs.find(l=>l.id==="'+oldLog.id+'")'))),JSON.parse(JSON.stringify(oldLog)));
+ E(`v210OpenRecipe(customFoods.find(f=>f.name==='Resep uji').id);`);await E(`dbPut('customFoods',{...v210RecipeOriginal,name:'Changed elsewhere'})`);await E('v24SaveRecipe({preventDefault(){}})');assert.equal(w.document.getElementById('v24RecipeDialog').open,true);assert.match(w.document.getElementById('v24RecipePreview').textContent,/buka ulang/);
+ E(`$('v24RecipeDialog').close();`);
+ // Comparison reflects replacement semantics and legacy fields that stay intact.
+ const diff=E(`v210RestoreDiff({logs:[{id:'a',qty:1},{id:'b',qty:1}],customFoods:[],weights:[],favorites:['a'],packs:[],foodMeasures:{a:{butir:10}},waterRecords:{'2026-10-01':500},profile:{age:30},waterGoal:2000},{logs:[{id:'a',qty:2},{id:'c',qty:1}],customFoods:[],weights:[],favorites:[],profile:{age:40}})`);
+ assert.deepEqual(JSON.parse(JSON.stringify(diff.rows[0])),{label:'Catatan makanan',added:1,changed:1,removed:1,same:0});assert.equal(diff.rows.find(r=>r.label==='Hari catatan air').kept,true);assert.equal(diff.rows.find(r=>r.label==='Takaran pribadi').removed,1);assert.equal(diff.profileChanged,true);assert.equal(diff.waterGoalKept,true);
+ const restoreSnapshot=await E('v20Snapshot()');w.reviewFile={name:'test-backup.json',size:100,text:async()=>JSON.stringify(restoreSnapshot)};
+ await E('v17OpenRestorePreview(window.reviewFile)');assert.ok(E('v210RestoreRevision!==null'));assert.match(w.document.getElementById('v210RestoreDiff').textContent,/TambahUbahHapusSama/);
+ const manualBefore=await E(`(async()=>{await dbPut('logs',{...logs[0],id:'new-after-manual-preview'});return (await dbAll('logs')).length;})()`);await E('v17ExecuteRestore()');assert.equal((await E("dbAll('logs')")).length,manualBefore);assert.match(w.document.getElementById('v17RestoreMessage').textContent,/Data lokal berubah/);
+ E(`$('v17RestoreDialog').close()`);assert.equal(E('v210RestoreRevision'),null);
+ // Closing while a file is being read cannot re-enable an obsolete preview.
+ w.delayedFile={name:'delayed.json',size:100,text:()=>new Promise(resolve=>{w.finishFile=()=>resolve(JSON.stringify(restoreSnapshot))})};const pendingReview=E('v17OpenRestorePreview(window.delayedFile)');E(`$('v17RestoreDialog').close()`);w.finishFile();await pendingReview;assert.equal(E('v17PendingBackup'),null);assert.equal(w.document.getElementById('v17RestoreConfirm').disabled,true);
+ E('v210ApplyTextSize("1.3")');assert.equal(w.document.documentElement.style.fontSize,'20.8px');E('v210ApplyTextSize("99")');assert.equal(w.document.documentElement.style.fontSize,'16px');
+ const css=fs.readFileSync('styles.css','utf8');assert.ok(css.includes('min-height:44px'));assert.ok(css.includes('var(--v210-viewport-height'));assert.equal(w.document.getElementById('toast').getAttribute('aria-live'),'polite');
+ Object.defineProperty(w,'visualViewport',{configurable:true,value:{height:300}});E("$('v24RecipeDialog').showModal()");w.document.getElementById('v24RecipeName').focus();E('v210Viewport()');assert.equal(w.document.body.classList.contains('v210-keyboard'),true);w.document.getElementById('v24RecipeName').blur();E('v210Viewport()');assert.equal(w.document.body.classList.contains('v210-keyboard'),false);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
