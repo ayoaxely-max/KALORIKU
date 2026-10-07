@@ -10,7 +10,7 @@ on:
       - 'index.html'
       - 'data/*.json'
       - 'scripts/audit-foods.cjs'
-      - 'docs/TKPI_MACRO_AUDIT_97_2026-10-06.json'
+      - 'docs/*AUDIT*.json'
       - '.github/workflows/audit-foods.yml'
   pull_request:
     paths:
@@ -22,7 +22,7 @@ on:
       - 'index.html'
       - 'data/*.json'
       - 'scripts/audit-foods.cjs'
-      - 'docs/TKPI_MACRO_AUDIT_97_2026-10-06.json'
+      - 'docs/*AUDIT*.json'
       - '.github/workflows/audit-foods.yml'
   workflow_dispatch:
 

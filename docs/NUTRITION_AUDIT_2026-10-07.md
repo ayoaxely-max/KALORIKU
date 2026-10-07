@@ -1,4 +1,4 @@
-# Audit data gizi — 7 Oktober 2026 (2.10.1)
+# Audit data gizi — 7 Oktober 2026 (2.10.2)
 
 Audit struktur mencakup 2.678 entri dan 432 konversi porsi. Pemeriksaan visual PDF primer dibatasi pada tujuh baris TKPI yang ditandai pemeriksaan energi–makro. Ini bukan pengesahan seluruh katalog; 1.986 entri tetap berjenis estimasi.
 
@@ -30,3 +30,5 @@ Antarmuka menampilkan catatan audit, membedakan anomali tercetak dari estimasi y
 Hasil quality gate: 0 kesalahan struktur/konversi, 11 penanda gizi (7 anomali tercetak, 4 estimasi belum disahkan). Sebanyak 16 peringatan katalog adalah 15 nama setara dan 1 alias kode; angka itu bukan jumlah masalah gizi. Lulus gate tidak membuktikan semua nilai gizi akurat.
 
 Validasi: audit katalog, 26 unit test, dan suite integrasi (termasuk tampilan anomali primer dan escaping catatan sumber).
+
+Pemeriksaan aplikasi live menemukan cache HTTP mempertahankan katalog lama setelah versi shell berubah. Versi 2.10.2 memakai `cache: reload` saat memuat tujuh katalog dan memasang shell service worker agar browser memeriksa data terbaru; cache offline tetap tersedia bila jaringan gagal.

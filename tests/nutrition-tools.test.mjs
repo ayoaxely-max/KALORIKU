@@ -35,6 +35,8 @@ test('photo conflicts select a coherent photo and component log group',()=>{
 });
 test('all new assets are in the offline shell and backup paths include custom measures',()=>{
  const sw=fs.readFileSync('sw.js','utf8'),version=JSON.parse(fs.readFileSync('package.json','utf8')).version;for(const p of ['nutrition-tools.js','v24.js','db.js?v='+version])assert.ok(sw.includes(p));
+ assert.ok(sw.includes("new Request(url,{cache:'reload'})"));
+ const catalogLoads=fs.readFileSync('app.js','utf8').match(/fetch\('\.\/data\/foods[^']*\.json',\{cache:'reload'\}\)/g);assert.equal(catalogLoads.length,7);
  for(const f of ['v20.js','v17.js'])assert.ok(fs.readFileSync(f,'utf8').includes('foodMeasures'));
 });
 test('deletion markers suppress stale records in either direction and undo supersedes deletion',()=>{
