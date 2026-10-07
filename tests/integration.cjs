@@ -5,7 +5,7 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
  w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({},{get:()=>()=>{}});w.fetch=async url=>{if(String(url).startsWith('./'))return {ok:true,json:async()=>JSON.parse(fs.readFileSync(String(url).slice(2),'utf8'))};throw Error('External request not mocked');};
  const errors=[];w.addEventListener('error',e=>errors.push(e.message));
- for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js'])E(fs.readFileSync(f,'utf8'));
+ for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js'])E(fs.readFileSync(f,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
  for(let i=0;i<100&&!E('allFoods.length>2000');i++)await new Promise(r=>setTimeout(r,10));assert.equal(E('allFoods.length>2000'),true);
  await E(`(async()=>{v24OpenMeasure(allFoods.find(f=>f.name==='Tempe garit goreng').id);$('v24MeasureFields').querySelector('[data-measure="potong"]').value='60';await v24SaveMeasure({preventDefault(){}});})()`);
@@ -38,5 +38,23 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  const previousUpload=uploadState.state.lastUpload;
  await E(`(async()=>{v20Api=async()=>{throw Error('Network test failure')};await v20Upload();})()`);assert.equal((await E("dbGetKV('v27SyncActivity:test')")).lastUpload,previousUpload);
  E(`v20AccountId='other-account';`);await E('v27RenderSync()');assert.match(w.document.getElementById('v27SyncActivity').textContent,/Belum ada unggahan/);assert.doesNotMatch(w.document.getElementById('v27SyncActivity').textContent,/Hasil gabungan/);
+
+ // Inline measures persist and keep the other personal units.
+ E(`$('dbSearch').value='Telur rebus';renderDatabase();`);
+ const measureBox=w.document.querySelector('#dbResults .v28-measure');assert.ok(measureBox);
+ const measureId=measureBox.dataset.food;
+ measureBox.querySelector('[data-v28unit]').value='butir';measureBox.querySelector('[data-v28grams]').value='55';await E('v28SaveInline(document.querySelector("#dbResults .v28-measure"))');
+ assert.equal((await E("dbGetKV('foodMeasures')"))[measureId].butir,55);
+ const weekly=E(`v28WeeklyData([{date:localDate(),qty:1,calories:0,protein:0,carbs:0,fat:0},{date:offsetDate(localDate(),-1),qty:2,calories:100,protein:10,carbs:0,fat:0}],[{date:offsetDate(localDate(),-6),weight:70},{date:localDate(),weight:69}])`);
+ assert.equal(weekly.recorded,2);assert.equal(weekly.calories,100);assert.equal(weekly.protein,10);assert.equal(weekly.weightChange,-1);assert.equal(weekly.days.filter(d=>!d.recorded).length,5);
+ assert.equal(E('v28WeeklyData([],[]).calories'),null);assert.equal(E('v28WeeklyData([],[]).weightChange'),null);
+ E('renderStats()');assert.match(w.document.getElementById('v15WeeklySummary').textContent,/Belum dicatat/);assert.match(w.document.getElementById('v15WeeklySummary').textContent,/Rerata protein/);assert.match(w.document.getElementById('avg7').textContent,/hari tercatat/);
+ // Pending updates require a click, and a form or cloud operation blocks reload.
+ E(`v28WaitingWorker={postMessage:()=>{window.updateMessageCount=(window.updateMessageCount||0)+1}};v20Busy=false;v17Restoring=false;`);
+ for(const d of w.document.querySelectorAll('dialog'))d.open=false;
+ w.document.getElementById('addDialog').open=true;E('v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);
+ w.document.getElementById('addDialog').open=false;E('v20Busy=true;v28ApplyUpdate()');assert.equal(w.updateMessageCount,undefined);
+ E('v20Busy=false;v28ApplyUpdate()');assert.equal(w.updateMessageCount,1);assert.equal(E('v28UpdateRequested'),true);
+ const sw=fs.readFileSync('sw.js','utf8');assert.ok(sw.includes("event.data?.type==='SKIP_WAITING'"));assert.ok(!sw.slice(sw.indexOf("self.addEventListener('install'"),sw.indexOf("self.addEventListener('message'")).includes('skipWaiting'));
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
