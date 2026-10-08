@@ -5,10 +5,10 @@ function recapShift(month,delta){
 }
 function recapData(month){
  if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)||Number(month.slice(0,4))<1000||month>localDate().slice(0,7))return null;
- const end=recapShift(month,1)+'-01',days=[];
+ const end=recapShift(month,1)+'-01',days=[],waterByDate=new Map(v17MonthWaterEntries(month));
  for(let date=month+'-01';date<end&&date<=localDate();date=offsetDate(date,1)){
   const items=logs.filter(l=>l.date===date),sum=total(items);
-  const water=Object.hasOwn(v15WaterRecords,date)?Number(v15WaterRecords[date]):null;
+  const water=waterByDate.get(date)??null;
   const weight=weights.find(w=>w.date===date)?.weight??null;
   days.push({date,cal:items.length?sum.cal:null,protein:items.length?sum.p:null,water,weight});
  }

@@ -39,6 +39,12 @@ function v17SumKnown(entries,key){
   if(v17Numeric(e[key])&&v17Numeric(e.qty)){sum+=e[key]*e.qty;count++}
  }return {sum,count,total:entries.length};
 }
+// Shared with dashboard recap: explicit zero is recorded; missing/future dates are excluded.
+function v17MonthWaterEntries(month){
+ return Object.entries(v15WaterRecords).filter(([date,value])=>
+  date.startsWith(month+'-')&&v17BackupCheckDate(date)&&date<=localDate()&&
+  typeof value==='number'&&Number.isFinite(value)&&value>=0);
+}
 function v17MonthReport(month){
  if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(month))return null;
  const entries=logs.filter(x=>x.date?.startsWith(month+'-'));
@@ -49,8 +55,7 @@ function v17MonthReport(month){
   const kcal=total(entries.filter(l=>l.date===d)).cal;
   return Math.abs(kcal-calTarget)<=calTarget*.15;
  }).length;
- const waters=Object.entries(v15WaterRecords)
-  .filter(([d,value])=>d.startsWith(month+'-')&&Number(value)>0);
+ const waters=v17MonthWaterEntries(month);
  const waterSum=waters.reduce((a,[,v])=>a+Number(v),0);
  const ws=weights.filter(x=>x.date?.startsWith(month+'-')).sort((a,b)=>a.date.localeCompare(b.date));
  const extras=Object.fromEntries(V17_FIELDS.map(f=>[f.key,v17SumKnown(entries,f.key)]));

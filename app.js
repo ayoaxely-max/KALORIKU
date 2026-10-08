@@ -122,10 +122,10 @@ async function backup(){try{const data=await v20Snapshot();download(`KaloriKu_ba
  }
  download('KaloriKu_'+localDate()+'.csv','text/csv;charset=utf-8','\ufeff'+lines.join('\n'));
 }
-let barcodeRequest=null,barcodeSession=0,barcodeBusy=false,barcodeProductName='';
+let barcodeRequest=null,barcodeSession=0,barcodeBusy=false,barcodeProductName='',barcodeLookupCode='',barcodeFallbackCode='';
 function barcodeStatus(text){$('scanStatus').textContent=text;}
 function barcodeFallback(code,text,name=''){
- barcodeProductName=name;$('manualBarcode').value=code;$('customBarcode').value=code;
+ barcodeProductName=name;barcodeFallbackCode=code;$('manualBarcode').value=code;$('customBarcode').value=code;
  barcodeStatus('Barcode '+code+' · '+text);$('barcodeAddLabel').classList.remove('hidden');
 }
 function barcodeStopCamera(){
@@ -135,7 +135,7 @@ function barcodeStopCamera(){
 }
 async function startScanner(){
  stopScanner();if(!window.isSecureContext){toast('Scanner kamera membutuhkan HTTPS');return}
- $('scannerDialog').showModal();$('barcodeAddLabel').classList.add('hidden');barcodeProductName='';
+ $('scannerDialog').showModal();$('barcodeAddLabel').classList.add('hidden');barcodeProductName='';barcodeFallbackCode='';barcodeLookupCode='';
  barcodeStatus('Arahkan kamera ke barcode produk, atau ketik nomornya di bawah.');
  const session=barcodeSession;
  try{
@@ -163,6 +163,7 @@ function stopScanner(){
 }
 async function lookupBarcode(raw){
  const code=String(raw||'').replace(/\s+/g,'');
+ barcodeRequest?.abort();barcodeRequest=null;barcodeBusy=false;$('manualLookup').disabled=false;barcodeProductName='';barcodeFallbackCode='';barcodeLookupCode=code;
  if(!/^\d{8,14}$/.test(code)){$('barcodeAddLabel').classList.add('hidden');barcodeStatus('Masukkan nomor barcode 8–14 digit yang tercetak di kemasan.');return}
  barcodeRequest?.abort();const controller=new AbortController();barcodeRequest=controller;barcodeBusy=true;
  const session=barcodeSession;barcodeStopCamera();$('manualBarcode').value=code;barcodeProductName='';
@@ -186,8 +187,10 @@ async function lookupBarcode(raw){
    return;
   }
   const name=product.product_name?(product.product_name+(product.brands?' · '+product.brands:'')):'';
-  const n=product.nutriments||{},suffix=product.serving_size&&Number.isFinite(n['energy-kcal_serving'])?'_serving':'_100g';
-  const values=['energy-kcal','proteins','carbohydrates','fat'].map(k=>n[k+suffix]);
+  const n=product.nutriments||{},keys=['energy-kcal','proteins','carbohydrates','fat'];
+  const complete=suffix=>keys.every(k=>typeof n[k+suffix]==='number'&&Number.isFinite(n[k+suffix])&&n[k+suffix]>=0);
+  const suffix=product.serving_size&&complete('_serving')?'_serving':'_100g';
+  const values=keys.map(k=>n[k+suffix]);
   if(!name||values.some(v=>typeof v!=='number'||!Number.isFinite(v)||v<0)){
    barcodeFallback(code,'Produk ditemukan, tetapi nama atau data kalori/makro belum lengkap. Lengkapi dari label kemasan.',name);return;
   }
@@ -200,8 +203,16 @@ async function lookupBarcode(raw){
  finally{clearTimeout(timer);if(barcodeRequest===controller){barcodeRequest=null;barcodeBusy=false;$('manualLookup').disabled=false}}
 }
 document.addEventListener('DOMContentLoaded',()=>{
- $('barcodeAddLabel').onclick=()=>{const code=$('manualBarcode').value,name=barcodeProductName;stopScanner();$('customForm').reset();$('customBarcode').value=code;$('customName').value=name;openCustom()};
+ $('barcodeAddLabel').onclick=()=>{const code=$('manualBarcode').value.replace(/\s+/g,'');
+  if(!barcodeFallbackCode||code!==barcodeFallbackCode){$('barcodeAddLabel').classList.add('hidden');barcodeStatus('Nomor barcode berubah. Tekan Cari untuk memeriksa produk yang baru.');return}
+  const name=barcodeProductName;stopScanner();$('customForm').reset();$('customBarcode').value=code;$('customName').value=name;openCustom()};
  $('barcodeScanAgain').onclick=startScanner;
+ $('manualBarcode').addEventListener('input',e=>{
+  if(e.target.value.replace(/\s+/g,'')===barcodeLookupCode)return;
+  barcodeSession++;barcodeRequest?.abort();barcodeRequest=null;barcodeBusy=false;barcodeStopCamera();
+  barcodeProductName='';barcodeFallbackCode='';$('manualLookup').disabled=false;$('barcodeAddLabel').classList.add('hidden');
+  barcodeStatus('Nomor barcode berubah. Tekan Cari untuk memeriksa produk yang baru.');
+ });
  $('manualBarcode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();lookupBarcode(e.target.value)}});
  $('scannerDialog').addEventListener('cancel',stopScanner);
  $('scannerDialog').addEventListener('close',()=>{if(!$('scannerDialog').open&&(scannerStream||barcodeRequest))stopScanner()});
