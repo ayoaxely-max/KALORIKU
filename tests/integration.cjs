@@ -6,7 +6,7 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  w.HTMLElement.prototype.scrollIntoView=function(){};w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};
  w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({},{get:()=>()=>{}});w.fetch=async url=>{if(String(url).startsWith('./'))return {ok:true,json:async()=>JSON.parse(fs.readFileSync(String(url).slice(2),'utf8'))};throw Error('External request not mocked');};
  const errors=[];w.addEventListener('error',e=>errors.push(e.message));
- for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js','v29.js','v210.js'])E(fs.readFileSync(f,'utf8'));
+ for(const f of ['nutrition-tools.js','db.js','app.js','photo.js','ai-photo.js','v14.js','v15.js','v16.js','v17.js','v20.js','v24.js','v27.js','v28.js','v29.js','v210.js','v212.js'])E(fs.readFileSync(f,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
  for(let i=0;i<100&&!E('allFoods.length>2000');i++)await new Promise(r=>setTimeout(r,10));assert.equal(E('allFoods.length>2000'),true);
  await E(`(async()=>{v24OpenMeasure(allFoods.find(f=>f.name==='Tempe garit goreng').id);$('v24MeasureFields').querySelector('[data-measure="potong"]').value='60';await v24SaveMeasure({preventDefault(){}});})()`);
@@ -124,5 +124,14 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E('dashboardSetDate(offsetDate(localDate(),1))');assert.equal(E('dashboardSelectedDate()'),E('localDate()'));E("dashboardSetDate('2026-02-30')");assert.equal(E('dashboardSelectedDate()'),E('localDate()'));
  w.document.getElementById('dashboardPrev').click();w.document.getElementById('dashboardNext').click();assert.equal(E('dashboardSelectedDate()'),E('localDate()'));
  const dashboardTestBar=w.document.getElementById('dashboardDateBar'),touch=(type,x,y)=>{const event=new w.Event(type);Object.defineProperty(event,type==='touchstart'?'touches':'changedTouches',{value:[{clientX:x,clientY:y}]});dashboardTestBar.dispatchEvent(event);};touch('touchstart',100,100);touch('touchend',180,105);assert.equal(E('dashboardSelectedDate()'),E('offsetDate(localDate(),-1)'));touch('touchstart',180,100);touch('touchend',100,105);assert.equal(E('dashboardSelectedDate()'),E('localDate()'));touch('touchstart',100,100);touch('touchend',110,200);assert.equal(E('dashboardSelectedDate()'),E('localDate()'));
+ // Corner history follows the dashboard date; monthly data respects missing and zero values.
+ w.scrollTo=()=>{};
+ w.document.getElementById('dashboardHistory').click();assert.equal(E('historyDate'),E('dashboardSelectedDate()'));assert.equal(E('currentPage'),'history');
+ E(`go('today');logs=[{date:'2024-02-29',qty:2,calories:100,protein:5,carbs:1,fat:1}];weights=[{date:'2024-02-29',weight:70.5}];v15WaterRecords={'2024-02-28':0,'2024-02-29':500};recapSelectedMonth='2024-02';renderRecap()`);
+ assert.equal(E('recapData("2024-02").days.length'),29);assert.equal(E('recapData("2024-02").mean'),200);assert.equal(E('recapData("2024-02").protein'),10);assert.equal(E('recapData("2024-02").water'),250);assert.equal(E('recapData("2024-02").days[0].cal'),null);assert.equal(E('recapData("2024-02").days[28].weight'),70.5);
+ assert.equal(E('recapShift("2024-01",-1)'),'2023-12');assert.equal(E('recapData("2023-02").days.length'),28);assert.equal(E('recapData("2023-02").mean'),null);assert.equal(E('recapData("2024-13")'),null);
+ w.document.getElementById('recapNext').click();assert.equal(E('recapSelectedMonth'),'2024-03');w.document.getElementById('recapPrev').click();assert.equal(E('recapSelectedMonth'),'2024-02');
+ w.document.querySelector('[data-recap-date="2024-02-29"]').click();assert.equal(E('historyDate'),'2024-02-29');
+ E(`go('today');recapSelectedMonth=localDate().slice(0,7);logs=[];renderToday()`);assert.equal(w.document.getElementById('recapNext').disabled,true);assert.match(w.document.getElementById('recapSummary').textContent,/0 hari/);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
