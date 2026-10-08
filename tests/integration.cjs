@@ -133,5 +133,17 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  w.document.getElementById('recapNext').click();assert.equal(E('recapSelectedMonth'),'2024-03');w.document.getElementById('recapPrev').click();assert.equal(E('recapSelectedMonth'),'2024-02');
  w.document.querySelector('[data-recap-date="2024-02-29"]').click();assert.equal(E('historyDate'),'2024-02-29');
  E(`go('today');recapSelectedMonth=localDate().slice(0,7);logs=[];renderToday()`);assert.equal(w.document.getElementById('recapNext').disabled,true);assert.match(w.document.getElementById('recapSummary').textContent,/0 hari/);
+ // Barcode lookup distinguishes API absence, incomplete nutrients and connection failures.
+ const barcodeFetch=w.fetch;
+ E(`$('scannerDialog').showModal()`);
+ w.fetch=async()=>({ok:false,status:404});await E("lookupBarcode('8998866204385')");assert.match(w.document.getElementById('scanStatus').textContent,/8998866204385.*belum tersedia/);assert.equal(w.document.getElementById('manualBarcode').value,'8998866204385');
+ w.fetch=async()=>{throw new TypeError('Network failed')};await E("lookupBarcode('8998866204385')");assert.match(w.document.getElementById('scanStatus').textContent,/Koneksi.*gagal/);assert.equal(w.document.getElementById('manualLookup').disabled,false);
+ w.fetch=async()=>({ok:false,status:503});await E("lookupBarcode('8998866204385')");assert.match(w.document.getElementById('scanStatus').textContent,/HTTP 503/);
+ const barcodeCount=E('customFoods.length');w.fetch=async()=>({ok:true,status:200,json:async()=>({product:{product_name:'Produk parsial',nutriments:{'energy-kcal_100g':100}}})});await E("lookupBarcode('8998866204385')");assert.match(w.document.getElementById('scanStatus').textContent,/belum lengkap/);assert.equal(E('customFoods.length'),barcodeCount);
+ w.document.getElementById('barcodeAddLabel').click();assert.equal(w.document.getElementById('customDialog').open,true);assert.equal(w.document.getElementById('customBarcode').value,'8998866204385');assert.equal(w.document.getElementById('customName').value,'Produk parsial');E("$('customDialog').close();$('scannerDialog').showModal()");
+ let finishBarcode;w.fetch=()=>new Promise(resolve=>{finishBarcode=resolve});const pendingBarcode=E("lookupBarcode('8998866204385')");E('stopScanner()');finishBarcode({ok:false,status:404});await pendingBarcode;assert.equal(w.document.getElementById('scannerDialog').open,false);assert.equal(w.document.getElementById('manualLookup').disabled,false);
+ w.fetch=async()=>({ok:true,status:200,json:async()=>({product:{product_name:'Produk lengkap uji',nutriments:{'energy-kcal_100g':100,proteins_100g:0,carbohydrates_100g:25,fat_100g:0}}})});E("$('scannerDialog').showModal()");await E("lookupBarcode('8998866204385')");assert.equal(E("customFoods.find(f=>f.barcode==='8998866204385').protein"),0);assert.equal(w.document.getElementById('foodSearch').value,'Produk lengkap uji');
+ w.fetch=async()=>{throw Error('Local lookup must not use network')};await E("lookupBarcode('8 998866 204385')");assert.equal(w.document.getElementById('foodSearch').value,'Produk lengkap uji');
+ await E("lookupBarcode('abc')");assert.match(w.document.getElementById('scanStatus').textContent,/8–14 digit/);w.fetch=barcodeFetch;
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});

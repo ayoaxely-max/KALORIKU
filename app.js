@@ -122,8 +122,89 @@ async function backup(){try{const data=await v20Snapshot();download(`KaloriKu_ba
  }
  download('KaloriKu_'+localDate()+'.csv','text/csv;charset=utf-8','\ufeff'+lines.join('\n'));
 }
-async function startScanner(){if(!window.isSecureContext){toast('Scanner kamera membutuhkan HTTPS');return}$('scannerDialog').showModal();$('scanStatus').textContent='Arahkan kamera ke barcode produk.';try{scannerStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});$('scannerVideo').srcObject=scannerStream;if('BarcodeDetector'in window){const det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128','code_39']});const loop=async()=>{if(!scannerStream)return;try{const codes=await det.detect($('scannerVideo'));if(codes[0]?.rawValue){await lookupBarcode(codes[0].rawValue);return}}catch{}scanTimer=setTimeout(loop,250)};loop()}else{$('scanStatus').textContent='Browser ini belum mendukung deteksi barcode otomatis. Ketik nomor barcode di bawah.'}}catch(e){$('scanStatus').textContent='Kamera tidak dapat dibuka. Periksa izin kamera atau masukkan barcode manual.'}}
-function stopScanner(){if(scanTimer)clearTimeout(scanTimer);scanTimer=null;if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null}$('scannerVideo').srcObject=null;$('scannerDialog').close()}
-async function lookupBarcode(code){if(!code)return;const local=allFoods.find(f=>f.barcode===code);if(local){stopScanner();$('addDialog').showModal();$('foodSearch').value=local.name;renderAddResults();toast('Produk ditemukan di perangkat');return}if(!navigator.onLine){$('scanStatus').textContent='Barcode belum tersimpan dan perangkat sedang offline.';return}$('scanStatus').textContent=`Mencari ${code}...`;try{const u=`https://world.openfoodfacts.org/api/v3/product/${encodeURIComponent(code)}?fields=product_name,brands,serving_size,nutriments`;const r=await fetch(u);if(!r.ok)throw Error();const j=await r.json(),p=j.product;if(!p?.product_name)throw Error();const n=p.nutriments||{},serv=p.serving_size||'100 g/ml',hasServ=!!p.serving_size&&Number.isFinite(n['energy-kcal_serving']),suffix=hasServ?'_serving':'_100g',cal=Number(n[`energy-kcal${suffix}`]);if(!Number.isFinite(cal))throw Error();const f={id:'off_'+code,name:p.product_name+(p.brands?` · ${p.brands}`:''),category:'Produk kemasan',serving:hasServ?serv:'100 g/ml',calories:cal,protein:Number(n[`proteins${suffix}`])||0,carbs:Number(n[`carbohydrates${suffix}`])||0,fat:Number(n[`fat${suffix}`])||0,source_type:'openfoodfacts',source_ref:`Open Food Facts · ${code}`,barcode:code,...v17FromOFF(n,suffix)};await dbPut('customFoods',f);customFoods.push(f);allFoods=[...staticFoods,...customFoods];stopScanner();$('addDialog').showModal();$('foodSearch').value=f.name;renderAddResults();toast('Produk ditemukan dan disimpan offline')}catch(e){$('scanStatus').textContent='Produk belum ditemukan. Anda bisa memasukkannya dari label kemasan.';$('customBarcode').value=code;}}
+let barcodeRequest=null,barcodeSession=0,barcodeBusy=false,barcodeProductName='';
+function barcodeStatus(text){$('scanStatus').textContent=text;}
+function barcodeFallback(code,text,name=''){
+ barcodeProductName=name;$('manualBarcode').value=code;$('customBarcode').value=code;
+ barcodeStatus('Barcode '+code+' · '+text);$('barcodeAddLabel').classList.remove('hidden');
+}
+function barcodeStopCamera(){
+ if(scanTimer)clearTimeout(scanTimer);scanTimer=null;
+ if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null}
+ $('scannerVideo').srcObject=null;
+}
+async function startScanner(){
+ stopScanner();if(!window.isSecureContext){toast('Scanner kamera membutuhkan HTTPS');return}
+ $('scannerDialog').showModal();$('barcodeAddLabel').classList.add('hidden');barcodeProductName='';
+ barcodeStatus('Arahkan kamera ke barcode produk, atau ketik nomornya di bawah.');
+ const session=barcodeSession;
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});
+  if(session!==barcodeSession){stream.getTracks().forEach(t=>t.stop());return}
+  scannerStream=stream;$('scannerVideo').srcObject=stream;
+ }catch(e){barcodeStatus('Kamera tidak dapat dibuka. Periksa izin kamera atau ketik nomor barcode.');return}
+ if(!('BarcodeDetector' in window)){barcodeStatus('Browser belum mendukung scan otomatis. Ketik nomor barcode, lalu tekan Cari.');return}
+ try{
+  const supported=typeof BarcodeDetector.getSupportedFormats==='function'?await BarcodeDetector.getSupportedFormats():['ean_13','ean_8','upc_a','upc_e','code_128','code_39'];
+  const formats=['ean_13','ean_8','upc_a','upc_e','code_128','code_39'].filter(f=>supported.includes(f));
+  if(!formats.length)throw Error('unsupported');const detector=new BarcodeDetector({formats});
+  const loop=async()=>{
+   if(!scannerStream||session!==barcodeSession)return;
+   try{const codes=await detector.detect($('scannerVideo'));if(session!==barcodeSession)return;
+    if(codes[0]?.rawValue){barcodeStopCamera();await lookupBarcode(codes[0].rawValue);return}
+   }catch(e){/* Video may not have a decoded frame yet. */}
+   scanTimer=setTimeout(loop,250);
+  };loop();
+ }catch(e){barcodeStatus('Deteksi otomatis tidak tersedia. Ketik nomor barcode, lalu tekan Cari.')}
+}
+function stopScanner(){
+ barcodeSession++;barcodeRequest?.abort();barcodeRequest=null;barcodeBusy=false;
+ barcodeStopCamera();$('manualLookup').disabled=false;$('scannerDialog').close();
+}
+async function lookupBarcode(raw){
+ const code=String(raw||'').replace(/\s+/g,'');
+ if(!/^\d{8,14}$/.test(code)){$('barcodeAddLabel').classList.add('hidden');barcodeStatus('Masukkan nomor barcode 8–14 digit yang tercetak di kemasan.');return}
+ barcodeRequest?.abort();const controller=new AbortController();barcodeRequest=controller;barcodeBusy=true;
+ const session=barcodeSession;barcodeStopCamera();$('manualBarcode').value=code;barcodeProductName='';
+ $('barcodeAddLabel').classList.add('hidden');$('manualLookup').disabled=true;barcodeStatus('Barcode '+code+' · Mencari produk…');
+ const active=()=>barcodeRequest===controller&&session===barcodeSession;
+ const showFood=f=>{stopScanner();if(!$('addDialog').open)$('addDialog').showModal();$('foodSearch').value=f.name;renderAddResults()};
+ let timer;
+ try{
+  const local=allFoods.find(f=>String(f.barcode||'').replace(/\s+/g,'')===code);
+  if(local){showFood(local);toast('Produk ditemukan di perangkat');return}
+  if(!navigator.onLine){barcodeFallback(code,'Perangkat offline; produk belum tersimpan di perangkat ini. Sambungkan internet dan tekan Cari lagi, atau isi dari label.');return}
+  timer=setTimeout(()=>controller.abort(),15000);
+  const u=`https://world.openfoodfacts.org/api/v3/product/${encodeURIComponent(code)}?fields=product_name,brands,serving_size,nutriments`;
+  const response=await fetch(u,{signal:controller.signal});if(!active())return;
+  if(response.status===404){barcodeFallback(code,'Produk belum tersedia di Open Food Facts. Isi dari label kemasan.');return}
+  if(!response.ok){barcodeFallback(code,'Layanan pencarian gagal merespons (HTTP '+response.status+'). Tekan Cari untuk mencoba lagi.');return}
+  const data=await response.json();if(!active())return;const product=data.product;
+  if(!product){
+   if(data.status===0||data.result?.id==='product_not_found'){barcodeFallback(code,'Produk belum tersedia di Open Food Facts. Isi dari label kemasan.')}
+   else barcodeFallback(code,'Respons layanan pencarian tidak dapat dibaca. Tekan Cari untuk mencoba lagi.');
+   return;
+  }
+  const name=product.product_name?(product.product_name+(product.brands?' · '+product.brands:'')):'';
+  const n=product.nutriments||{},suffix=product.serving_size&&Number.isFinite(n['energy-kcal_serving'])?'_serving':'_100g';
+  const values=['energy-kcal','proteins','carbohydrates','fat'].map(k=>n[k+suffix]);
+  if(!name||values.some(v=>typeof v!=='number'||!Number.isFinite(v)||v<0)){
+   barcodeFallback(code,'Produk ditemukan, tetapi nama atau data kalori/makro belum lengkap. Lengkapi dari label kemasan.',name);return;
+  }
+  const food={id:'off_'+code,name,category:'Produk kemasan',serving:suffix==='_serving'?product.serving_size:'100 g/ml',calories:values[0],protein:values[1],carbs:values[2],fat:values[3],source_type:'openfoodfacts',source_ref:'Open Food Facts · '+code,barcode:code,...v17FromOFF(n,suffix)};
+  try{await dbPut('customFoods',food)}catch(e){if(active())barcodeFallback(code,'Produk ditemukan, tetapi gagal disimpan di perangkat. Periksa ruang penyimpanan lalu coba lagi.');return}
+  // Persisted food remains available even if the dialog was closed during the write.
+  customFoods=customFoods.filter(f=>f.id!==food.id);customFoods.push(food);allFoods=[...staticFoods,...customFoods];
+  if(!active())return;showFood(food);toast('Produk ditemukan dan disimpan offline');
+ }catch(e){if(active())barcodeFallback(code,controller.signal.aborted?'Pencarian melewati batas waktu. Tekan Cari untuk mencoba lagi.':'Koneksi ke layanan pencarian gagal atau respons tidak terbaca. Tekan Cari untuk mencoba lagi, atau isi dari label.')}
+ finally{clearTimeout(timer);if(barcodeRequest===controller){barcodeRequest=null;barcodeBusy=false;$('manualLookup').disabled=false}}
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ $('barcodeAddLabel').onclick=()=>{const code=$('manualBarcode').value,name=barcodeProductName;stopScanner();$('customForm').reset();$('customBarcode').value=code;$('customName').value=name;openCustom()};
+ $('barcodeScanAgain').onclick=startScanner;
+ $('manualBarcode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();lookupBarcode(e.target.value)}});
+ $('scannerDialog').addEventListener('cancel',stopScanner);
+ $('scannerDialog').addEventListener('close',()=>{if(!$('scannerDialog').open&&(scannerStream||barcodeRequest))stopScanner()});
+});
 function updateOnline(){$('offlineBanner').classList.toggle('hidden',navigator.onLine)}async function registerSW(){if('serviceWorker'in navigator)try{await navigator.serviceWorker.register('./sw.js')}catch(e){console.warn(e)}}function showInstall(){$('installBtn').classList.remove('hidden');$('installBtn2').classList.remove('hidden')}async function installPWA(){if(!installPrompt){toast('Di Chrome: menu ⋮ → Tambahkan ke layar utama / Instal aplikasi');return}installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('installBtn').classList.add('hidden');$('installBtn2').classList.add('hidden')}
 window.addFood=addFood;window.toggleFav=toggleFav;window.removeLog=removeLog;window.saveMealPack=saveMealPack;window.addPack=addPack;window.addEventListener('DOMContentLoaded',()=>init().catch(e=>{console.error(e);document.body.innerHTML='<div style="padding:30px;font-family:system-ui"><h2>KaloriKu gagal dimuat</h2><p>'+esc(e.message)+'</p></div>'}));
