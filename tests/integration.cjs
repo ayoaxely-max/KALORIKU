@@ -245,5 +245,15 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E("installPrompt={prompt:async()=>{},userChoice:Promise.resolve({outcome:'accepted'})}");await E('installPWA()');assert.match(w.document.getElementById('installStatus').textContent,/dimulai/);
  w.dispatchEvent(new w.Event('appinstalled'));assert.equal(w.document.getElementById('installBtn2').disabled,true);assert.match(w.document.getElementById('installBtn2').textContent,/sudah terpasang/);assert.equal(w.document.getElementById('installBtn').classList.contains('hidden'),true);
  E('installConfirmed=false');const installMatchMedia=w.matchMedia;w.matchMedia=()=>({matches:true});E('showInstall()');assert.equal(w.document.getElementById('installBtn2').disabled,true);w.matchMedia=installMatchMedia;E('showInstall()');
+ // Photo entry routes immediately to its selected source, without a second chooser.
+ const cameraInput=w.document.getElementById('photoCameraInput'),galleryInput=w.document.getElementById('photoGalleryInput');const cameraClick=cameraInput.click,galleryClick=galleryInput.click;let cameraOpened=0,galleryOpened=0;
+ cameraInput.click=()=>{cameraOpened++};galleryInput.click=()=>{galleryOpened++};
+ try{
+  E("openAdd();$('entryDate').value='2024-03-03';$('mealSelect').value='Snack'");w.document.getElementById('photoFoodBtn').click();
+  assert.equal(cameraOpened,1);assert.equal(galleryOpened,0);assert.equal(w.document.getElementById('addDialog').open,false);assert.equal(w.document.getElementById('photoDialog').open,true);assert.equal(w.document.getElementById('photoEntryDate').value,'2024-03-03');assert.equal(w.document.getElementById('photoMeal').value,'Snack');assert.equal(w.document.getElementById('takePhotoBtn').classList.contains('hidden'),false);assert.equal(w.document.getElementById('uploadPhotoBtn').classList.contains('hidden'),true);assert.equal(cameraInput.getAttribute('capture'),'environment');
+  w.document.getElementById('takePhotoBtn').click();assert.equal(cameraOpened,2);E('closePhotoMeal();openAdd()');w.document.getElementById('pickGalleryQuickBtn').click();
+  assert.equal(galleryOpened,1);assert.equal(cameraOpened,2);assert.equal(w.document.getElementById('takePhotoBtn').classList.contains('hidden'),true);assert.equal(w.document.getElementById('uploadPhotoBtn').classList.contains('hidden'),false);assert.equal(galleryInput.hasAttribute('capture'),false);w.document.getElementById('uploadPhotoBtn').click();assert.equal(galleryOpened,2);
+  E("photoSaveBusy=true;photoDraftItems=[{sentinel:'keep'}]");w.document.getElementById('photoFoodBtn').click();w.document.getElementById('pickGalleryQuickBtn').click();assert.equal(cameraOpened,2);assert.equal(galleryOpened,2);assert.equal(E('photoDraftItems[0].sentinel'),'keep');
+ }finally{cameraInput.click=cameraClick;galleryInput.click=galleryClick;E('photoSaveBusy=false;closePhotoMeal()')}
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});

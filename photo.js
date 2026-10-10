@@ -27,10 +27,13 @@ function setPhotoPreview(blob){
   $('photoPreviewWrap').classList.toggle('hidden',!blob);
   if(blob)$('photoPreview').src=photoDraftUrl;
 }
-function openPhotoMeal(){
+function openPhotoMeal(source='camera'){
   if(photoSaveBusy)return;
   try{if($('addDialog')?.open)$('addDialog').close()}catch{}
   photoDraftItems=[];photoDraftBlob=null;photoDraftSource=null;setPhotoPreview(null);
+  $('takePhotoBtn').classList.toggle('hidden',source==='gallery');
+  $('uploadPhotoBtn').classList.toggle('hidden',source!=='gallery');
+  $('takePhotoBtn').textContent='📷 Ambil foto sekarang';$('uploadPhotoBtn').textContent='🖼️ Pilih foto dari galeri';
   $('photoEntryDate').value=$('entryDate').value||localDate();$('photoEntryDate').max=localDate();
   $('photoSearch').value='';$('photoNote').value='';
   $('analyzePhotoBtn').disabled=true;
@@ -129,8 +132,9 @@ async function updatePhotoStorageStatus(){
 document.addEventListener('DOMContentLoaded',async()=>{
   await dbOpen();
   mealPhotos=await dbAll('mealPhotos');
-  $('photoFoodBtn').onclick=openPhotoMeal;
-  $('pickGalleryQuickBtn').onclick=()=>{openPhotoMeal();$('photoGalleryInput').click()};
+  const startPhoto=source=>{if(photoSaveBusy)return;openPhotoMeal(source);$(source==='gallery'?'photoGalleryInput':'photoCameraInput').click()};
+  $('photoFoodBtn').onclick=()=>startPhoto('camera');
+  $('pickGalleryQuickBtn').onclick=()=>startPhoto('gallery');
   $('closePhotoDialog').onclick=()=>closePhotoMeal();
   $('photoDialog').addEventListener('cancel',e=>{if(photoSaveBusy)e.preventDefault()});
   $('takePhotoBtn').onclick=()=>$('photoCameraInput').click();
@@ -148,6 +152,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       if(!compressed)throw new Error('Tidak dapat memproses gambar');
       photoDraftBlob=compressed;
       photoDraftSource=origin;
+      $('takePhotoBtn').textContent='📷 Ambil ulang foto';$('uploadPhotoBtn').textContent='🖼️ Ganti foto dari galeri';
       photoDraftItems=[];
       renderPhotoSelected();
       $('aiSuggestions').innerHTML='';
