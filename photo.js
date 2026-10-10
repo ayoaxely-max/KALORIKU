@@ -1,9 +1,10 @@
+let photoSaveBusy=false;
 let mealPhotos=[],photoDraftItems=[],photoDraftBlob=null,photoDraftUrl=null,photoDraftSource=null;
 
 function photoServingGrams(food){return NutritionTools.servingGrams(food,foodMeasures[food.id])}
 function photoItemQty(item){
-  if(item.grams && item.servingGrams) return Math.max(.01,item.grams/item.servingGrams);
-  return Math.max(.01,Number(item.qty)||1);
+ const q=item.servingGrams?Number(item.grams)/item.servingGrams:Number(item.qty);
+ return Number.isFinite(q)&&q>0?q:NaN;
 }
 function photoItemCalories(item){return Number(item.food.calories||0)*photoItemQty(item)}
 function photoItemMacros(item){
@@ -27,6 +28,7 @@ function setPhotoPreview(blob){
   if(blob)$('photoPreview').src=photoDraftUrl;
 }
 function openPhotoMeal(){
+  if(photoSaveBusy)return;
   try{if($('addDialog')?.open)$('addDialog').close()}catch{}
   photoDraftItems=[];photoDraftBlob=null;photoDraftSource=null;setPhotoPreview(null);
   $('photoEntryDate').value=$('entryDate').value||localDate();$('photoEntryDate').max=localDate();
@@ -39,7 +41,8 @@ function openPhotoMeal(){
   renderPhotoSearch();renderPhotoSelected();
   $('photoDialog').showModal();
 }
-function closePhotoMeal(){
+function closePhotoMeal(force=false){
+  if(photoSaveBusy&&force!==true)return;
   if(photoDraftUrl)URL.revokeObjectURL(photoDraftUrl);
   photoDraftUrl=null;photoDraftBlob=null;photoDraftSource=null;photoDraftItems=[];
   $('photoDialog').close();
@@ -51,15 +54,18 @@ function renderPhotoSearch(){
   $('photoSearchResults').innerHTML=a.map(f=>`<div class="log-row"><div class="food-info"><strong>${esc(f.name)}</strong>${foodSearchBadge(f,q)}<small>${esc(f.serving)} · ${fmt(f.calories)} kcal</small></div><button class="add-btn" onclick="addPhotoFood('${f.id}')">＋</button></div>`).join('')||'<div class="empty">Tidak ditemukan.</div>';
 }
 window.addPhotoFood=id=>{
+  if(photoSaveBusy)return;
   const food=allFoods.find(f=>f.id===id);if(!food)return;
   const sg=photoServingGrams(food);
   photoDraftItems.push({id:'pi_'+crypto.randomUUID(),food,servingGrams:sg,grams:sg||null,qty:1});
   $('photoSearch').value='';renderPhotoSearch();renderPhotoSelected();
 };
-window.removePhotoFood=id=>{photoDraftItems=photoDraftItems.filter(x=>x.id!==id);renderPhotoSelected()};
+window.removePhotoFood=id=>{if(photoSaveBusy)return;photoDraftItems=photoDraftItems.filter(x=>x.id!==id);renderPhotoSelected()};
 window.photoAmountChanged=(id,type,value)=>{
+  if(photoSaveBusy)return;
   const i=photoDraftItems.find(x=>x.id===id);if(!i)return;
-  if(type==='grams')i.grams=Math.max(1,Number(value)||1);else i.qty=Math.max(.01,Number(value)||1);
+  const amount=Number(value);if(!Number.isFinite(amount)||amount<=0){toast('Jumlah harus lebih dari 0');renderPhotoSelected();return}
+  if(type==='grams')i.grams=amount;else i.qty=amount;
   renderPhotoSelected();
 };
 function renderPhotoSelected(){
@@ -67,26 +73,33 @@ function renderPhotoSelected(){
   $('photoTotalKcal').textContent=`${fmt(total)} kcal`;
   $('photoSelected').innerHTML=photoDraftItems.length?photoDraftItems.map(i=>{
     const sg=i.servingGrams;
-    const ctl=sg?`<label class="photo-amount">Berat perkiraan (g)<input type="number" min="1" step="1" value="${Math.round(i.grams||sg)}" onchange="photoAmountChanged('${i.id}','grams',this.value)"></label>`
-      :`<label class="photo-amount">Jumlah porsi<input type="number" min="0.1" step="0.1" value="${i.qty}" onchange="photoAmountChanged('${i.id}','qty',this.value)"></label>`;
+    const ctl=sg?`<label class="photo-amount">Berat perkiraan (g)<input type="number" min="0.01" step="any" value="${i.grams??sg}" onchange="photoAmountChanged('${i.id}','grams',this.value)"></label>`
+      :`<label class="photo-amount">Jumlah porsi<input type="number" min="0.01" step="any" value="${i.qty}" onchange="photoAmountChanged('${i.id}','qty',this.value)"></label>`;
     return `<div class="photo-selected-row"><div class="food-info"><strong>${esc(i.food.name)}</strong><small>${esc(i.food.serving)} · ≈ ${fmt(photoItemCalories(i))} kcal</small></div>${ctl}<button class="del" onclick="removePhotoFood('${i.id}')">×</button></div>`;
   }).join(''):'<div class="empty small">Belum ada komponen makanan.</div>';
 }
 async function savePhotoMeal(){
+  if(photoSaveBusy)return;
   if(!photoDraftBlob){toast('Ambil atau pilih foto dulu');return}
   if(!photoDraftItems.length){toast('Tambahkan minimal satu makanan');return}
+  if(photoDraftItems.some(i=>!Number.isFinite(photoItemQty(i)))){toast('Isi jumlah positif yang valid untuk setiap makanan');return}
   const id='mp_'+crypto.randomUUID(),date=$('photoEntryDate').value||localDate(),meal=$('photoMeal').value,createdAt=Date.now();
   const items=photoDraftItems.map(i=>{
     const q=photoItemQty(i),m=photoItemMacros(i);
-    return {id:i.id||'pi_'+crypto.randomUUID(),foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?Math.round(i.grams||i.servingGrams):null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,...v17NutrientSnapshot(i.food),total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
+    return {id:i.id||'pi_'+crypto.randomUUID(),foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?i.grams:null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,...v17NutrientSnapshot(i.food),total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
   });
   const rec={id,date,meal,note:$('photoNote').value.trim(),image:photoDraftBlob,items,createdAt,photoOrigin:photoDraftSource,source:items.some(i=>i.aiEstimate)?'photo_ai_confirmed':'photo_manual_confirmed'};
-  await dbPut('mealPhotos',rec);mealPhotos.push(rec);
+  const entries=[];
   for(const i of items){
     const l={id:'l_'+crypto.randomUUID(),date,meal,foodId:i.foodId,name:i.name,serving:i.grams?`${i.grams} g (foto)`:i.serving,servingGrams:i.servingGrams,photoItemId:i.id,qty:i.qty,calories:i.calories,protein:i.protein,carbs:i.carbs,fat:i.fat,...v17NutrientSnapshot(i),createdAt:createdAt+Math.random(),mealPhotoId:id,entrySource:i.aiEstimate?'photo_ai':'photo',aiEstimate:i.aiEstimate};
-    await dbPut('logs',l);logs.push(l);
+    entries.push(l);
   }
-  closePhotoMeal();renderToday();renderHistory();renderStats();renderPhotoMeals();updatePhotoStorageStatus();toast('Foto dan makanan tersimpan');
+  photoSaveBusy=true;const controls=[...$('photoDialog').querySelectorAll('input,select,textarea,button')].map(el=>[el,el.disabled]);controls.forEach(([el])=>el.disabled=true);
+  try{
+    await dbWritePhotoMeal(rec,entries);mealPhotos.push(rec);logs.push(...entries);
+    closePhotoMeal(true);renderToday();renderHistory();renderStats();renderPhotoMeals();updatePhotoStorageStatus();toast('Foto dan makanan tersimpan');
+  }catch(e){toast('Foto dan makanan gagal disimpan. Isian tetap tersedia; silakan coba lagi.');}
+  finally{photoSaveBusy=false;controls.forEach(([el,disabled])=>el.disabled=disabled);}
 }
 async function deletePhotoMeal(id){
   const rec=mealPhotos.find(x=>x.id===id);if(!rec)return;
@@ -118,7 +131,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
   mealPhotos=await dbAll('mealPhotos');
   $('photoFoodBtn').onclick=openPhotoMeal;
   $('pickGalleryQuickBtn').onclick=()=>{openPhotoMeal();$('photoGalleryInput').click()};
-  $('closePhotoDialog').onclick=closePhotoMeal;
+  $('closePhotoDialog').onclick=()=>closePhotoMeal();
+  $('photoDialog').addEventListener('cancel',e=>{if(photoSaveBusy)e.preventDefault()});
   $('takePhotoBtn').onclick=()=>$('photoCameraInput').click();
   $('uploadPhotoBtn').onclick=()=>$('photoGalleryInput').click();
   async function chooseMealPhoto(event,origin){

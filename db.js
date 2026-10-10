@@ -55,3 +55,25 @@ async function dbPutLogsReviewed(entries,sources){
   }catch(e){t.abort();reject(e);}
  });
 }
+
+// Commit a photo and its linked intake records together, with stale-edit guards.
+async function dbWritePhotoMeal(photo,entries,previous=null){
+ const d=await dbOpen();
+ return new Promise((resolve,reject)=>{
+  const t=d.transaction(['mealPhotos','logs','kv'],'readwrite');let stale=false;
+  t.oncomplete=()=>{window.dispatchEvent(new Event('kaloriku:datachanged'));resolve();};
+  t.onabort=()=>reject(stale?Error('Data foto atau catatan berubah. Muat ulang sebelum mengedit kembali.'):t.error||Error('Transaksi foto dibatalkan'));t.onerror=()=>{};
+  try{
+   if(previous){
+    for(const [store,value] of [['mealPhotos',previous.photo],...previous.logs.map(log=>['logs',log])]){
+     const r=t.objectStore(store).get(value.id);
+     r.onsuccess=()=>{if(NutritionTools.canonical(r.result)!==NutritionTools.canonical(value)){stale=true;t.abort();}};
+    }
+   }
+   const method=previous?'put':'add';t.objectStore('mealPhotos')[method](photo);
+   for(const entry of entries)t.objectStore('logs')[method](entry);
+   v25WriteDeletionStates(t,[{field:'mealPhotos',key:photo.id,deleted:false},...entries.map(l=>({field:'logs',key:l.id,deleted:false}))]);
+   const kv=t.objectStore('kv'),revision=kv.get('v24DataRevision');revision.onsuccess=()=>kv.put({key:'v24DataRevision',value:(Number(revision.result?.value)||0)+1});
+  }catch(e){t.abort();reject(e);}
+ });
+}

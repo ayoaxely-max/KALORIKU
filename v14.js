@@ -1,4 +1,5 @@
 /* KaloriKu v1.4: correct food-log quantities without clearing records. */
+let v14EditBusy=false;
 let v14EditId=null,v14GramBase=null;
 function v24PhotoItemIndex(log,rec){
  if(log.photoItemId)return rec.items.findIndex(i=>i.id===log.photoItemId);
@@ -13,6 +14,7 @@ function v14ServingGrams(rec){
 }
 function v14UnitGrams(unit,rec){return v24UnitFor(unit,{id:rec.foodId,serving:rec.serving,servingGrams:rec.servingGrams})}
 window.editKaloriLog=function(id){
+ if(v14EditBusy)return;
  const l=logs.find(x=>x.id===id);if(!l)return;
  v14EditId=id;v14GramBase=v14ServingGrams(l);
  $('editLogFood').textContent=l.name+' · '+l.serving;
@@ -32,7 +34,7 @@ function v14ExplainEdit(){
  $('editLogAmount').setCustomValidity(unavailable?'Berat per porsi belum diketahui. Pilih satuan porsi.':'');
 }
 async function v14SaveEdit(event){
- event.preventDefault();
+ event.preventDefault();if(v14EditBusy)return;
  const old=logs.find(x=>x.id===v14EditId);if(!old)return;
  const unit=$('editLogUnit').value,amount=Number($('editLogAmount').value);
  if(!Number.isFinite(amount)||amount<=0){toast('Jumlah harus lebih dari 0');return}
@@ -42,27 +44,34 @@ async function v14SaveEdit(event){
  if(!Number.isFinite(qty)||qty<=0||qty>500){toast('Jumlah tidak valid');return}
  const revised={...old,qty,date:old.mealPhotoId?old.date:$('editLogDate').value,meal:old.mealPhotoId?old.meal:$('editLogMeal').value};
  if(!revised.date||revised.date>localDate()){toast('Tanggal tidak valid');return}
+ v14EditBusy=true;const controls=[...$('editLogDialog').querySelectorAll('input,select,button')].map(el=>[el,el.disabled]);controls.forEach(([el])=>el.disabled=true);
  try{
+  let photoChange=null;
   if(old.mealPhotoId&&typeof mealPhotos!=='undefined'){
    const rec=mealPhotos.find(p=>p.id===old.mealPhotoId);
+   if(!rec)throw Error('Foto terkait tidak ditemukan');
    if(rec){
     const index=v24PhotoItemIndex(old,rec);
     if(index<0||!rec.items[index])throw Error('Komponen foto tidak dapat disinkronkan');
     const item=rec.items[index],servingGrams=item.servingGrams||v14GramBase;
-    const nextItem={...item,qty,grams:servingGrams?Math.round(qty*servingGrams):item.grams,total:{cal:old.calories*qty,p:old.protein*qty,c:old.carbs*qty,f:old.fat*qty}};
+    const nextItem={...item,qty,grams:servingGrams?qty*servingGrams:item.grams,total:{cal:old.calories*qty,p:old.protein*qty,c:old.carbs*qty,f:old.fat*qty}};
+    if(servingGrams)revised.serving=nextItem.grams+' g (foto)';
     const nextRec={...rec,items:rec.items.map((it,i)=>i===index?nextItem:it)};
-    await dbPut('mealPhotos',nextRec);mealPhotos=mealPhotos.map(p=>p.id===rec.id?nextRec:p);
+    photoChange={previous:rec,next:nextRec};
    }
   }
-  await dbPut('logs',revised);
+  if(photoChange){await dbWritePhotoMeal(photoChange.next,[revised],{photo:photoChange.previous,logs:[old]});mealPhotos=mealPhotos.map(p=>p.id===photoChange.next.id?photoChange.next:p);}
+  else await dbPut('logs',revised);
   logs=logs.map(x=>x.id===old.id?revised:x);
   $('editLogDialog').close();renderToday();renderHistory();renderStats();
   if(typeof renderPhotoMeals==='function')renderPhotoMeals();
   toast('Catatan diperbarui');
- }catch(e){console.error(e);toast('Gagal menyimpan perubahan')}
+ }catch(e){toast(e.message?.startsWith('Data foto atau catatan berubah')?e.message:'Gagal menyimpan perubahan. Isian tetap tersedia; silakan coba lagi.')}
+ finally{v14EditBusy=false;controls.forEach(([el,disabled])=>el.disabled=disabled);}
 }
 document.addEventListener('DOMContentLoaded',()=>{
- $('closeEditLog').onclick=()=>$('editLogDialog').close();
+ $('closeEditLog').onclick=()=>{if(!v14EditBusy)$('editLogDialog').close()};
+ $('editLogDialog').addEventListener('cancel',e=>{if(v14EditBusy)e.preventDefault()});
  $('editLogForm').addEventListener('submit',v14SaveEdit);
  $('editLogUnit').onchange=()=>{
   if(v14EditId){const l=logs.find(x=>x.id===v14EditId);if(l){const g=v14UnitGrams($('editLogUnit').value,l);$('editLogAmount').value=g!==null&&v14GramBase?Number((l.qty*v14GramBase/g).toFixed(1)):l.qty}}

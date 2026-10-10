@@ -1,9 +1,9 @@
 {
   "name": "kaloriku-pwa",
   "private": true,
-  "version": "2.12.7",
+  "version": "2.12.8",
   "scripts": {
-    "test": "node --test tests/*.test.mjs && node tests/integration.cjs && node tests/safety-regression.cjs",
+    "test": "node --test tests/*.test.mjs && node tests/integration.cjs && node tests/safety-regression.cjs && node tests/photo-atomic.cjs",
     "audit": "node scripts/audit-foods.cjs"
   },
   "devDependencies": {
