@@ -192,5 +192,35 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  let weightWrites=0;fidb.IDBObjectStore.prototype.put=function(...args){if(this.name==='weights')weightWrites++;return originalPut.apply(this,args)};
  try{await Promise.all([E('saveWeight({preventDefault(){}})'),E('saveWeight({preventDefault(){}})')])}finally{fidb.IDBObjectStore.prototype.put=originalPut}
  assert.equal(weightWrites,1);assert.equal(w.document.getElementById('weightDialog').open,false);assert.equal((await E("dbAll('weights')")).find(x=>x.date==='2024-03-02').weight,72);assert.equal(E('weightSaveBusy'),false);
+ // Settings must not change active memory or stored data on a failed KV transaction.
+ const settingsOriginalPut=fidb.IDBObjectStore.prototype.put;
+ w.prompt=()=> 'Paket favorit regresi';
+ const settingsCases=[
+  {key:'profile',state:'profile',setup:"renderProfileFields();$('weight').value='88'",action:'saveProfile()',message:/Profil gagal disimpan/},
+  {key:'packs',state:'packs',setup:"packs=[];logs=[{id:'settings-log',date:dashboardSelectedDate(),meal:'Makan Siang',foodId:'settings-food',name:'Paket uji',qty:1,calories:100,protein:2,carbs:20,fat:1}]",action:"saveMealPack('Makan Siang')",message:/Paket favorit gagal disimpan/},
+  {key:'favorites',state:'favorites',setup:'favorites=[]',action:'toggleFav(allFoods[0].id)',message:/Favorit gagal disimpan/}
+ ];
+ for(const config of settingsCases){
+  E(config.setup);await E(`dbSetKV('${config.key}',${config.state})`);
+  if(config.key==='profile'){
+   const originalSex=E('profile.sex'),nextSex=originalSex==='male'?'female':'male';
+   w.document.querySelector(`#sexSegment [data-v="${nextSex}"]`).click();assert.equal(E('profile.sex'),originalSex);assert.equal(w.document.getElementById('weight').value,'88');
+  }
+  const before=E(`JSON.stringify(${config.state})`),storedBefore=JSON.stringify(await E(`dbGetKV('${config.key}')`)),revisionBefore=await E("dbGetKV('v24DataRevision',0)");
+  E("$('toast').textContent=''");
+  fidb.IDBObjectStore.prototype.put=function(value,...args){if(this.name==='kv'&&value.key===config.key)throw Error('Settings storage failure');return settingsOriginalPut.call(this,value,...args)};
+  try{await E(config.action)}finally{fidb.IDBObjectStore.prototype.put=settingsOriginalPut}
+  assert.equal(E(`JSON.stringify(${config.state})`),before,config.key+' memory unchanged');assert.equal(JSON.stringify(await E(`dbGetKV('${config.key}')`)),storedBefore,config.key+' storage unchanged');assert.equal(await E("dbGetKV('v24DataRevision',0)"),revisionBefore);assert.match(w.document.getElementById('toast').textContent,config.message);
+  if(config.key==='profile'){assert.equal(w.document.getElementById('weight').value,'88');assert.match(w.document.getElementById('profileSaveStatus').textContent,/gagal disimpan/);assert.equal(w.document.getElementById('saveProfileBtn').disabled,false)}
+  let writes=0;fidb.IDBObjectStore.prototype.put=function(value,...args){if(this.name==='kv'&&value.key===config.key)writes++;return settingsOriginalPut.call(this,value,...args)};
+  try{await Promise.all([E(config.action),E(config.action)])}finally{fidb.IDBObjectStore.prototype.put=settingsOriginalPut}
+  assert.equal(writes,1,config.key+' duplicate submit blocked');assert.notEqual(E(`JSON.stringify(${config.state})`),before);assert.equal(JSON.stringify(await E(`dbGetKV('${config.key}')`)),E(`JSON.stringify(${config.state})`));
+  if(config.key==='profile'){assert.equal(E('profile.weight'),88);assert.equal(E('profile.sex'),w.document.querySelector('#sexSegment button.on').dataset.v)}
+  if(config.key==='packs')assert.equal(E('packs.length'),1);
+  if(config.key==='favorites')assert.equal(E('favorites.length'),1);
+ }
+ // Successful removal is also persisted, and committed settings survive a reopen.
+ await E('toggleFav(allFoods[0].id)');assert.equal(E('favorites.length'),0);assert.deepEqual(Array.from(await E("dbGetKV('favorites')")),[]);
+ E('_db.close();_db=null');assert.equal((await E("dbGetKV('profile')")).weight,88);assert.equal((await E("dbGetKV('packs')")).length,1);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
