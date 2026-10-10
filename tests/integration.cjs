@@ -173,5 +173,24 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E("$('weightValue').value='';$('weightDialog').showModal()");w.document.querySelector('#weightForm .sheet-head button').click();assert.equal(w.document.getElementById('weightDialog').open,false);
  // Explicit Save still persists the weight and updates the monthly view.
  E("$('weightDate').value='2024-03-01';$('weightValue').value='71';$('weightDialog').showModal()");await E('saveWeight({preventDefault(){}})');assert.equal((await E("dbAll('weights')")).find(x=>x.date==='2024-03-01').weight,71);
+ // Pack writes roll back all items and sync revision on a second-item failure.
+ E("packs=[{id:'atomic-pack',items:[{foodId:'p1',name:'Paket satu',qty:1,calories:100},{foodId:'p2',name:'Paket dua',qty:1,calories:200}]}];$('entryDate').value=localDate();$('mealSelect').value='Makan Siang'");
+ const packMemory=E('JSON.stringify(logs)'),packStorage=JSON.stringify(await E("dbAll('logs')")),packRevision=await E("dbGetKV('v24DataRevision',0)");
+ const originalPut=fidb.IDBObjectStore.prototype.put,originalAdd=fidb.IDBObjectStore.prototype.add;let packWrites=0;
+ fidb.IDBObjectStore.prototype.add=function(...args){if(this.name==='logs'&&++packWrites===2)throw Error('Second pack item failed');return originalAdd.apply(this,args)};
+ try{await E("addPack('atomic-pack')")}finally{fidb.IDBObjectStore.prototype.add=originalAdd}
+ assert.equal(E('JSON.stringify(logs)'),packMemory);assert.equal(JSON.stringify(await E("dbAll('logs')")),packStorage);assert.equal(await E("dbGetKV('v24DataRevision',0)"),packRevision);assert.match(w.document.getElementById('toast').textContent,/Paket gagal disimpan/);assert.equal(E('packSaveBusy'),false);
+ // Two overlapping calls save exactly one pack; retry after rollback is complete.
+ await Promise.all([E("addPack('atomic-pack')"),E("addPack('atomic-pack')")]);
+ assert.equal(E("logs.filter(l=>l.foodId==='p1').length"),1);assert.equal(E("logs.filter(l=>l.foodId==='p2').length"),1);assert.equal((await E("dbAll('logs')")).filter(l=>l.foodId==='p1').length,1);assert.equal(await E("dbGetKV('v24DataRevision',0)"),packRevision+1);
+ // A weight storage failure retains the form and values without changing data.
+ E("$('weightDate').value='2024-03-02';$('weightValue').value='72';$('weightDialog').showModal()");
+ const weightMemory=E('JSON.stringify(weights)'),weightStorage=JSON.stringify(await E("dbAll('weights')"));
+ fidb.IDBObjectStore.prototype.put=function(...args){if(this.name==='weights')throw Error('Weight storage failed');return originalPut.apply(this,args)};
+ try{await E('saveWeight({preventDefault(){}})')}finally{fidb.IDBObjectStore.prototype.put=originalPut}
+ assert.equal(E('JSON.stringify(weights)'),weightMemory);assert.equal(JSON.stringify(await E("dbAll('weights')")),weightStorage);assert.equal(w.document.getElementById('weightDialog').open,true);assert.equal(w.document.getElementById('weightValue').value,'72');assert.match(w.document.getElementById('weightSaveStatus').textContent,/gagal disimpan/);assert.equal(w.document.querySelector('#weightForm button[type=submit]').disabled,false);
+ let weightWrites=0;fidb.IDBObjectStore.prototype.put=function(...args){if(this.name==='weights')weightWrites++;return originalPut.apply(this,args)};
+ try{await Promise.all([E('saveWeight({preventDefault(){}})'),E('saveWeight({preventDefault(){}})')])}finally{fidb.IDBObjectStore.prototype.put=originalPut}
+ assert.equal(weightWrites,1);assert.equal(w.document.getElementById('weightDialog').open,false);assert.equal((await E("dbAll('weights')")).find(x=>x.date==='2024-03-02').weight,72);assert.equal(E('weightSaveBusy'),false);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
