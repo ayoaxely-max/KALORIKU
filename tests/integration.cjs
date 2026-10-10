@@ -230,5 +230,20 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E("$('qtyInput').value='0.5'");await E("addFood('small-quantity')");assert.equal(E('logs.at(-1).qty'),0.005);assert.equal(E('logs.at(-1).calories*logs.at(-1).qty'),0.5);
  E("$('qtyUnit').value='porsi';$('qtyInput').value='0.05'");await E("addFood('small-quantity')");assert.equal(E('logs.at(-1).qty'),0.05);
  const smallBefore=E('logs.length');E("$('qtyInput').value='0'");await E("addFood('small-quantity')");assert.equal(E('logs.length'),smallBefore);
+ // Installation remains discoverable even without a browser-provided prompt.
+ E('installPrompt=null;installConfirmed=false;showInstall()');
+ assert.equal(w.document.getElementById('installBtn').classList.contains('hidden'),false);assert.equal(w.document.getElementById('installBtn2').classList.contains('hidden'),false);
+ await E('installPWA()');assert.equal(w.document.getElementById('installHelpDialog').open,true);w.document.querySelector('#installHelpDialog [data-close]').click();assert.equal(w.document.getElementById('installHelpDialog').open,false);
+ const installUA=w.navigator.userAgent;Object.defineProperty(w.navigator,'userAgent',{configurable:true,value:'Android'});await E('installPWA()');assert.match(w.document.getElementById('installHelpSteps').textContent,/Chrome/);E("$('installHelpDialog').close()");
+ Object.defineProperty(w.navigator,'userAgent',{configurable:true,value:'iPhone'});await E('installPWA()');assert.match(w.document.getElementById('installHelpSteps').textContent,/Safari/);E("$('installHelpDialog').close()");Object.defineProperty(w.navigator,'userAgent',{configurable:true,value:installUA});
+ // Concurrent clicks open only one native prompt; dismissal leaves a retry path.
+ let nativePrompts=0,resolveInstall;const choice=new Promise(resolve=>{resolveInstall=resolve});
+ const promptEvent=new w.Event('beforeinstallprompt',{cancelable:true});promptEvent.prompt=async()=>{nativePrompts++};promptEvent.userChoice=choice;w.dispatchEvent(promptEvent);assert.equal(promptEvent.defaultPrevented,true);
+ const installAttempt=E('installPWA()');await E('installPWA()');assert.equal(nativePrompts,1);assert.equal(w.document.getElementById('installBtn2').disabled,true);resolveInstall({outcome:'dismissed'});await installAttempt;assert.equal(w.document.getElementById('installBtn2').disabled,false);assert.equal(w.document.getElementById('installBtn2').classList.contains('hidden'),false);assert.match(w.document.getElementById('installStatus').textContent,/dibatalkan/);
+ // Native prompt errors recover to instructions instead of escaping.
+ E("installPrompt={prompt:async()=>{throw Error('Prompt unavailable')}}");await E('installPWA()');assert.equal(w.document.getElementById('installHelpDialog').open,true);assert.equal(E('installBusy'),false);E("$('installHelpDialog').close()");
+ E("installPrompt={prompt:async()=>{},userChoice:Promise.resolve({outcome:'accepted'})}");await E('installPWA()');assert.match(w.document.getElementById('installStatus').textContent,/dimulai/);
+ w.dispatchEvent(new w.Event('appinstalled'));assert.equal(w.document.getElementById('installBtn2').disabled,true);assert.match(w.document.getElementById('installBtn2').textContent,/sudah terpasang/);assert.equal(w.document.getElementById('installBtn').classList.contains('hidden'),true);
+ E('installConfirmed=false');const installMatchMedia=w.matchMedia;w.matchMedia=()=>({matches:true});E('showInstall()');assert.equal(w.document.getElementById('installBtn2').disabled,true);w.matchMedia=installMatchMedia;E('showInstall()');
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
