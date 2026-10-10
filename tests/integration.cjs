@@ -222,5 +222,13 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  // Successful removal is also persisted, and committed settings survive a reopen.
  await E('toggleFav(allFoods[0].id)');assert.equal(E('favorites.length'),0);assert.deepEqual(Array.from(await E("dbGetKV('favorites')")),[]);
  E('_db.close();_db=null');assert.equal((await E("dbGetKV('profile')")).weight,88);assert.equal((await E("dbGetKV('packs')")).length,1);
+ // Small quantities retain the exact ratio; no silent minimum serving inflation.
+ E("for(const d of document.querySelectorAll('dialog'))d.open=false;openAdd();window.smallFood={id:'small-quantity',name:'Fixture takaran kecil',serving:'100 g',servingGrams:100,calories:100,protein:10,carbs:10,fat:2};customFoods.push(window.smallFood);allFoods=[...staticFoods,...customFoods];$('qtyUnit').value='gram';$('qtyInput').value='0.1'");
+ assert.equal(w.document.getElementById('qtyInput').checkValidity(),true);
+ await E("addFood('small-quantity')");assert.equal(E('logs.at(-1).qty'),0.001);assert.equal(E('logs.at(-1).calories*logs.at(-1).qty'),0.1);
+ const smallSaved=(await E("dbAll('logs')")).find(l=>l.id===E('logs.at(-1).id'));assert.equal(smallSaved.qty,0.001);
+ E("$('qtyInput').value='0.5'");await E("addFood('small-quantity')");assert.equal(E('logs.at(-1).qty'),0.005);assert.equal(E('logs.at(-1).calories*logs.at(-1).qty'),0.5);
+ E("$('qtyUnit').value='porsi';$('qtyInput').value='0.05'");await E("addFood('small-quantity')");assert.equal(E('logs.at(-1).qty'),0.05);
+ const smallBefore=E('logs.length');E("$('qtyInput').value='0'");await E("addFood('small-quantity')");assert.equal(E('logs.length'),smallBefore);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
