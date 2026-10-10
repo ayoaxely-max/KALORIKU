@@ -162,5 +162,16 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E("logs=[];v15WaterRecords={'2024-02-01':0,'2024-02-02':500,'2024-02-30':900,'2024-02-03':null,'2024-02-04':-5}");assert.equal(E('recapData("2024-02").water'),250);assert.equal(E('v17MonthReport("2024-02").waterMean'),250);assert.equal(E('v17MonthReport("2024-02").waterDays'),2);assert.equal(E('recapData("2024-01").water'),null);assert.equal(E('v17MonthReport("2024-01").waterMean'),null);
  E("v15WaterRecords={'2024-02-01':0}");assert.equal(E('recapData("2024-02").water'),0);assert.equal(E('v17MonthReport("2024-02").waterMean'),0);
  E("v15WaterRecords={[localDate()]:500,[offsetDate(localDate(),1)]:1000}");assert.equal(E('recapData(localDate().slice(0,7)).water'),500);assert.equal(E('v17MonthReport(localDate().slice(0,7)).waterMean'),500);
+ // Closing either form must not persist valid data or be blocked by required fields.
+ E("$('customForm').reset();$('customName').value='Batal produk';$('customServing').value='100 g';$('customCal').value='100';$('customP').value='0';$('customC').value='25';$('customF').value='0';openCustom()");
+ const cancelFoods=E('customFoods.length'),cancelStoredFoods=(await E("dbAll('customFoods')")).length;
+ w.document.querySelector('#customForm .sheet-head button').click();assert.equal(w.document.getElementById('customDialog').open,false);assert.equal(E('customFoods.length'),cancelFoods);assert.equal((await E("dbAll('customFoods')")).length,cancelStoredFoods);
+ E("$('customForm').reset();openCustom()");w.document.querySelector('#customForm .sheet-head button').click();assert.equal(w.document.getElementById('customDialog').open,false);
+ E("$('weightDate').value='2024-03-01';$('weightValue').value='71';$('weightDialog').showModal()");
+ const cancelWeights=E('JSON.stringify(weights)'),cancelStoredWeights=JSON.stringify(await E("dbAll('weights')"));
+ w.document.querySelector('#weightForm .sheet-head button').click();assert.equal(w.document.getElementById('weightDialog').open,false);assert.equal(E('JSON.stringify(weights)'),cancelWeights);assert.equal(JSON.stringify(await E("dbAll('weights')")),cancelStoredWeights);
+ E("$('weightValue').value='';$('weightDialog').showModal()");w.document.querySelector('#weightForm .sheet-head button').click();assert.equal(w.document.getElementById('weightDialog').open,false);
+ // Explicit Save still persists the weight and updates the monthly view.
+ E("$('weightDate').value='2024-03-01';$('weightValue').value='71';$('weightDialog').showModal()");await E('saveWeight({preventDefault(){}})');assert.equal((await E("dbAll('weights')")).find(x=>x.date==='2024-03-01').weight,71);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
