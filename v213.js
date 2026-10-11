@@ -8,10 +8,24 @@ function v213ValidBackupState(state){
  return Number.isFinite(exported)&&Number.isFinite(confirmed)&&exported<=confirmed&&confirmed<=Date.now()?state:null;
 }
 function v213RenderBackup(){
+ v213RenderBackupChanges();
  const state=v213ValidBackupState(v213BackupState),hasData=logs.length||weights.length||customFoods.length||Object.keys(typeof v15WaterRecords==='undefined'?{}:v15WaterRecords).length;
  $('v213BackupStatus').textContent=state?'Backup terakhir dibuat: '+new Date(state.exportedAt).toLocaleString('id-ID')+'. File dikonfirmasi tersimpan: '+new Date(state.confirmedAt).toLocaleString('id-ID')+'.':'Belum ada backup yang dikonfirmasi pada perangkat ini.';
  $('v213BackupReminder').classList.toggle('hidden',!hasData||(state&&Date.now()-Date.parse(state.exportedAt)<7*86400000));
  $('v213BackupReminderText').textContent=state?'Sudah 7 hari atau lebih sejak backup terakhir. Simpan cadangan terbaru.':'Catatan tersimpan di perangkat ini. Buat backup agar bisa dipulihkan jika ganti HP.';
+}
+let v213RevisionRead=0;
+async function v213RenderBackupChanges(){
+ const request=++v213RevisionRead,state=v213ValidBackupState(v213BackupState);
+ const el=$('v213BackupChanges');el.textContent='';
+ if(!state)return;
+ try{
+  const revision=await dbGetKV('v24DataRevision',0);
+  if(request!==v213RevisionRead||state!==v213BackupState)return;
+  el.textContent=Number.isSafeInteger(state.revision)&&Number.isSafeInteger(revision)&&revision>=state.revision
+   ?(revision>state.revision?'Ada perubahan setelah backup terakhir. Buat backup baru untuk menyertakannya.':'Tidak ada perubahan data sejak backup terakhir.')
+   :'Status perubahan sejak backup lama belum tersedia. Buat backup baru.';
+ }catch{if(request===v213RevisionRead)el.textContent='Status perubahan belum dapat dibaca. Coba buka halaman ini lagi.';}
 }
 backup=async function(){
  if(v213BackupBusy||v213ConfirmBusy)return;v213BackupBusy=true;$('backupBtn').disabled=true;

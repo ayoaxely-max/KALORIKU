@@ -16,6 +16,12 @@ function v214OpenPortion(id){
   button.textContent=amount.toLocaleString('id-ID',{maximumFractionDigits:2})+(choices.unit==='gram'?' g':' porsi')+(choices.estimated&&amount===choices.normal?' · Umum':'');
   button.onclick=()=>{if(v214PortionBusy)return;$('v214PortionAmount').value=amount;v214PreviewPortion();};list.append(button);
  }
+ if(choices.unit==='gram')for(const [unit,grams] of Object.entries(NutritionTools.measures(food,foodMeasures[id]))){
+  if(unit==='porsi')continue;
+  const button=document.createElement('button');button.type='button';button.className='chip';button.dataset.amount=grams;
+  button.textContent='1 '+unit+' ≈ '+grams.toLocaleString('id-ID',{maximumFractionDigits:2})+' g';
+  button.onclick=()=>{if(v214PortionBusy)return;$('v214PortionAmount').value=grams;v214PreviewPortion();};list.append(button);
+ }
  let initial=choices.normal;
  const inputAmount=Number($('qtyInput').value),inputUnit=$('qtyUnit').value;
  if(inputAmount>0&&(inputUnit!=='porsi'||inputAmount!==1)){
@@ -33,7 +39,10 @@ function v214PreviewPortion(){
  for(const button of $('v214PortionChoices').querySelectorAll('button')){const selected=Number(button.dataset.amount)===amount;button.classList.toggle('on',selected);button.setAttribute('aria-pressed',selected);}
  if(!valid){$('v214PortionPreview').textContent='Masukkan jumlah yang lebih besar dari nol.';return;}
  const qty=v214PortionUnit==='gram'?amount/base:amount,f=v214PortionFood;
- $('v214PortionPreview').textContent=amount.toLocaleString('id-ID',{maximumFractionDigits:3})+(v214PortionUnit==='gram'?' g':' porsi')+' → '+fmt(f.calories*qty)+' kcal · Protein '+fmt(f.protein*qty)+' g · Karbo '+fmt(f.carbs*qty)+' g · Lemak '+fmt(f.fat*qty)+' g';
+ const missing=NutritionTools.missingNutrients(f);
+ $('v214PortionPreview').textContent=amount.toLocaleString('id-ID',{maximumFractionDigits:3})+(v214PortionUnit==='gram'?' g':' porsi')+' → '+NutritionTools.nutrientFields.slice(0,4).map(([key,label])=>label+' '+NutritionTools.nutrientText(f,key,qty)).join(' · ')+(missing.length?'. Belum diketahui: '+missing.join(', ')+'. Nilai kosong bukan nol.':'');
+ if(NutritionTools.nutrientFields.slice(0,4).some(([key])=>!NutritionTools.knownNutrient(f[key])||!Number.isFinite(f[key]*qty))){$('v214PortionSave').disabled=true;$('v214PortionPreview').textContent+=' Lengkapi kalori dan makro sebelum mencatat.';}
+
 }
 function v214ClosePortion(){if(v214PortionBusy)return;v214PortionFood=null;$('v214PortionDialog').close();}
 async function v214SavePortion(event){

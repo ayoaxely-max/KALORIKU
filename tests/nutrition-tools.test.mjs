@@ -76,3 +76,13 @@ test('common meal choices distinguish foods, raw ingredients, database weights a
  assert.equal(tools.commonPortions({serving:'1 bungkus'}).unit,'porsi');
  const sw=fs.readFileSync('sw.js','utf8');assert.ok(sw.includes('v214.js?v='+JSON.parse(fs.readFileSync('package.json','utf8')).version));
 });
+
+test('unknown nutrition differs from explicit zero and scales known amounts',()=>{
+ assert.equal(tools.nutrientText({protein:null},'protein'),'belum diketahui');
+ assert.equal(tools.nutrientText({protein:''},'protein'),'belum diketahui');
+ assert.equal(tools.nutrientText({protein:0},'protein',2),'0 g');
+ assert.equal(tools.nutrientText({protein:3},'protein',0.5),'1,5 g');
+ assert.equal(tools.nutrientText({protein:Infinity},'protein'),'belum diketahui');
+ assert.ok(tools.missingNutrients({protein:0}).includes('Serat'));
+ assert.ok(!tools.missingNutrients({protein:0}).includes('Protein'));
+});

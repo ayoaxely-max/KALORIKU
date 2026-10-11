@@ -1,5 +1,9 @@
 /* Pure calculations shared by UI and regression tests. Never infer grams from ml. */
 const NutritionTools=(()=>{
+ const nutrientFields=[['calories','Kalori','kcal'],['protein','Protein','g'],['carbs','Karbohidrat','g'],['fat','Lemak','g'],['fiber','Serat','g'],['sugar','Gula','g'],['sodium','Natrium','mg'],['saturatedFat','Lemak jenuh','g']];
+ const knownNutrient=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
+ function nutrientText(food,key,quantity=1){const field=nutrientFields.find(f=>f[0]===key);return knownNutrient(food[key])&&knownNutrient(food[key]*quantity)?(food[key]*quantity).toLocaleString('id-ID',{maximumFractionDigits:2})+' '+field[2]:'belum diketahui';}
+ function missingNutrients(food){return nutrientFields.filter(([key])=>!knownNutrient(food[key])).map(([,label])=>label);}
  const units=['porsi','sdm','sdt','centong','potong','gelas','butir','buah'];
  const positive=n=>typeof n==='number'&&Number.isFinite(n)&&n>0;
  function servingGrams(f,overrides={}){
@@ -102,6 +106,6 @@ const NutritionTools=(()=>{
   for(const field of ['profile','waterGoal'])if(cloud[field]!==undefined)result[field]=local[field]===undefined?cloud[field]:choose(field,field,local[field],cloud[field]);
   return {snapshot:result,conflicts,added,removed,unresolved};
  }
- return {units,positive,servingGrams,measures,commonPortions,recipe,canonical,merge,syncFields,conflictId,deletionUnion,nextDeletion};
+ return {nutrientFields,knownNutrient,nutrientText,missingNutrients,units,positive,servingGrams,measures,commonPortions,recipe,canonical,merge,syncFields,conflictId,deletionUnion,nextDeletion};
 })();
 if(typeof module!=='undefined')module.exports=NutritionTools;

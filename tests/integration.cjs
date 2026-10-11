@@ -304,5 +304,16 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  E('dbPut=portionRealPut');await Promise.all([E('v214SavePortion({preventDefault(){}})'),E('v214SavePortion({preventDefault(){}})')]);assert.equal(E('logs.length'),invalidCount+1);assert.equal(E('logs.at(-1).qty'),0.75);
  E("window.portionRecipe={id:'portion-recipe',name:'Resep tanpa berat di nama',serving:'1 porsi',servingGrams:45,calories:90,protein:2,carbs:10,fat:4};customFoods.push(portionRecipe);allFoods=[...staticFoods,...customFoods];foodMeasures['portion-recipe']={porsi:60};v214OpenPortion('portion-recipe');$('v214PortionAmount').value='30';v214PreviewPortion()");assert.match(w.document.getElementById('v214PortionPreview').textContent,/45 kcal/);await E('v214SavePortion({preventDefault(){}})');assert.equal(E('logs.at(-1).qty'),0.5);assert.equal(E('logs.at(-1).servingGrams'),60);
  E("customFoods.push({id:'portion-drink',name:'Minuman tanpa berat',serving:'250 ml',calories:100,protein:0,carbs:25,fat:0});allFoods=[...staticFoods,...customFoods];v214OpenPortion('portion-drink')");assert.equal(E('v214PortionUnit'),'porsi');assert.match(w.document.getElementById('v214PortionNote').textContent,/tidak otomatis/);await E('v214SavePortion({preventDefault(){}})');assert.equal(E('logs.at(-1).qty'),1);assert.equal(E('logs.at(-1).servingGrams'),null);
+ // Household measures, missing values and post-backup changes.
+ E("foodMeasures['portion-rice']={centong:80};v214OpenPortion('portion-rice')");
+ const household=[...w.document.querySelectorAll('#v214PortionChoices button')].find(b=>b.textContent.startsWith('1 centong'));
+ assert.ok(household);household.click();assert.equal(w.document.getElementById('v214PortionAmount').value,'80');assert.match(w.document.getElementById('v214PortionPreview').textContent,/144 kcal/);
+ E("v214ClosePortion();customFoods.push({id:'partial-food',name:'Partial',serving:'100 g',calories:100,protein:null,carbs:20,fat:0});allFoods=[...staticFoods,...customFoods];v214OpenPortion('partial-food')");
+ assert.match(w.document.getElementById('v214PortionPreview').textContent,/Protein belum diketahui/);assert.equal(w.document.getElementById('v214PortionSave').disabled,true);
+ assert.match(E("foodCard(allFoods.find(f=>f.id==='partial-food'))"),/P belum diketahui/);
+ const partialCount=E('logs.length');await E("addFood('partial-food',{amount:100,unit:'gram'})");assert.equal(E('logs.length'),partialCount);
+ E('v214ClosePortion()');await E("(async()=>{v213BackupState={exportedAt:new Date().toISOString(),confirmedAt:new Date().toISOString(),revision:await dbGetKV('v24DataRevision',0)};await v213RenderBackupChanges()})()");
+ assert.match(w.document.getElementById('v213BackupChanges').textContent,/Tidak ada perubahan/);
+ await E("dbSetKV('favorites',[...favorites,'portion-rice'])");await E('v213RenderBackupChanges()');assert.match(w.document.getElementById('v213BackupChanges').textContent,/Ada perubahan setelah backup/);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
