@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = "gemini-3.8-flash";
+const DEFAULT_MODEL = "gemini-3.5-flash-lite";
 
 function headers(origin, allowed) {
   const ok = origin && origin === allowed;
@@ -100,7 +100,7 @@ export default {
     // Retry only transient provider failures, then try a different Gemini model.
     // Keep retries bounded so a busy model cannot block the UI indefinitely.
     const primaryModel = env.GEMINI_MODEL || DEFAULT_MODEL;
-    const fallbackModel = env.GEMINI_FALLBACK_MODEL || "gemini-2.5-flash";
+    const fallbackModel = env.GEMINI_FALLBACK_MODEL || "gemini-3.6-flash";
     const models = [{ name:primaryModel, tries:2 }];
     if (fallbackModel !== primaryModel) models.push({ name:fallbackModel, tries:1 });
     const payload = {
@@ -116,6 +116,7 @@ export default {
     };
 
     let failedBecauseBusy = false;
+    let lastProviderStatus = null;
     for (const plan of models) {
       for (let attempt = 0; attempt < plan.tries; attempt++) {
         if (attempt > 0) await new Promise(resolve => setTimeout(resolve, 900));
@@ -138,9 +139,12 @@ export default {
         }
 
         if (!response.ok) {
+          lastProviderStatus = response.status;
+          // An unavailable model should advance directly to the configured fallback.
+          if (response.status === 404) break;
           if (![429, 500, 502, 503, 504].includes(response.status)) {
             // Do not expose raw provider errors, configuration, or key details.
-            return json({ ok:false, error:"ai_provider_error", retryable:false }, 502, origin, allowed);
+            return json({ ok:false, error:response.status === 401 || response.status === 403 ? "ai_provider_access_denied" : "ai_provider_error", providerStatus:response.status, retryable:false }, 502, origin, allowed);
           }
           failedBecauseBusy = true;
           continue;
@@ -163,8 +167,9 @@ export default {
 
     return json({
       ok:false,
-      error:failedBecauseBusy ? "ai_temporarily_unavailable" : "ai_provider_error",
-      retryable:Boolean(failedBecauseBusy)
+      error:lastProviderStatus === 404 ? "ai_model_unavailable" : failedBecauseBusy ? "ai_temporarily_unavailable" : "ai_provider_error",
+      providerStatus:lastProviderStatus,
+      retryable:lastProviderStatus !== 404 && Boolean(failedBecauseBusy)
     }, failedBecauseBusy ? 503 : 502, origin, allowed);
   }
 };

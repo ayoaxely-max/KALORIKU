@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import app from '../src/index.js';
 
 const origin = 'https://ayoaxely-max.github.io';
-const env = {GEMINI_API_KEY:'unit-test-placeholder',ALLOWED_ORIGIN:origin,GEMINI_MODEL:'gemini-3.8-flash',GEMINI_FALLBACK_MODEL:'gemini-2.5-flash'};
+const env = {GEMINI_API_KEY:'unit-test-placeholder',ALLOWED_ORIGIN:origin,GEMINI_MODEL:'gemini-3.5-flash-lite',GEMINI_FALLBACK_MODEL:'gemini-3.6-flash'};
 const food = {name:'Nasi putih',estimated_grams:150,min_grams:100,max_grams:200,confidence:.85,portion_description:'sepiring'};
 function request(imageBase64='aGVsbG8='){
   return new Request('https://kaloriku-ai.example/analyze',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({imageBase64,mimeType:'image/jpeg'})});
@@ -37,7 +37,7 @@ test('transient 503 retries primary then succeeds',async()=>{
     const r=await app.fetch(request(),env);
     assert.equal(r.status,200);
     assert.equal(urls.length,2);
-    assert.ok(urls.every(x=>x.includes('gemini-3.8-flash')));
+    assert.ok(urls.every(x=>x.includes('gemini-3.5-flash-lite')));
   });
 });
 test('busy primary falls back to alternative model',async()=>{
@@ -45,9 +45,9 @@ test('busy primary falls back to alternative model',async()=>{
     const r=await app.fetch(request(),env);
     const j=await r.json();
     assert.equal(r.status,200);
-    assert.equal(j.model,'gemini-2.5-flash');
+    assert.equal(j.model,'gemini-3.6-flash');
     assert.equal(urls.length,3);
-    assert.ok(urls[2].includes('gemini-2.5-flash'));
+    assert.ok(urls[2].includes('gemini-3.6-flash'));
   });
 });
 test('exhausted retries return safe temporary error without provider text',async()=>{
@@ -75,4 +75,17 @@ test('missing API key and invalid image do not call provider',async()=>{
   assert.equal(noKey.status,503);
   const invalid=await app.fetch(request(''),env);
   assert.equal(invalid.status,413);
+});
+
+test('missing primary model goes directly to fallback',async()=>{
+ await withMock([new Response('private details',{status:404}),okResponse()],async urls=>{
+  const r=await app.fetch(request(),env),j=await r.json();
+  assert.equal(r.status,200);assert.equal(j.model,env.GEMINI_FALLBACK_MODEL);assert.equal(urls.length,2);
+ });
+});
+test('missing models produce a safe diagnostic',async()=>{
+ await withMock([new Response('private details',{status:404}),new Response('private details',{status:404})],async urls=>{
+  const r=await app.fetch(request(),env),j=await r.json();
+  assert.equal(j.error,'ai_model_unavailable');assert.equal(j.providerStatus,404);assert.equal(j.retryable,false);assert.equal(urls.length,2);assert.ok(!JSON.stringify(j).includes('private details'));
+ });
 });
