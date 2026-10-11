@@ -228,7 +228,7 @@ async function v17ExecuteRestore(){
  if(v17Restoring||!v17PendingBackup)return;
  const x=v17PendingBackup,check=v17ValidateBackup(x),reviewedRevision=v24RestoreRevision??v210RestoreRevision;
  if(check.errors.length){v17SetBackupPreview(check.errors.join(' • '),'error');return}
- v17Restoring=true;$('v17RestoreConfirm').disabled=true;
+ v17Restoring=true;$('v17RestoreConfirm').disabled=true;$('v17RestoreCancel').disabled=true;
  v17SetBackupPreview('Mempersiapkan foto, lalu memulihkan secara aman…');
  try{
   const photos=[];
@@ -290,14 +290,15 @@ async function v17ExecuteRestore(){
   $('v15WaterGoalInput').value=v15WaterGoal;
   v17RenderMonthly();toast('Backup berhasil dipulihkan');
  }catch(e){console.error(e);v17SetBackupPreview('Pemulihan gagal; transaksi data dibatalkan: '+String(e.message||e),'error')}
- finally{v17Restoring=false;$('v17RestoreConfirm').disabled=!v17PendingBackup}
+ finally{v17Restoring=false;$('v17RestoreConfirm').disabled=!v17PendingBackup;$('v17RestoreCancel').disabled=false}
 }
 const v17OldRenderStats=renderStats;
 renderStats=function(){v17OldRenderStats();v17RenderMonthly()};
 document.addEventListener('DOMContentLoaded',()=>{
  $('v17MonthPicker').onchange=e=>{v17ReportMonth=e.target.value;v17RenderMonthly()};
  $('v17RestoreConfirm').onclick=v17ExecuteRestore;
- $('v17RestoreCancel').onclick=()=>{$('v17RestoreDialog').close();v17PendingBackup=null};
+ $('v17RestoreCancel').onclick=()=>{if(v17Restoring)return;$('v17RestoreDialog').close();v17PendingBackup=null};
+ $('v17RestoreDialog').addEventListener('cancel',e=>{if(v17Restoring)e.preventDefault()});
  $('v17RestoreDialog').addEventListener('close',()=>{v17PendingBackup=null});
  v17RenderMonthly();
 });

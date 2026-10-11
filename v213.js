@@ -2,11 +2,15 @@
 let v213BackupState=null,v213PendingBackup=null,v213BackupBusy=false,v213ConfirmBusy=false,v213Ready=false;
 let v213EditingFood=null,v213EditBusy=false;
 const v213Optional=[['fiber','Serat (g)'],['sugar','Gula (g)'],['sodium','Natrium (mg)'],['saturatedFat','Lemak jenuh (g)']];
-function v213ValidBackupState(state){return state&&Number.isFinite(Date.parse(state.confirmedAt))&&Date.parse(state.confirmedAt)<=Date.now()&&Number.isFinite(Date.parse(state.exportedAt))?state:null;}
+function v213ValidBackupState(state){
+ if(!state)return null;
+ const exported=Date.parse(state.exportedAt),confirmed=Date.parse(state.confirmedAt);
+ return Number.isFinite(exported)&&Number.isFinite(confirmed)&&exported<=confirmed&&confirmed<=Date.now()?state:null;
+}
 function v213RenderBackup(){
  const state=v213ValidBackupState(v213BackupState),hasData=logs.length||weights.length||customFoods.length||Object.keys(typeof v15WaterRecords==='undefined'?{}:v15WaterRecords).length;
- $('v213BackupStatus').textContent=state?'Backup terakhir dikonfirmasi: '+new Date(state.confirmedAt).toLocaleString('id-ID')+'.':'Belum ada backup yang dikonfirmasi pada perangkat ini.';
- $('v213BackupReminder').classList.toggle('hidden',!hasData||(state&&Date.now()-Date.parse(state.confirmedAt)<7*86400000));
+ $('v213BackupStatus').textContent=state?'Backup terakhir dibuat: '+new Date(state.exportedAt).toLocaleString('id-ID')+'. File dikonfirmasi tersimpan: '+new Date(state.confirmedAt).toLocaleString('id-ID')+'.':'Belum ada backup yang dikonfirmasi pada perangkat ini.';
+ $('v213BackupReminder').classList.toggle('hidden',!hasData||(state&&Date.now()-Date.parse(state.exportedAt)<7*86400000));
  $('v213BackupReminderText').textContent=state?'Sudah 7 hari atau lebih sejak backup terakhir. Simpan cadangan terbaru.':'Catatan tersimpan di perangkat ini. Buat backup agar bisa dipulihkan jika ganti HP.';
 }
 backup=async function(){

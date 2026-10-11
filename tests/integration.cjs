@@ -263,7 +263,7 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
   const exported=JSON.parse(E('v213Downloads[0].body'));assert.equal('v213BackupState' in exported,false);assert.equal('v213GuideHidden' in exported,false);assert.ok(Array.isArray(exported.logs));
   E("window.v213OriginalKV=dbSetKV;dbSetKV=async(key,value)=>{if(key==='v213BackupState')throw Error('Confirmation write failed');return v213OriginalKV(key,value)}");await E('v213ConfirmBackup()');assert.equal(E('v213BackupState'),null);assert.match(w.document.getElementById('v213BackupConfirmStatus').textContent,/belum dapat disimpan/);assert.equal(w.document.getElementById('v213BackupConfirmDialog').open,true);
   E('dbSetKV=v213OriginalKV');await Promise.all([E('v213ConfirmBackup()'),E('v213ConfirmBackup()')]);assert.ok((await E("dbGetKV('v213BackupState')")).confirmedAt);assert.equal(w.document.getElementById('v213BackupConfirmDialog').open,false);
-  E("v213BackupState={...v213BackupState,confirmedAt:new Date(Date.now()-8*86400000).toISOString()};v213RenderBackup()");assert.equal(w.document.getElementById('v213BackupReminder').classList.contains('hidden'),false);
+  E("v213BackupState={...v213BackupState,exportedAt:new Date(Date.now()-9*86400000).toISOString(),confirmedAt:new Date(Date.now()-8*86400000).toISOString()};v213RenderBackup()");assert.equal(w.document.getElementById('v213BackupReminder').classList.contains('hidden'),false);
   const lastConfirmed=JSON.stringify(await E("dbGetKV('v213BackupState')"));await E('backup();');E('v213CloseBackup()');assert.equal(JSON.stringify(await E("dbGetKV('v213BackupState')")),lastConfirmed);
   E("download=()=>{throw Error('Download failed')}");await E('backup()');assert.equal(JSON.stringify(await E("dbGetKV('v213BackupState')")),lastConfirmed);assert.match(w.document.getElementById('toast').textContent,/Backup gagal/);
  }finally{E('download=v213OriginalDownload;dbSetKV=v213OriginalKV')}
@@ -278,5 +278,19 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  await Promise.all([E('v213SaveBarcodeEdit({preventDefault(){}})'),E('v213SaveBarcodeEdit({preventDefault(){}})')]);const corrected=(await E("dbAll('customFoods')")).find(f=>f.id==='care-product');assert.equal(corrected.calories,170);assert.equal(corrected.barcode,'8991234567890');assert.equal(corrected.source_type,'label');assert.equal('sodium' in corrected,false);assert.equal(E("JSON.stringify(logs.find(l=>l.id==='care-old-log'))"),oldIntake);
  E("v213OpenBarcodeEdit('care-product');$('v213Product_protein').value=''");await E('v213SaveBarcodeEdit({preventDefault(){}})');assert.match(w.document.getElementById('v213ProductStatus').textContent,/Isi kalori/);
  E("$('v213Product_protein').value='1'");await E("dbPut('customFoods',{...customFoods.find(f=>f.id==='care-product'),name:'Changed elsewhere'})");await E('v213SaveBarcodeEdit({preventDefault(){}})');assert.equal((await E("dbAll('customFoods')")).find(f=>f.id==='care-product').name,'Changed elsewhere');assert.equal(w.document.getElementById('v213ProductDialog').open,true);E('v213CloseProduct()');
+ // Backup age follows exported contents, not a delayed confirmation.
+ E("v213BackupState={exportedAt:new Date(Date.now()-8*86400000).toISOString(),confirmedAt:new Date().toISOString()};v213RenderBackup()");
+ assert.equal(w.document.getElementById('v213BackupReminder').classList.contains('hidden'),false,'Old file remains due for backup after recent confirmation');
+ assert.match(w.document.getElementById('v213BackupStatus').textContent,/dibuat/);
+ assert.equal(E("v213ValidBackupState({exportedAt:new Date(Date.now()+86400000).toISOString(),confirmedAt:new Date().toISOString()})"),null);
+ // Once confirmed, restore must remain visibly active until commit or rollback.
+ await E("(async()=>{window.restoreBusySnapshot={...(await v20Snapshot()),logs:[],customFoods:[],weights:[],mealPhotos:[],syncDeletions:[],waterRecords:{},foodMeasures:{}};await v17OpenRestorePreview({name:'busy.json',size:100,text:async()=>JSON.stringify(restoreBusySnapshot)});})()");
+ E("window.realBusyOpen=dbOpen;window.busyOpenRelease=null;dbOpen=()=>new Promise(resolve=>busyOpenRelease=()=>realBusyOpen().then(resolve));window.busyRestore=v17ExecuteRestore()");
+ for(let i=0;i<100&&!E('busyOpenRelease');i++)await new Promise(r=>setTimeout(r,1));
+ assert.ok(E('busyOpenRelease'));w.document.getElementById('v17RestoreCancel').click();
+ assert.equal(w.document.getElementById('v17RestoreDialog').open,true,'Cannot close a restore already in progress');
+ const restoreEscape=new w.Event('cancel',{cancelable:true});w.document.getElementById('v17RestoreDialog').dispatchEvent(restoreEscape);assert.equal(restoreEscape.defaultPrevented,true);
+ E('dbOpen=realBusyOpen;busyOpenRelease()');await E('busyRestore');
+ assert.equal(E('v17Restoring'),false);assert.equal(w.document.getElementById('v17RestoreDialog').open,false);assert.equal(w.document.getElementById('v17RestoreCancel').disabled,false);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
