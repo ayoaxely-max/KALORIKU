@@ -19,6 +19,24 @@ const NutritionTools=(()=>{
   for(const [u,n] of Object.entries(overrides))if(units.includes(u)&&positive(n))out[u]=n;
   return out;
  }
+ // Practical choices for recording a meal, not measured population serving sizes.
+ function commonPortions(f,overrides={}){
+  const base=servingGrams(f,overrides),name=String(f.name||'').toLowerCase(),category=String(f.category||'').toLowerCase();
+  if(!base)return {unit:'porsi',amounts:[0.5,1,1.5],normal:1,estimated:false};
+  let amounts;
+  const ingredient=/\b(mentah|tepung|kering|bubuk|beras|minyak|gula|garam)\b/.test(name);
+  if(!ingredient){
+   if(/^nasi(?:\s+(?:putih|merah|hitam|matang))?(?:\s*\(|,|$)/.test(name))amounts=[100,150,200];
+   else if(/^tempe\b/.test(name))amounts=[25,50,75];
+   else if(/^tahu\b/.test(name))amounts=[50,100,150];
+   else if(/^telur ayam\b|^telur (?:rebus|goreng|dadar|ceplok|orak)/.test(name))amounts=[50,55,60];
+   else if(category==='lauk hewani'&&!/\b(susu|abon|kerupuk|kaldu|tepung)\b/.test(name))amounts=[50,75,100];
+   else if(/^sayur/.test(category))amounts=[75,100,150];
+   else if(category==='buah')amounts=[80,100,150];
+   else if(/\b(ubi|singkong|kentang|jagung|mie|mi|bihun)\b/.test(name)&&/\b(rebus|kukus|matang)\b/.test(name)&&category==='makanan pokok')amounts=[100,150,200];
+  }
+  return amounts?{unit:'gram',amounts,normal:amounts[1],estimated:true}:{unit:'gram',amounts:[base/2,base,base*1.5],normal:base,estimated:false};
+ }
  function recipe(items,cookedGrams,portions){
   if(!items.length||!positive(cookedGrams)||!positive(portions))throw Error('Isi bahan, berat matang, dan jumlah porsi dengan angka positif.');
   const keys=['calories','protein','carbs','fat','fiber','sugar','sodium','saturatedFat'],totals={};
@@ -84,6 +102,6 @@ const NutritionTools=(()=>{
   for(const field of ['profile','waterGoal'])if(cloud[field]!==undefined)result[field]=local[field]===undefined?cloud[field]:choose(field,field,local[field],cloud[field]);
   return {snapshot:result,conflicts,added,removed,unresolved};
  }
- return {units,positive,servingGrams,measures,recipe,canonical,merge,syncFields,conflictId,deletionUnion,nextDeletion};
+ return {units,positive,servingGrams,measures,commonPortions,recipe,canonical,merge,syncFields,conflictId,deletionUnion,nextDeletion};
 })();
 if(typeof module!=='undefined')module.exports=NutritionTools;

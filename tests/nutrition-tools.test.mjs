@@ -62,3 +62,17 @@ test('marker ordering converges and legacy orphan photo records are retained',()
 test('delete and undo state generation advances the same key without changing other markers',()=>{
  const a=tools.nextDeletion([], 'logs','x',true),b=tools.nextDeletion(a,'logs','x',false);assert.equal(a[0].version,1);assert.equal(b[0].version,2);assert.equal(b[0].deleted,false);assert.equal(b.length,1);
 });
+
+test('common meal choices distinguish foods, raw ingredients, database weights and unknown ml',()=>{
+ const rice=tools.commonPortions({name:'Nasi putih',category:'Makanan pokok',serving:'100 g'});assert.deepEqual(rice.amounts,[100,150,200]);assert.equal(rice.normal,150);assert.equal(rice.estimated,true);
+ assert.deepEqual(tools.commonPortions({name:'Tempe goreng',serving:'100 g'}).amounts,[25,50,75]);
+ assert.deepEqual(tools.commonPortions({name:'Tahu kukus',serving:'100 g'}).amounts,[50,100,150]);
+ assert.deepEqual(tools.commonPortions({name:'Ayam goreng',category:'Lauk hewani',serving:'100 g'}).amounts,[50,75,100]);
+ assert.deepEqual(tools.commonPortions({name:'Ayam mentah',category:'Lauk hewani',serving:'100 g'}).amounts,[50,100,150]);
+ assert.equal(tools.commonPortions({name:'Nasi goreng ayam',category:'Hidangan Indonesia',serving:'1 piring (300 g)'}).normal,300);
+ assert.equal(tools.commonPortions({name:'Susu',category:'Minuman',serving:'1 gelas (250 ml)'}).unit,'porsi');
+ assert.equal(tools.commonPortions({name:'Resep',serving:'1 porsi',servingGrams:45}).normal,45);
+ assert.equal(tools.commonPortions({name:'Resep',serving:'1 porsi',servingGrams:45},{porsi:60}).normal,60);
+ assert.equal(tools.commonPortions({serving:'1 bungkus'}).unit,'porsi');
+ const sw=fs.readFileSync('sw.js','utf8');assert.ok(sw.includes('v214.js?v='+JSON.parse(fs.readFileSync('package.json','utf8')).version));
+});
