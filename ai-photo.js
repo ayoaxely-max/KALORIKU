@@ -54,16 +54,17 @@ async function testAiBackend(showToast=false){
   }catch(e){updateAiBackendStatus('Belum siap: '+String(e.message||e));if(showToast)toast('Backend AI belum siap');return false}
 }
 async function analyzeFoodPhoto(){
+  if(photoSaveBusy)return;
   if(!photoDraftBlob){toast('Ambil atau pilih foto dulu');return}
   if(!aiBackendUrl){toast('Atur URL backend AI di Profil');go('profile');return}
-  const sourcePhoto=photoDraftBlob;
+  const sourcePhoto=photoDraftBlob,sourceSession=photoSession;
   const btn=$('analyzePhotoBtn');btn.disabled=true;btn.textContent='Menganalisis…';
   setAiStatus('AI mengenali makanan. Jika server sedang sibuk, aplikasi akan mencoba kembali secara otomatis.');
   try{
     const b64=await blobBase64(sourcePhoto);
     let succeeded=false;
     for(let attempt=0;attempt<2;attempt++){
-      if(sourcePhoto!==photoDraftBlob)return; // Foto telah diganti / dialog ditutup.
+      if(sourcePhoto!==photoDraftBlob||sourceSession!==photoSession||photoSaveBusy)return; // Foto telah diganti / dialog ditutup.
       let response,body;
       try{
         response=await fetch(aiBackendUrl+'/analyze',{
@@ -81,8 +82,9 @@ async function analyzeFoodPhoto(){
         }
         throw new Error('Tidak dapat menghubungi AI. Periksa koneksi internet dan coba lagi.');
       }
+      if(sourcePhoto!==photoDraftBlob||sourceSession!==photoSession||photoSaveBusy)return;
       if(response.ok&&body?.ok){
-        if(sourcePhoto!==photoDraftBlob)return;
+        if(sourcePhoto!==photoDraftBlob||sourceSession!==photoSession||photoSaveBusy)return;
         applyAiSuggestions(body.result);
         succeeded=true;
         break;
@@ -97,14 +99,13 @@ async function analyzeFoodPhoto(){
       if(body?.error==='gemini_not_configured')throw new Error('Backend AI belum dikonfigurasi. Periksa pengaturan AI di Profil.');
       throw new Error('Analisis belum berhasil. Silakan coba kembali atau pilih makanan secara manual.');
     }
-    if(!succeeded&&sourcePhoto===photoDraftBlob)throw new Error('Analisis belum berhasil. Coba beberapa saat lagi.');
+    if(!succeeded&&sourcePhoto===photoDraftBlob&&sourceSession===photoSession&&!photoSaveBusy)throw new Error('Analisis belum berhasil. Coba beberapa saat lagi.');
   }catch(error){
-    if(sourcePhoto===photoDraftBlob){
+    if(sourcePhoto===photoDraftBlob&&sourceSession===photoSession&&!photoSaveBusy){
       setAiStatus(String(error.message||'Analisis gagal. Silakan coba lagi.'),'error');
     }
   }finally{
-    btn.disabled=!photoDraftBlob;
-    btn.textContent='✨ Analisis ulang dengan AI';
+    if(sourceSession===photoSession){btn.disabled=!photoDraftBlob||photoSaveBusy;btn.textContent='✨ Analisis ulang dengan AI';}
   }
 }
 function applyAiSuggestions(result){
@@ -118,6 +119,7 @@ function applyAiSuggestions(result){
   }
   photoDraftItems=matched;renderPhotoSelected();renderAiSuggestions(result,unmatched);
   if(result?.meal_description&&!$('photoNote').value)$('photoNote').value=result.meal_description;
+  photoScheduleDraft();
   const high=matched.filter(x=>x.ai.confidence>=.7).length;
   setAiStatus(`AI menemukan ${foods.length} komponen; ${matched.length} cocok dengan syarat ketat. ${high} keyakinan visual tinggi. Periksa nama dan gram/porsi sebelum simpan. Hasil foto tidak dapat menentukan berat pasti.`,'ok');
 }

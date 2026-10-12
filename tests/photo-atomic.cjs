@@ -40,7 +40,44 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
   E("editKaloriLog(window.editId);$('editLogAmount').value='2';$('editLogUnit').value='porsi'");await E("dbPut('logs',{...logs.find(x=>x.id===window.editId),qty:3})");const revision=await E('dbGetKV("v24DataRevision",0)'),photo=JSON.stringify(await E('dbAll("mealPhotos")'));await E('v14SaveEdit({preventDefault(){}})');assert.equal(JSON.stringify(await E('dbAll("mealPhotos")')),photo);assert.equal(await E('dbGetKV("v24DataRevision",0)'),revision);assert.equal((await E('dbAll("logs")')).find(x=>x.id===w.editId).qty,3);assert.equal(w.document.getElementById('editLogDialog').open,true);assert.match(w.document.getElementById('toast').textContent,/Muat ulang/);
  });
  await check('camera-form cancellation is blocked while write is pending',async()=>{
-  draft();const real=E('dbWritePhotoMeal');w.writeGate=null;w.gatedWrite=(...args)=>new Promise(resolve=>{w.writeGate=()=>real(...args).then(resolve)});E('dbWritePhotoMeal=window.gatedWrite');const pending=E('savePhotoMeal()');const event=new w.Event('cancel',{cancelable:true});w.document.getElementById('photoDialog').dispatchEvent(event);assert.equal(event.defaultPrevented,true);E('closePhotoMeal()');assert.equal(w.document.getElementById('photoDialog').open,true);w.writeGate();await pending;w.restoredWrite=real;E('dbWritePhotoMeal=window.restoredWrite');assert.equal(E('photoSaveBusy'),false);
+  draft();const real=E('dbWritePhotoMeal');w.writeGate=null;w.gatedWrite=(...args)=>new Promise(resolve=>{w.writeGate=()=>real(...args).then(resolve)});E('dbWritePhotoMeal=window.gatedWrite');const pending=E('savePhotoMeal()');const event=new w.Event('cancel',{cancelable:true});w.document.getElementById('photoDialog').dispatchEvent(event);assert.equal(event.defaultPrevented,true);E('closePhotoMeal()');assert.equal(w.document.getElementById('photoDialog').open,true);await new Promise(resolve=>setImmediate(resolve));w.writeGate();await pending;w.restoredWrite=real;E('dbWritePhotoMeal=window.restoredWrite');assert.equal(E('photoSaveBusy'),false);
+ });
+
+ w.cameraPhoto=new Blob(['camera-original'],{type:'image/jpeg'});
+ w.compressedPhoto=new Blob(['compressed-photo'],{type:'image/jpeg'});
+ await check('camera original persists before processing; failure keeps recoverable photo',async()=>{
+  E("openPhotoMeal('camera');compressMealPhoto=async()=>{const stored=await dbAll('mealPhotos');if(!stored.some(p=>p.image?.size===window.cameraPhoto.size))throw Error('original not saved');throw Error('decode failure')}");
+  await w.document.getElementById('photoCameraInput').onchange({target:{files:[w.cameraPhoto],value:'file'}});
+  assert.equal(E('photoDraftRecord.source'),'photo_draft');assert.equal(E('photoDraftRecord.image.size'),w.cameraPhoto.size);
+  assert.match(w.document.getElementById('photoDraftStatus').textContent,/Foto asli sudah tersimpan/);
+ });
+ await check('AI failure then photo-only save creates no intake and survives memory reset',async()=>{
+  const before=(await E('dbAll("logs")')).length;
+  w.AbortSignal=AbortSignal;w.fetch=async()=>({ok:false,status:502,json:async()=>({ok:false,retryable:false})});
+  E("aiBackendUrl='https://test.local'");await E('analyzeFoodPhoto()');assert.match(w.document.getElementById('aiPhotoStatus').textContent,/belum berhasil/);
+  const id=E('photoDraftRecord.id');w.savedDraftId=id;
+  await E('savePhotoMeal(true)');assert.equal((await E('dbAll("logs")')).length,before);assert.equal(w.document.getElementById('photoDialog').open,false);
+  E('mealPhotos=[];photoDraftBlob=null;photoDraftRecord=null');await E("(async()=>{mealPhotos=await dbAll('mealPhotos')})()");E('renderPhotoMeals();resumePhotoDraft(window.savedDraftId)');await E('photoDraftQueue');
+  assert.equal(E('photoDraftBlob.size'),w.cameraPhoto.size);assert.equal(E('photoDraftRecord.id'),id);
+  assert.equal(await E('photoDraftBlob.text()'),'camera-original');
+ });
+ await check('draft metadata and selected foods reopen, then finalize once without duplicate photo',async()=>{
+  E("$('photoNote').value='Lanjut setelah AI gagal';photoDraftItems=[{id:'draft-item',food:window.testFood,servingGrams:100,grams:70,qty:1}];renderPhotoSelected()");await E('closePhotoMeal()');
+  E('resumePhotoDraft(window.savedDraftId)');await E('photoDraftQueue');assert.equal(w.document.getElementById('photoNote').value,'Lanjut setelah AI gagal');assert.equal(E('photoDraftItems[0].grams'),70);
+  const before=(await E('dbAll("logs")')).length;
+  await Promise.all([E('savePhotoMeal()'),E('savePhotoMeal()')]);
+  const photos=await E('dbAll("mealPhotos")');assert.equal(photos.filter(p=>p.id===w.savedDraftId).length,1);assert.equal(photos.find(p=>p.id===w.savedDraftId).items.length,1);
+  assert.equal((await E('dbAll("logs")')).length,before+1);
+ });
+ await check('storage failure keeps original in form and blocks close; retry saves it',async()=>{
+  E("openPhotoMeal('camera')");const orig=fidb.IDBObjectStore.prototype.add;
+  fidb.IDBObjectStore.prototype.add=function(value,...args){if(this.name==='mealPhotos')throw Error('quota');return orig.call(this,value,...args)};
+  try{
+   await w.document.getElementById('photoCameraInput').onchange({target:{files:[w.cameraPhoto],value:'file'}});
+   assert.equal(E('photoDraftBlob.size'),w.cameraPhoto.size);assert.equal(E('photoDraftRecord'),null);
+   await E('closePhotoMeal()');assert.equal(w.document.getElementById('photoDialog').open,true);assert.match(w.document.getElementById('photoDraftStatus').textContent,/BELUM tersimpan/);
+  }finally{fidb.IDBObjectStore.prototype.add=orig;}
+  await E('savePhotoMeal(true)');assert.equal(w.document.getElementById('photoDialog').open,false);
  });
  assert.deepEqual(errors,[]);console.log('PHOTO REGRESSION '+count+' PASS');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1)});

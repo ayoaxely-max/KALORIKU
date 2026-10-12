@@ -1,4 +1,39 @@
 let photoSaveBusy=false;
+let photoDraftRecord=null,photoDraftQueue=Promise.resolve(),photoSession=0,photoDraftPending=0;
+function photoDraftStatus(text){$('photoDraftStatus').textContent=text;}
+function photoPersistDraft(){
+ if(!photoDraftBlob)return Promise.resolve();
+ const session=photoSession;
+ const snapshot={id:photoDraftRecord?.id||'mp_'+crypto.randomUUID(),date:$('photoEntryDate').value||localDate(),meal:$('photoMeal').value,note:$('photoNote').value.trim(),image:photoDraftBlob,items:[],draftItems:structuredClone(photoDraftItems),createdAt:photoDraftRecord?.createdAt||Date.now(),photoOrigin:photoDraftSource,source:'photo_draft'};
+ photoDraftPending++;photoDraftStatus('Menyimpan draft foto…');
+ const task=photoDraftQueue.catch(()=>{}).then(async()=>{
+  if(session!==photoSession)return;
+  // The first queued write allocates the ID used by every later revision.
+  if(photoDraftRecord){snapshot.id=photoDraftRecord.id;snapshot.createdAt=photoDraftRecord.createdAt;}
+  await dbWritePhotoMeal(snapshot,[],photoDraftRecord?{photo:photoDraftRecord,logs:[]}:null);
+  photoDraftRecord=snapshot;
+  mealPhotos=mealPhotos.filter(p=>p.id!==snapshot.id).concat(snapshot);
+  photoDraftStatus('Draft foto tersimpan di perangkat. Bisa dilanjutkan dari dashboard.');renderPhotoMeals();updatePhotoStorageStatus();
+ });
+ task.then(()=>photoDraftPending--,()=>photoDraftPending--);
+ photoDraftQueue=task;
+ task.catch(()=>{if(session===photoSession)photoDraftStatus('Draft BELUM tersimpan. Jangan tutup aplikasi. Coba Simpan foto saja atau unduh foto.');});
+ return task;
+}
+function photoScheduleDraft(){if(!photoSaveBusy&&photoDraftBlob&&photoDraftRecord)photoPersistDraft().catch(()=>{});}
+function downloadDraftPhoto(){
+ if(!photoDraftBlob)return;
+ const url=URL.createObjectURL(photoDraftBlob),a=document.createElement('a');a.href=url;
+ a.download='KaloriKu-foto-'+localDate()+(photoDraftBlob.type==='image/png'?'.png':photoDraftBlob.type==='image/webp'?'.webp':'.jpg');a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+function resumePhotoDraft(id){
+ if(photoSaveBusy)return;
+ const rec=mealPhotos.find(p=>p.id===id&&p.items.length===0);if(!rec)return;
+ openPhotoMeal(rec.photoOrigin||'camera');photoDraftRecord=structuredClone(rec);photoDraftBlob=rec.image;photoDraftSource=rec.photoOrigin;
+ photoDraftItems=structuredClone(rec.draftItems||[]);$('photoEntryDate').value=rec.date;$('photoMeal').value=rec.meal;$('photoNote').value=rec.note||'';
+ setPhotoPreview(rec.image);$('analyzePhotoBtn').disabled=false;renderPhotoSelected();
+}
+
 let mealPhotos=[],photoDraftItems=[],photoDraftBlob=null,photoDraftUrl=null,photoDraftSource=null;
 
 function photoServingGrams(food){return NutritionTools.servingGrams(food,foodMeasures[food.id])}
@@ -30,7 +65,7 @@ function setPhotoPreview(blob){
 function openPhotoMeal(source='camera'){
   if(photoSaveBusy)return;
   try{if($('addDialog')?.open)$('addDialog').close()}catch{}
-  photoDraftItems=[];photoDraftBlob=null;photoDraftSource=null;setPhotoPreview(null);
+  photoSession++;photoDraftRecord=null;photoDraftItems=[];photoDraftBlob=null;photoDraftSource=null;setPhotoPreview(null);photoDraftStatus('Foto akan disimpan otomatis setelah diambil.');
   $('takePhotoBtn').classList.toggle('hidden',source==='gallery');
   $('uploadPhotoBtn').classList.toggle('hidden',source!=='gallery');
   $('takePhotoBtn').textContent='📷 Ambil foto sekarang';$('uploadPhotoBtn').textContent='🖼️ Pilih foto dari galeri';
@@ -44,11 +79,17 @@ function openPhotoMeal(source='camera'){
   renderPhotoSearch();renderPhotoSelected();
   $('photoDialog').showModal();
 }
-function closePhotoMeal(force=false){
-  if(photoSaveBusy&&force!==true)return;
-  if(photoDraftUrl)URL.revokeObjectURL(photoDraftUrl);
-  photoDraftUrl=null;photoDraftBlob=null;photoDraftSource=null;photoDraftItems=[];
-  $('photoDialog').close();
+async function closePhotoMeal(force=false){
+ if(photoSaveBusy&&force!==true)return;
+ if(force!==true&&photoDraftBlob){
+  photoSaveBusy=true;
+  try{await photoPersistDraft();}catch{photoSaveBusy=false;return;}
+  photoSaveBusy=false;
+ }
+ photoSession++;
+ if(photoDraftUrl)URL.revokeObjectURL(photoDraftUrl);
+ photoDraftUrl=null;photoDraftBlob=null;photoDraftSource=null;photoDraftItems=[];photoDraftRecord=null;
+ $('photoDialog').close();
 }
 function renderPhotoSearch(){
   const q=$('photoSearch').value.trim().toLowerCase();
@@ -73,6 +114,7 @@ window.photoAmountChanged=(id,type,value)=>{
 };
 function renderPhotoSelected(){
   const total=photoDraftItems.reduce((s,i)=>s+photoItemCalories(i),0);
+  photoScheduleDraft();
   $('photoTotalKcal').textContent=`${fmt(total)} kcal`;
   $('photoSelected').innerHTML=photoDraftItems.length?photoDraftItems.map(i=>{
     const sg=i.servingGrams;
@@ -81,17 +123,18 @@ function renderPhotoSelected(){
     return `<div class="photo-selected-row"><div class="food-info"><strong>${esc(i.food.name)}</strong><small>${esc(i.food.serving)} · ≈ ${fmt(photoItemCalories(i))} kcal</small></div>${ctl}<button class="del" onclick="removePhotoFood('${i.id}')">×</button></div>`;
   }).join(''):'<div class="empty small">Belum ada komponen makanan.</div>';
 }
-async function savePhotoMeal(){
+async function savePhotoMeal(photoOnly=false){
+  photoOnly=photoOnly===true;
   if(photoSaveBusy)return;
   if(!photoDraftBlob){toast('Ambil atau pilih foto dulu');return}
-  if(!photoDraftItems.length){toast('Tambahkan minimal satu makanan');return}
-  if(photoDraftItems.some(i=>!Number.isFinite(photoItemQty(i)))){toast('Isi jumlah positif yang valid untuk setiap makanan');return}
-  const id='mp_'+crypto.randomUUID(),date=$('photoEntryDate').value||localDate(),meal=$('photoMeal').value,createdAt=Date.now();
-  const items=photoDraftItems.map(i=>{
+  if(!photoOnly&&!photoDraftItems.length){toast('AI tidak wajib. Pilih Simpan foto saja atau tambahkan makanan manual.');return}
+  if(!photoOnly&&photoDraftItems.some(i=>!Number.isFinite(photoItemQty(i)))){toast('Isi jumlah positif yang valid untuk setiap makanan');return}
+  let id=photoDraftRecord?.id||'mp_'+crypto.randomUUID();const date=$('photoEntryDate').value||localDate(),meal=$('photoMeal').value,createdAt=Date.now();
+  const items=(photoOnly?[]:photoDraftItems).map(i=>{
     const q=photoItemQty(i),m=photoItemMacros(i);
     return {id:i.id||'pi_'+crypto.randomUUID(),foodId:i.food.id,name:i.food.name,serving:i.food.serving,qty:q,grams:i.servingGrams?i.grams:null,servingGrams:i.servingGrams,calories:+i.food.calories||0,protein:+i.food.protein||0,carbs:+i.food.carbs||0,fat:+i.food.fat||0,...v17NutrientSnapshot(i.food),total:m,aiEstimate:i.ai?{recognizedName:i.ai.name,estimatedGrams:i.ai.grams||i.grams||null,minGrams:i.ai.min,maxGrams:i.ai.max,confidence:i.ai.confidence,portion:i.ai.portion,basis:i.ai.basis,matchScore:i.ai.matchScore}:null};
   });
-  const rec={id,date,meal,note:$('photoNote').value.trim(),image:photoDraftBlob,items,createdAt,photoOrigin:photoDraftSource,source:items.some(i=>i.aiEstimate)?'photo_ai_confirmed':'photo_manual_confirmed'};
+  const rec={id,date,meal,note:$('photoNote').value.trim(),image:photoDraftBlob,items,createdAt,photoOrigin:photoDraftSource,source:photoOnly?'photo_draft':items.some(i=>i.aiEstimate)?'photo_ai_confirmed':'photo_manual_confirmed',...(photoOnly?{draftItems:structuredClone(photoDraftItems)}:{})};
   const entries=[];
   for(const i of items){
     const l={id:'l_'+crypto.randomUUID(),date,meal,foodId:i.foodId,name:i.name,serving:i.grams?`${i.grams} g (foto)`:i.serving,servingGrams:i.servingGrams,photoItemId:i.id,qty:i.qty,calories:i.calories,protein:i.protein,carbs:i.carbs,fat:i.fat,...v17NutrientSnapshot(i),createdAt:createdAt+Math.random(),mealPhotoId:id,entrySource:i.aiEstimate?'photo_ai':'photo',aiEstimate:i.aiEstimate};
@@ -99,12 +142,15 @@ async function savePhotoMeal(){
   }
   photoSaveBusy=true;const controls=[...$('photoDialog').querySelectorAll('input,select,textarea,button')].map(el=>[el,el.disabled]);controls.forEach(([el])=>el.disabled=true);
   try{
-    await dbWritePhotoMeal(rec,entries);mealPhotos.push(rec);logs.push(...entries);
-    closePhotoMeal(true);renderToday();renderHistory();renderStats();renderPhotoMeals();updatePhotoStorageStatus();toast('Foto dan makanan tersimpan');
+    await photoDraftQueue.catch(()=>{});
+    if(photoDraftRecord){id=photoDraftRecord.id;rec.id=id;rec.createdAt=photoDraftRecord.createdAt;for(const entry of entries)entry.mealPhotoId=id;}
+    await dbWritePhotoMeal(rec,entries,photoDraftRecord?{photo:photoDraftRecord,logs:[]}:null);mealPhotos=mealPhotos.filter(p=>p.id!==id).concat(rec);logs.push(...entries);
+    closePhotoMeal(true);renderToday();renderHistory();renderStats();renderPhotoMeals();updatePhotoStorageStatus();toast(photoOnly?'Foto tersimpan. Kalori belum dicatat; lanjutkan kapan saja.':'Foto dan makanan tersimpan');
   }catch(e){toast('Foto dan makanan gagal disimpan. Isian tetap tersedia; silakan coba lagi.');}
   finally{photoSaveBusy=false;controls.forEach(([el,disabled])=>el.disabled=disabled);}
 }
 async function deletePhotoMeal(id){
+  if(photoSaveBusy||$('photoDialog').open)return;
   const rec=mealPhotos.find(x=>x.id===id);if(!rec)return;
   const linked=logs.filter(l=>l.mealPhotoId===id);
   await dbDeleteMany(linked.map(l=>({store:'logs',key:l.id})).concat({store:'mealPhotos',key:id}));
@@ -117,11 +163,11 @@ function photoCard(rec){
   const url=URL.createObjectURL(rec.image);
   setTimeout(()=>URL.revokeObjectURL(url),30000);
   const kcal=rec.items.reduce((s,i)=>s+(i.total?.cal??i.calories*i.qty),0);
-  return `<article class="card photo-meal-card"><img src="${url}" class="photo-meal-thumb" alt="Foto makanan"><div class="photo-meal-info"><strong>${esc(rec.note||rec.meal)}</strong><small>${rec.items.length} komponen · ≈ ${fmt(kcal)} kcal</small><div class="photo-tags">${rec.items.slice(0,4).map(i=>`<span>${esc(i.name)}${i.grams?` ${i.grams}g`:''}</span>`).join('')}</div></div><button class="del" onclick="deletePhotoMeal('${rec.id}')">×</button></article>`;
+  return `<article class="card photo-meal-card"><img src="${url}" class="photo-meal-thumb" alt="Foto makanan"><div class="photo-meal-info"><strong>${esc(rec.note||rec.meal)}</strong><small>${rec.items.length?rec.items.length+' komponen · ≈ '+fmt(kcal)+' kcal':'Draft foto · kalori belum dicatat'}</small><div class="photo-tags">${rec.items.slice(0,4).map(i=>`<span>${esc(i.name)}${i.grams?` ${i.grams}g`:''}</span>`).join('')}</div>${!rec.items.length?`<small>${esc(rec.date)}</small><button type="button" class="secondary" onclick="resumePhotoDraft('${rec.id}')">Lanjutkan</button>`:''}</div><button class="del" onclick="deletePhotoMeal('${rec.id}')">×</button></article>`;
 }
 function renderPhotoMeals(){
   const el=$('todayPhotoMeals');if(!el)return;
-  const a=mealPhotos.filter(x=>x.date===dashboardSelectedDate()).sort((a,b)=>b.createdAt-a.createdAt);
+  const a=mealPhotos.filter(x=>x.date===dashboardSelectedDate()||x.source==='photo_draft').sort((a,b)=>b.createdAt-a.createdAt);
   el.innerHTML=a.length?`<div class="section-head"><h2>Foto makanan</h2><span>${a.length} foto</span></div>`+a.map(photoCard).join(''):'';
 }
 async function updatePhotoStorageStatus(){
@@ -136,18 +182,23 @@ document.addEventListener('DOMContentLoaded',async()=>{
   $('photoFoodBtn').onclick=()=>startPhoto('camera');
   $('pickGalleryQuickBtn').onclick=()=>startPhoto('gallery');
   $('closePhotoDialog').onclick=()=>closePhotoMeal();
-  $('photoDialog').addEventListener('cancel',e=>{if(photoSaveBusy)e.preventDefault()});
+  $('photoDialog').addEventListener('cancel',e=>{e.preventDefault();closePhotoMeal();});
+  window.addEventListener('beforeunload',e=>{if(photoDraftBlob&&(!photoDraftRecord||photoSaveBusy||photoDraftPending>0)){e.preventDefault();e.returnValue='';}});
   $('takePhotoBtn').onclick=()=>$('photoCameraInput').click();
   $('uploadPhotoBtn').onclick=()=>$('photoGalleryInput').click();
   async function chooseMealPhoto(event,origin){
     const input=event.target,file=input.files?.[0];
     input.value='';
-    if(!file)return;
+    if(!file||photoSaveBusy)return;
     if(!file.type.startsWith('image/')){toast('Pilih file gambar yang valid');return}
     const analyze=$('analyzePhotoBtn');
-    analyze.disabled=true;
+    photoSaveBusy=true;analyze.disabled=true;
     toast('Memproses foto…');
     try{
+      await photoDraftQueue.catch(()=>{});
+      photoSession++;photoDraftRecord=null;photoDraftItems=[];photoDraftSource=origin;
+      photoDraftBlob=/^image\/(jpeg|png|webp)$/i.test(file.type)?file:null;
+      if(photoDraftBlob){setPhotoPreview(photoDraftBlob);await photoPersistDraft();}
       const compressed=await compressMealPhoto(file);
       if(!compressed)throw new Error('Tidak dapat memproses gambar');
       photoDraftBlob=compressed;
@@ -157,19 +208,23 @@ document.addEventListener('DOMContentLoaded',async()=>{
       renderPhotoSelected();
       $('aiSuggestions').innerHTML='';
       $('aiPhotoStatus').classList.add('hidden');
-      setPhotoPreview(compressed);
+      setPhotoPreview(compressed);await photoPersistDraft();
       analyze.disabled=false;
       analyze.textContent='✨ Analisis foto dengan AI';
       toast(origin==='gallery'?'Foto galeri siap':'Foto kamera siap');
     }catch(error){
       console.error(error);
       analyze.disabled=!photoDraftBlob;
-      toast('Foto gagal diproses. Pilih foto lain.');
+      photoDraftStatus(photoDraftRecord?'Foto asli sudah tersimpan sebagai draft. Pemrosesan belum berhasil; lanjutkan nanti.':'Foto belum tersimpan. Jangan tutup aplikasi; coba Simpan foto saja atau unduh foto.');
+    }finally{photoSaveBusy=false;analyze.disabled=!photoDraftBlob;
     }
   }
   $('photoCameraInput').onchange=e=>chooseMealPhoto(e,'camera');
   $('photoGalleryInput').onchange=e=>chooseMealPhoto(e,'gallery');
   $('photoSearch').oninput=renderPhotoSearch;
-  $('savePhotoMealBtn').onclick=savePhotoMeal;
+  $('savePhotoMealBtn').onclick=()=>savePhotoMeal();
+  $('savePhotoOnlyBtn').onclick=()=>savePhotoMeal(true);$('downloadPhotoBtn').onclick=downloadDraftPhoto;
+  for(const id of ['photoNote','photoEntryDate','photoMeal'])$(id).addEventListener('change',photoScheduleDraft);
+  $('photoNote').addEventListener('input',photoScheduleDraft);
   renderPhotoMeals();updatePhotoStorageStatus();
 });

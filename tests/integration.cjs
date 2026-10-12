@@ -314,6 +314,6 @@ const {JSDOM}=require('jsdom');const fidb=require('fake-indexeddb');const fs=req
  const partialCount=E('logs.length');await E("addFood('partial-food',{amount:100,unit:'gram'})");assert.equal(E('logs.length'),partialCount);
  E('v214ClosePortion()');await E("(async()=>{v213BackupState={exportedAt:new Date().toISOString(),confirmedAt:new Date().toISOString(),revision:await dbGetKV('v24DataRevision',0)};await v213RenderBackupChanges()})()");
  assert.match(w.document.getElementById('v213BackupChanges').textContent,/Tidak ada perubahan/);
- await E("dbSetKV('favorites',[...favorites,'portion-rice'])");await E('v213RenderBackupChanges()');assert.match(w.document.getElementById('v213BackupChanges').textContent,/Ada perubahan setelah backup/);
+ await E("dbSetKV('favorites',[...favorites,'portion-rice'])");await E('v213RenderBackupChanges()');for(let i=0;i<100&&!/Ada perubahan setelah backup/.test(w.document.getElementById('v213BackupChanges').textContent);i++)await new Promise(r=>setTimeout(r,10));assert.match(w.document.getElementById('v213BackupChanges').textContent,/Ada perubahan setelah backup/);
  assert.deepEqual(errors,[]);console.log('DOM + IndexedDB integration PASS: measures, recipe, gram log/edit, encrypted merge, water conflicts, atomic stale-revision rollback.');dom.window.close();
 })().catch(e=>{console.error(e);process.exit(1);});
